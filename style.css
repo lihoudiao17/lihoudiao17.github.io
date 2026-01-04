@@ -282,6 +282,17 @@ h2 {
     border-color: var(--text-color);
 }
 
+/* 粒子画布 */
+#particle-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* 在背景之上，内容之下 */
+    pointer-events: none; /* 关键：不阻挡鼠标点击文字和按钮 */
+}
+
 /* --- 音乐控制模块 --- */
 .music-wrapper {
     position: fixed;
