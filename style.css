@@ -197,7 +197,7 @@ h2 {
 
 /* 诗词备注（通韵等） */
 .poem-note {
-    font-size: 0.8rem;
+    font-size: 1.1rem; /* 调整为比正文(1.5rem)稍小一号，更清晰 */
     color: #999;
     margin-top: 1.5rem; 
     padding-top: 0;
@@ -262,19 +262,18 @@ h2 {
 #next-btn {
     writing-mode: vertical-rl; /* 竖排 */
     background: transparent;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd; /* 边框调亮一点 */
     padding: 15px 8px; /* 细长条 */
     font-family: 'Noto Serif SC', serif;
-    color: #888;
+    color: #ffffff; /* 改为白色字体，增加醒目度 */
     cursor: pointer;
     transition: all 0.3s;
     border-radius: 4px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* 增加文字阴影，保证在亮部背景也能看清 */
     
     /* 定位 */
     margin-left: 20px; /* 离诗框一点距离 */
     align-self: flex-end; /* 底部对齐 */
-    /* 或者绝对定位 */
-    /* position: absolute; bottom: 2rem; right: 2rem; */
 }
 
 #next-btn:hover {
@@ -300,6 +299,12 @@ h2 {
 
 .site-footer p {
     margin: 3px 0;
+}
+
+.footer-stars {
+    letter-spacing: 5px; /* 让星星散开一点，更有格调 */
+    margin-top: 10px !important;
+    opacity: 0.7; /* 稍微淡一点，不要太抢眼 */
 }
 
 /* --- 移动端适配 (小于 600px 的屏幕) --- */
