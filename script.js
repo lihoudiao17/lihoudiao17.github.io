@@ -107,9 +107,42 @@ function nextPoem() {
     renderPoem(currentIndex);
 }
 
+// 音乐控制逻辑
+function initMusic() {
+    const musicCtrl = document.getElementById('music-control');
+    const audio = document.getElementById('bg-music');
+    let isPlaying = false;
+
+    musicCtrl.addEventListener('click', () => {
+        if (isPlaying) {
+            audio.pause();
+            musicCtrl.classList.remove('music-playing');
+        } else {
+            audio.play().catch(e => console.log("播放被拦截:", e));
+            musicCtrl.classList.add('music-playing');
+        }
+        isPlaying = !isPlaying;
+    });
+
+    // 辅助逻辑：用户第一次点击页面任何地方时，尝试自动开启（如果尚未播放）
+    const firstClickPlay = () => {
+        if (!isPlaying) {
+            audio.play().then(() => {
+                musicCtrl.classList.add('music-playing');
+                isPlaying = true;
+            }).catch(e => {});
+        }
+        document.removeEventListener('click', firstClickPlay);
+    };
+    document.addEventListener('click', firstClickPlay);
+}
+
 // 初始化
 document.addEventListener('DOMContentLoaded', () => {
     // 随机开始
     currentIndex = Math.floor(Math.random() * poems.length);
     renderPoem(currentIndex);
+    
+    // 初始化音乐
+    initMusic();
 });
