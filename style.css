@@ -69,6 +69,8 @@ body::before {
     align-items: center;
     position: relative;
     z-index: 1; /* 确保整个容器都在背景层之上 */
+    /* 核心调整：底部增加到 60px，继续把整体内容向上平移 */
+    padding-bottom: 60px; 
 }
 
 .site-title {
@@ -277,6 +279,23 @@ h2 {
     background: var(--text-color);
     color: #fff;
     border-color: var(--text-color);
+}
+
+/* --- 底部页脚信息 --- */
+.site-footer {
+    /* 核心调整：再往上顶 30px */
+    margin-bottom: 30px; 
+    font-size: 1rem;
+    font-weight: bold;
+    color: #444; /* 颜色稍微加深一点点以配合粗体 */
+    text-align: center;
+    line-height: 1.6;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5); 
+    opacity: 0.9;
+}
+
+.site-footer p {
+    margin: 3px 0;
 }
 
 /* --- 移动端适配 (小于 600px 的屏幕) --- */
