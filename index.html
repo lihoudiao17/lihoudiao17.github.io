@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>静心诗社</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- 引入 Noto Serif SC (宋体) 和 Ma Shan Zheng (书法体) -->
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-ink"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="site-title">静心诗社</h1>
+            <p class="subtitle">任凭劫难磨棱角，不为繁华易素心</p>
+        </header>
+
+        <main id="poem-card" class="poem-card">
+            <div class="poem-content">
+                <!-- 右上角装饰枝条 SVG -->
+                <svg class="decoration-branch" viewBox="0 0 100 100" width="100" height="100">
+                    <path d="M100,0 Q60,20 30,50" fill="none" stroke="#a8bba8" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M70,25 Q80,40 75,55" fill="none" stroke="#a8bba8" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M45,40 Q30,30 20,35" fill="none" stroke="#a8bba8" stroke-width="1.5" stroke-linecap="round"/>
+                    <circle cx="30" cy="50" r="3" fill="#d48888" opacity="0.8"/>
+                    <circle cx="75" cy="55" r="2.5" fill="#d48888" opacity="0.7"/>
+                    <circle cx="20" cy="35" r="2" fill="#d48888" opacity="0.6"/>
+                    <circle cx="60" cy="20" r="2" fill="#d48888" opacity="0.5"/>
+                </svg>
+
+                <h2 id="poem-title">七律 · 落差</h2>
+                
+                <div id="poem-body" class="body-text">
+                    <p>静气凝神窗外光</p>
+                    <p>焉知此刻不彷徨</p>
+                    <p>伊人一点眉间蹙</p>
+                    <p>博士浑身蜗角慌</p>
+                    <p>惧怕落差安赫尔</p>
+                    <p>迷茫处在太平洋</p>
+                    <p>三生石约牵南北</p>
+                    <p>缘分留诗多少行</p>
+                </div>
+                
+                <!-- 印章容器 -->
+                <div class="stamps-container">
+                    <div class="seal">当代<br>作品</div>
+                    <div class="seal">理工<br>博士</div>
+                    <div class="seal">珍藏</div>
+                </div>
+            </div>
+            
+            <!-- 按钮移到这里，作为悬浮挂件 -->
+            <button id="next-btn" onclick="nextPoem()">下一首</button>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
