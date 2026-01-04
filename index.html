@@ -13,12 +13,22 @@
 <body>
     <div class="background-layer"></div>
     
-    <!-- 音乐模块 -->
-    <div id="music-control" class="music-control">
-        <svg class="music-icon" viewBox="0 0 24 24">
-            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" fill="currentColor"/>
-        </svg>
-        <audio id="bg-music" src="backgroundmusic.mp3" loop></audio>
+    <!-- 音乐模块容器 -->
+    <div class="music-wrapper">
+        <!-- 旋转图标 -->
+        <div id="music-control" class="music-control">
+            <svg class="music-icon" viewBox="0 0 24 24">
+                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" fill="currentColor"/>
+            </svg>
+        </div>
+        
+        <!-- 隐藏歌单 -->
+        <ul id="music-list" class="music-list">
+            <li data-src="backgroundmusic.mp3" class="active">阳关三叠</li>
+            <li data-src="music02.mp3">高山流水</li>
+        </ul>
+        
+        <audio id="bg-music" loop></audio>
     </div>
     
     <div class="container">

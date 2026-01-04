@@ -111,22 +111,59 @@ function nextPoem() {
 function initMusic() {
     const musicCtrl = document.getElementById('music-control');
     const audio = document.getElementById('bg-music');
+    const playlistItems = document.querySelectorAll('.music-list li');
     let isPlaying = false;
 
-    musicCtrl.addEventListener('click', () => {
-        if (isPlaying) {
+    // 默认加载第一首
+    if (playlistItems.length > 0) {
+        audio.src = playlistItems[0].dataset.src;
+    }
+
+    // 播放/暂停 切换函数
+    const togglePlay = () => {
+        if (audio.paused) {
+            audio.play().then(() => {
+                musicCtrl.classList.add('music-playing');
+                isPlaying = true;
+            }).catch(e => console.log("播放被拦截:", e));
+        } else {
             audio.pause();
             musicCtrl.classList.remove('music-playing');
-        } else {
-            audio.play().catch(e => console.log("播放被拦截:", e));
-            musicCtrl.classList.add('music-playing');
+            isPlaying = false;
         }
-        isPlaying = !isPlaying;
+    };
+
+    // 图标点击事件
+    musicCtrl.addEventListener('click', togglePlay);
+
+    // 歌单点击切歌事件
+    playlistItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.stopPropagation(); // 防止冒泡触发其他点击
+            
+            const newSrc = item.dataset.src;
+            // 切换高亮
+            playlistItems.forEach(li => li.classList.remove('active'));
+            item.classList.add('active');
+
+            // 只有当源文件不同时才重载
+            if (audio.getAttribute('src') !== newSrc) {
+                audio.src = newSrc;
+                // 切歌后自动播放
+                audio.play().then(() => {
+                    musicCtrl.classList.add('music-playing');
+                    isPlaying = true;
+                }).catch(e => {});
+            } else {
+                // 如果点的就是当前这首，就切换播放状态
+                togglePlay();
+            }
+        });
     });
 
-    // 辅助逻辑：用户第一次点击页面任何地方时，尝试自动开启（如果尚未播放）
+    // 辅助逻辑：用户第一次点击页面任何地方时，尝试自动开启
     const firstClickPlay = () => {
-        if (!isPlaying) {
+        if (audio.paused) {
             audio.play().then(() => {
                 musicCtrl.classList.add('music-playing');
                 isPlaying = true;
