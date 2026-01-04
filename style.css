@@ -87,11 +87,11 @@ body::before {
 .subtitle {
     font-size: 1.1rem; 
     font-weight: bold;
-    color: #ffffff; /* 改为白色 */
+    color: #1a1a1a; /* 改为深墨黑色，与页脚呼应 */
     letter-spacing: 2px;
     margin-top: 10px;
-    /* 增加深色半透明阴影，确保白色文字在浅色背景区域也能看清 */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    /* 调整阴影：改为白色柔光，衬托黑字 */
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 /* 诗词卡片核心区域 */
@@ -287,11 +287,11 @@ h2 {
     margin-bottom: 30px; 
     font-size: 1rem;
     font-weight: bold;
-    color: #444; /* 颜色稍微加深一点点以配合粗体 */
+    color: #1a1a1a; /* 改为深墨黑色，增加对比度 */
     text-align: center;
     line-height: 1.6;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5); 
-    opacity: 0.9;
+    opacity: 1; /* 调满不透明度 */
 }
 
 .site-footer p {
