@@ -103,6 +103,8 @@ body::before {
     width: 100%;
     padding: 2rem;
     position: relative; /* 关键：为了定位按钮 */
+    /* 核心微调：将模块2和模块3整体视觉上移 30px，缩短与标题的距离 */
+    transform: translateY(-30px); 
 }
 
 .poem-content {
@@ -283,15 +285,17 @@ h2 {
 
 /* --- 底部页脚信息 --- */
 .site-footer {
-    /* 核心调整：再往上顶 30px */
-    margin-bottom: 30px; 
+    /* 核心调整：底部边距增加到 60px */
+    margin-bottom: 60px; 
+    /* 新增：向上位移 50px，主动去“追”上面的模块2，缩小间距 */
+    transform: translateY(-50px);
     font-size: 1rem;
     font-weight: bold;
-    color: #1a1a1a; /* 改为深墨黑色，增加对比度 */
+    color: #1a1a1a; 
     text-align: center;
     line-height: 1.6;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5); 
-    opacity: 1; /* 调满不透明度 */
+    opacity: 1; 
 }
 
 .site-footer p {
