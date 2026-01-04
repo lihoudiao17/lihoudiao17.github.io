@@ -26,11 +26,22 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('background.jpg');
-    background-size: cover;
+    
+    /* 核心修改：添加网格纹理叠加在背景图之上 */
+    background-image: 
+        /* 垂直线 */
+        linear-gradient(90deg, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+        /* 水平线 */
+        linear-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+        /* 原背景图 */
+        url('background.jpg');
+        
+    /* 设置网格大小为 30px * 30px */
+    background-size: 30px 30px, 30px 30px, cover;
     background-position: center;
-    background-repeat: no-repeat;
-    /* 核心改动：降饱和度、降亮度、轻微模糊 */
+    background-repeat: repeat, repeat, no-repeat;
+
+    /* 保持原有的滤镜效果 */
     filter: saturate(0.4) brightness(0.7) blur(2px);
     z-index: -2;
 }
