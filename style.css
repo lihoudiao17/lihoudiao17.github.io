@@ -69,8 +69,8 @@ body::before {
     align-items: center;
     position: relative;
     z-index: 1; /* 确保整个容器都在背景层之上 */
-    /* 核心调整：底部增加到 60px，继续把整体内容向上平移 */
-    padding-bottom: 60px; 
+    /* 核心调整：底部增加到 90px，继续把整体内容向上平移，防止大屏底部被遮挡 */
+    padding-bottom: 90px; 
 }
 
 .site-title {
