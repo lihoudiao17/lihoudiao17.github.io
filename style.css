@@ -111,8 +111,8 @@ body::before {
 }
 
 .poem-content {
-    /* 核心：竖排文字 */
-    writing-mode: vertical-rl;
+    display: block;
+    /* 恢复为块级，因为内部还有绝对定位元素 */
     background-color: #f1f8f1;
     /* 修改为淡绿色 */
 
@@ -140,15 +140,30 @@ body::before {
     /* max-height: 80vh;  移除 max-height，改用 fixed height */
 
     position: relative;
-    transition: opacity 0.5s ease;
     /* 移除 all/transform transition，避免尺寸变化动画 */
+
+    overflow: hidden;
+}
+
+/* 新增：内部文字容器 */
+#poem-text-container {
+    width: 100%;
+    height: 100%;
+
+    /* 核心：竖排文字 */
+    writing-mode: vertical-rl;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     /* 内容居中 */
-    overflow: hidden;
+
+    transition: opacity 0.5s ease;
+    /* 动画移到这里 */
+    position: relative;
+    z-index: 1;
+    /* 确保在背景之上 */
 }
 
 /* 旋转的背景图层 */
@@ -462,7 +477,7 @@ h2 {
 }
 
 /* --- 横排模式样式 --- */
-.poem-content.horizontal-mode {
+.poem-content.horizontal-mode #poem-text-container {
     writing-mode: horizontal-tb;
     /* 核心：改为横排 */
     /* 尺寸和 padding 现在是固定的，不再在这里修改，保证框不动 */
@@ -475,7 +490,7 @@ h2 {
 }
 
 /* 横排时的标题微调：字体调小 */
-.poem-content.horizontal-mode h2 {
+.poem-content.horizontal-mode #poem-text-container h2 {
     font-size: 2.0rem;
     /* 从 2.4rem 降下来 */
     margin: 0 0 1.5rem 0;
@@ -486,7 +501,7 @@ h2 {
 }
 
 /* 横排时的正文微调：字体调小，行间距压缩 */
-.poem-content.horizontal-mode .body-text {
+.poem-content.horizontal-mode #poem-text-container .body-text {
     font-size: 1.2rem;
     /* 从 1.5rem 降下来 */
     line-height: 2.2rem;
@@ -497,7 +512,7 @@ h2 {
     /* 向上平移一个格子的距离 */
 }
 
-.poem-content.horizontal-mode .body-text p {
+.poem-content.horizontal-mode #poem-text-container .body-text p {
     margin: 0.6rem 0;
     text-align: center;
 }

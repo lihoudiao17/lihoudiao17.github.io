@@ -40,10 +40,10 @@ function toggleTOC() {
 function renderPoem(index) {
     if (poems.length === 0) return;
     const poem = poems[index];
-    const card = document.querySelector('.poem-content');
+    const textContainer = document.getElementById('poem-text-container');
 
     // 淡出动画
-    card.style.opacity = 0;
+    textContainer.style.opacity = 0;
 
     setTimeout(() => {
         // --- 自动化处理逻辑开始 ---
@@ -82,7 +82,7 @@ function renderPoem(index) {
         }
 
         // 淡入动画
-        card.style.opacity = 1;
+        textContainer.style.opacity = 1;
     }, 500);
 }
 
