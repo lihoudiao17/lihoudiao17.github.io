@@ -965,29 +965,66 @@ align-items: center;
 /* --- 平板/iPad 适配 (601px - 1024px) --- */
 @media screen and (min-width: 601px) and (max-width: 1024px) {
     .container {
-        height: 95vh;
-        padding: 1rem;
+        height: auto;
+        /* 不强制高度，让内容自然撑开 */
+        min-height: 100vh;
+        padding: 2rem 1rem;
+        /* 顶部增加安全边距，防止标题被遮挡 */
+        padding-top: 3rem;
+        justify-content: flex-start;
+        /* 从顶部开始排列，而非两端分布 */
+        gap: 1rem;
+        /* 各模块之间的间距 */
+    }
+
+    .site-title {
+        font-size: 2.8rem;
+        /* 平板上稍微调小 */
+        margin-bottom: 0;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+        margin-top: 5px;
+    }
+
+    .poem-card {
+        transform: none;
+        /* 移除上移偏移 */
+        flex-grow: 0;
     }
 
     .poem-content {
-        padding: 3rem;
-        width: 600px;
-        /* 平板上稍微宽一点 */
+        padding: 2.5rem;
+        width: min(500px, 85vw);
+        /* 自适应宽度，最大500px或85%视口宽度 */
+        height: auto;
+        min-height: 550px;
     }
 
     /* 平板上按钮也建议放到底部或者紧贴卡片 */
     .control-panel {
-        right: 50%;
-        transform: translateX(330px);
-        /* 紧贴卡片边缘 (300 + 30) */
-        bottom: 3rem;
+        position: relative;
+        /* 改为相对定位，跟随文档流 */
+        right: auto;
+        transform: none;
+        bottom: auto;
+        flex-direction: row;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 1rem;
     }
 
-    /* 确保动画最终位置也匹配 */
-    @keyframes slide-in-right {
-        to {
-            transform: translateX(330px);
-            opacity: 1;
-        }
+    #prev-btn,
+    #next-btn {
+        writing-mode: horizontal-tb;
+        /* 平板上也改为横排 */
+        padding: 10px 20px;
+    }
+
+    .site-footer {
+        margin-bottom: 1rem;
+        transform: none;
+        /* 移除上移偏移 */
     }
 }
