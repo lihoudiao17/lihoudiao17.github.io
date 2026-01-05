@@ -312,12 +312,19 @@ h2 {
     /* 尺寸和 padding 现在是固定的，不再在这里修改，保证框不动 */
 }
 
+/* 核心：横排时切换为蓝色玫瑰 */
+.poem-content.horizontal-mode::before {
+    background-image: url('bluerose.png');
+    /* 保持原有的旋转和位置，如果蓝色玫瑰需要微调位置，可以在这里覆盖 bottom/right/transform */
+}
+
 /* 横排时的标题微调：字体调小 */
 .poem-content.horizontal-mode h2 {
     font-size: 2.0rem; /* 从 2.4rem 降下来 */
     margin: 0 0 1.5rem 0; 
     writing-mode: horizontal-tb;
     text-align: center;
+    transform: translateY(-30px); /* 向上平移一个格子的距离 */
 }
 
 /* 横排时的正文微调：字体调小，行间距压缩 */
@@ -325,6 +332,7 @@ h2 {
     font-size: 1.2rem; /* 从 1.5rem 降下来 */
     line-height: 2.2rem; /* 配合字体缩小行高 */
     letter-spacing: 3px; /* 稍微紧凑一点 */
+    transform: translateY(-30px); /* 向上平移一个格子的距离 */
 }
 
 .poem-content.horizontal-mode .body-text p {
