@@ -831,12 +831,15 @@ align-items: center;
     .container {
         height: 100vh;
         /* 手机上撑满 */
-        padding: 10px;
+        padding: 5px;
+        padding-bottom: 20px;
+        /* 底部留出空间 */
     }
 
     .site-title {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
         /* 标题改小 */
+        margin-top: 1rem;
     }
 
     .subtitle {
@@ -845,57 +848,117 @@ align-items: center;
     }
 
     .poem-card {
-        padding: 0.5rem;
+        padding: 0;
         /* 卡片外边距减小 */
-        flex-direction: row;
-        /* 手机上横向排列（按钮在旁边会挤） -> 还是保持 column 吧，或者按钮放下面 */
-        align-items: center;
+        width: 100%;
+        transform: translateY(-10px);
+        flex-direction: column;
+        /* 保持竖向 */
+        overflow: visible;
+        /* 允许溢出 */
     }
 
     .poem-content {
-        padding: 2rem 2rem;
+        width: 90%;
+        /* 宽度自适应 */
+        height: auto;
+        min-height: 500px;
+        /* 保持一定高度 */
+        padding: 2rem 1.5rem;
         /* 内边距大幅减小 */
-        padding-top: 2rem;
-        padding-bottom: 6rem;
+        padding-top: 1.5rem;
+        padding-bottom: 4rem;
         /* 给印章留位 */
-        max-height: 70vh;
     }
 
     h2 {
         font-size: 1.8rem;
         /* 诗题改小 */
-        margin-left: 1.5rem;
+        margin: 0 0 0 1rem;
         /* 间距改小 */
     }
 
     .body-text {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         /* 正文改小，防溢出 */
-        line-height: 2rem;
+        line-height: 2.2rem;
         letter-spacing: 2px;
     }
 
     /* 花也要小一点 */
     .decoration-branch {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
+        opacity: 0.6;
+        /* 淡化，防遮挡 */
+    }
+
+    .poem-content::before {
+        /* 玫瑰背景 */
+        width: 250px;
+        height: 250px;
+        right: -50px;
+        bottom: -50px;
+        opacity: 1;
     }
 
     /* 印章位置微调 */
     .stamps-container {
         bottom: 10px;
         left: 10px;
-        transform: scale(0.8);
+        transform: scale(0.7);
         /* 整体缩小印章 */
         transform-origin: bottom left;
     }
 
-    /* 手机上按钮如果不方便竖排，可以改回横排放在下面 */
+    /* --- 核心修复：手机端按钮放在底部平铺 --- */
+    .control-panel {
+        position: fixed;
+        /* 改为固定定位，吸底 */
+        bottom: 20px;
+        left: 50%;
+        right: auto;
+        top: auto;
+        transform: translateX(-50%);
+        /* 水平居中 */
+        flex-direction: row;
+        /* 横向排列 */
+        width: 90%;
+        justify-content: space-between;
+        /* 左右分布 */
+        gap: 0;
+        animation: none;
+        /* 移除滑入动画，改为淡入 */
+        opacity: 1;
+        z-index: 100;
+        pointer-events: none;
+        /* 让容器不挡点击，按钮单独开启 */
+    }
+
+    /* 将按钮移到容器两侧 */
+    #prev-btn,
     #next-btn {
         writing-mode: horizontal-tb;
-        margin-left: 0;
-        margin-top: 20px;
-        align-self: center;
+        /* 改为横排 */
+        pointer-events: auto;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 8px 15px;
+        font-size: 1rem;
+    }
+
+    /* 隐藏模式切换和名录按钮，或者把它们放在顶部 */
+    /* 暂时保持在右上角，但需要调整大小 */
+    .music-wrapper {
+        top: 10px;
+        right: 10px;
+        transform: scale(0.8);
+        transform-origin: top right;
+    }
+
+    .site-footer {
+        display: none;
+        /* 手机上屏幕太小，暂时隐藏页脚以突出内容 */
     }
 }
 
@@ -903,60 +966,28 @@ align-items: center;
 @media screen and (min-width: 601px) and (max-width: 1024px) {
     .container {
         height: 95vh;
-        /* 平板上稍微给多点高度 */
-        padding: 1rem;
-        justify-content: center;
-        /* 居中对齐 */
-    }
-
-    .site-title {
-        font-size: 3rem;
-        /* 标题适中 */
-    }
-
-    .poem-card {
         padding: 1rem;
     }
 
     .poem-content {
-        /* 平板上内边距介于手机和电脑之间 */
-        padding: 3rem 4rem;
-        padding-top: 2.5rem;
-        padding-bottom: 7rem;
-        /* 给印章留位 */
-        max-height: 75vh;
-        /* 防止过高 */
+        padding: 3rem;
+        width: 600px;
+        /* 平板上稍微宽一点 */
     }
 
-    h2 {
-        font-size: 2.2rem;
-        margin-left: 2rem;
+    /* 平板上按钮也建议放到底部或者紧贴卡片 */
+    .control-panel {
+        right: 50%;
+        transform: translateX(330px);
+        /* 紧贴卡片边缘 (300 + 30) */
+        bottom: 3rem;
     }
 
-    .body-text {
-        font-size: 1.3rem;
-        /* 字体稍微比电脑版小一点 */
-        line-height: 2.5rem;
-        letter-spacing: 3px;
-    }
-
-    /* 装饰花适当缩小 */
-    .decoration-branch {
-        width: 120px;
-        height: 120px;
-    }
-
-    /* 印章整体稍微缩小 */
-    .stamps-container {
-        bottom: 15px;
-        left: 15px;
-        transform: scale(0.9);
-        transform-origin: bottom left;
-    }
-
-    /* 按钮保持竖排，但距离拉近点 */
-    #next-btn {
-        margin-left: 10px;
-        padding: 12px 6px;
+    /* 确保动画最终位置也匹配 */
+    @keyframes slide-in-right {
+        to {
+            transform: translateX(330px);
+            opacity: 1;
+        }
     }
 }
