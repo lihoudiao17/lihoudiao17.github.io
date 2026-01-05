@@ -114,9 +114,13 @@ body::before {
     
     /* 背景图移至 ::before */
     
-    padding: 4rem 6rem; 
-    padding-top: 3rem; 
-    padding-bottom: 8rem; 
+    /* 核心调整：固定尺寸，防止切换版式时跳动 */
+    width: 500px;
+    height: 600px;
+    
+    /* 这里的 padding 仅作为内部留白，不再撑大盒子（需配合 box-sizing） */
+    padding: 3rem;
+    box-sizing: border-box; 
     
     /* 3D 悬浮感核心：多层阴影 */
     box-shadow: 
@@ -129,15 +133,16 @@ body::before {
         
     border-radius: 2px; 
     border: 1px solid rgba(0,0,0,0.05); 
-    max-height: 80vh; 
+    /* max-height: 80vh;  移除 max-height，改用 fixed height */
     
     position: relative;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease; /* 移除 all/transform transition，避免尺寸变化动画 */
     
     display: flex; 
     flex-direction: column;
     justify-content: center; 
-    overflow: hidden; /* 关键：防止旋转后的图片溢出方框 */
+    align-items: center; /* 内容居中 */
+    overflow: hidden; 
 }
 
 /* 旋转的背景图层 */
@@ -258,14 +263,29 @@ h2 {
     grid-row: 2;
 }
 
-/* 下一首按钮：改为长方形红色印章 */
-#next-btn {
-    writing-mode: vertical-rl; /* 竖排 */
-    background: rgba(255, 255, 255, 0.9); /* 微微白底 */
-    border: 2px solid #a83f3f; /* 红色边框 */
+/* --- 控制面板组（模块3） --- */
+.control-panel {
+    position: absolute;
+    bottom: 2rem; /* 整体距离底部的位置 */
+    right: 50%;   /* 参考中心线 */
+    /* 容器整体平移：250px(半宽) + 20px(间距) + 微调 */
+    transform: translateX(290px); 
+    z-index: 10;
+    
+    display: flex;
+    flex-direction: column; /* 竖向排列 */
+    gap: 1.5rem; /* 核心：按钮之间的等间距 */
+    align-items: center; /* 确保它们中心对齐 */
+}
+
+/* 按钮通用样式：长方形红色印章 */
+#next-btn, #mode-btn, #prev-btn {
+    writing-mode: vertical-rl; /* 竖排文字 */
+    background: rgba(255, 255, 255, 0.9); 
+    border: 2px solid #a83f3f; 
     padding: 12px 4px; 
-    font-family: 'Ma Shan Zheng', cursive; /* 书法体 */
-    color: #a83f3f; /* 红色文字 */
+    font-family: 'Ma Shan Zheng', cursive; 
+    color: #a83f3f; 
     cursor: pointer;
     transition: all 0.3s;
     border-radius: 2px;
@@ -274,25 +294,46 @@ h2 {
     text-shadow: none;
     box-shadow: 0 0 2px rgba(168, 63, 63, 0.2);
     
-    /* 绝对定位核心：对齐下边框 */
-    position: absolute;
-    bottom: 2rem; /* 精准对齐 .poem-content 的底部（2rem是父容器内边距） */
-    right: 50%;
-    /* 这里的 translateX 值需要根据诗框宽度动态微调，
-       假设诗框在大屏下宽度约 400px，那么一半就是 200px，
-       我们往右平移 290px（原230 + 两个格子60px）就能优雅悬浮在右侧。 */
-    transform: translateX(290px); 
-    
+    /* 移除之前的绝对定位属性，由父容器接管 */
+    position: static; 
+    transform: none;
     margin: 0;
-    align-self: auto;
-    z-index: 10;
 }
 
-#next-btn:hover {
+#next-btn:hover, #mode-btn:hover, #prev-btn:hover {
     background: #a83f3f;
     color: #fff;
     border-color: #a83f3f;
 }
+
+/* --- 横排模式样式 --- */
+.poem-content.horizontal-mode {
+    writing-mode: horizontal-tb; /* 核心：改为横排 */
+    /* 尺寸和 padding 现在是固定的，不再在这里修改，保证框不动 */
+}
+
+/* 横排时的标题微调：字体调小 */
+.poem-content.horizontal-mode h2 {
+    font-size: 2.0rem; /* 从 2.4rem 降下来 */
+    margin: 0 0 1.5rem 0; 
+    writing-mode: horizontal-tb;
+    text-align: center;
+}
+
+/* 横排时的正文微调：字体调小，行间距压缩 */
+.poem-content.horizontal-mode .body-text {
+    font-size: 1.2rem; /* 从 1.5rem 降下来 */
+    line-height: 2.2rem; /* 配合字体缩小行高 */
+    letter-spacing: 3px; /* 稍微紧凑一点 */
+}
+
+.poem-content.horizontal-mode .body-text p {
+    margin: 0.6rem 0;
+    text-align: center;
+}
+
+/* 横排时的按钮文字处理 */
+/* 按钮本身保持竖排(为了好看的印章形状)，但如果需要也可以微调，暂时保持竖排印章 */
 
 /* --- 电脑端特殊布局 --- */
 /* 因为按钮现在是绝对定位的，我们需要确保在大屏下它不会跑太远 */

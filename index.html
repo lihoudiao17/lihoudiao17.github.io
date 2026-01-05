@@ -79,8 +79,12 @@
                 </div>
             </div>
             
-            <!-- 按钮移到这里，作为悬浮挂件 -->
-            <button id="next-btn" onclick="nextPoem()">下一首</button>
+            <!-- 按钮移到这里，作为悬浮挂件组 -->
+            <div class="control-panel">
+                <button id="mode-btn" onclick="toggleMode()">横排</button>
+                <button id="prev-btn" onclick="prevPoem()">上一首</button>
+                <button id="next-btn" onclick="nextPoem()">下一首</button>
+            </div>
         </main>
         
         <!-- 新增：底部页脚信息 -->

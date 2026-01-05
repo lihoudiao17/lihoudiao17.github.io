@@ -107,6 +107,28 @@ function nextPoem() {
     renderPoem(currentIndex);
 }
 
+function prevPoem() {
+    // 逻辑：(当前索引 - 1 + 总长度) % 总长度，确保处理负数
+    currentIndex = (currentIndex - 1 + poems.length) % poems.length;
+    renderPoem(currentIndex);
+}
+
+// 切换横竖排版
+function toggleMode() {
+    const card = document.querySelector('.poem-content');
+    const btn = document.getElementById('mode-btn');
+    
+    // 切换 class
+    card.classList.toggle('horizontal-mode');
+    
+    // 修改按钮文字
+    if (card.classList.contains('horizontal-mode')) {
+        btn.innerText = "竖排"; // 当前是横排，提示用户点击变竖排
+    } else {
+        btn.innerText = "横排"; // 当前是竖排，提示用户点击变横排
+    }
+}
+
 // 音乐控制逻辑
 function initMusic() {
     const musicCtrl = document.getElementById('music-control');
@@ -160,18 +182,6 @@ function initMusic() {
             }
         });
     });
-
-    // 辅助逻辑：用户第一次点击页面任何地方时，尝试自动开启
-    const firstClickPlay = () => {
-        if (audio.paused) {
-            audio.play().then(() => {
-                musicCtrl.classList.add('music-playing');
-                isPlaying = true;
-            }).catch(e => {});
-        }
-        document.removeEventListener('click', firstClickPlay);
-    };
-    document.addEventListener('click', firstClickPlay);
 }
 
 // 初始化
