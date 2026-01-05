@@ -258,28 +258,48 @@ h2 {
     grid-row: 2;
 }
 
-/* 下一首按钮：悬浮在右侧底部 */
+/* 下一首按钮：改为长方形红色印章 */
 #next-btn {
     writing-mode: vertical-rl; /* 竖排 */
-    background: transparent;
-    border: 1px solid #ddd; /* 边框调亮一点 */
-    padding: 15px 8px; /* 细长条 */
-    font-family: 'Noto Serif SC', serif;
-    color: #ffffff; /* 改为白色字体，增加醒目度 */
+    background: rgba(255, 255, 255, 0.9); /* 微微白底 */
+    border: 2px solid #a83f3f; /* 红色边框 */
+    padding: 12px 4px; 
+    font-family: 'Ma Shan Zheng', cursive; /* 书法体 */
+    color: #a83f3f; /* 红色文字 */
     cursor: pointer;
     transition: all 0.3s;
-    border-radius: 4px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* 增加文字阴影，保证在亮部背景也能看清 */
+    border-radius: 2px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-shadow: none;
+    box-shadow: 0 0 2px rgba(168, 63, 63, 0.2);
     
-    /* 定位 */
-    margin-left: 20px; /* 离诗框一点距离 */
-    align-self: flex-end; /* 底部对齐 */
+    /* 绝对定位核心：对齐下边框 */
+    position: absolute;
+    bottom: 2rem; /* 精准对齐 .poem-content 的底部（2rem是父容器内边距） */
+    right: 50%;
+    /* 这里的 translateX 值需要根据诗框宽度动态微调，
+       假设诗框在大屏下宽度约 400px，那么一半就是 200px，
+       我们往右平移 290px（原230 + 两个格子60px）就能优雅悬浮在右侧。 */
+    transform: translateX(290px); 
+    
+    margin: 0;
+    align-self: auto;
+    z-index: 10;
 }
 
 #next-btn:hover {
-    background: var(--text-color);
+    background: #a83f3f;
     color: #fff;
-    border-color: var(--text-color);
+    border-color: #a83f3f;
+}
+
+/* --- 电脑端特殊布局 --- */
+/* 因为按钮现在是绝对定位的，我们需要确保在大屏下它不会跑太远 */
+@media screen and (min-width: 1025px) {
+    .poem-card {
+        overflow: visible; /* 允许按钮显示在框外 */
+    }
 }
 
 /* 粒子画布 */
@@ -302,6 +322,30 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: flex-end; /* 右对齐 */
+}
+
+/* 新增：背景音乐提示印章 */
+.music-label {
+    position: absolute;
+    right: 50px; /* 在图标左侧 */
+    top: 4px;    /* 垂直居中微调：(40px图标 - 32px印章)/2 = 4px */
+    width: 32px;
+    height: 32px;
+    border: 2px solid #a83f3f; /* 红色边框 */
+    color: #a83f3f;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 1.1;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px; /* 稍微方一点，更像印章 */
+    font-family: 'Ma Shan Zheng', cursive; /* 书法体 */
+    background-color: rgba(255, 255, 255, 0.9);
+    pointer-events: none;
+    /* 增加一个极其微弱的红色发光，模拟朱砂效果 */
+    box-shadow: 0 0 2px rgba(168, 63, 63, 0.2);
 }
 
 .music-control {
