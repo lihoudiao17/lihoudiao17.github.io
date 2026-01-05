@@ -1017,15 +1017,19 @@ align-items: center;
 
     /* 平板上按钮也建议放到底部或者紧贴卡片 */
     .control-panel {
-        position: relative;
+        position: relative !important;
         /* 改为相对定位，跟随文档流 */
-        right: auto;
-        transform: none;
-        bottom: auto;
+        right: auto !important;
+        transform: none !important;
+        bottom: auto !important;
         flex-direction: row;
         justify-content: center;
         gap: 2rem;
         margin-top: 1rem;
+        animation: none !important;
+        /* 禁用入场动画，防止覆盖定位 */
+        opacity: 1 !important;
+        /* 确保可见 */
     }
 
     #prev-btn,
