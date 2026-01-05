@@ -828,18 +828,31 @@ align-items: center;
 
 /* --- 移动端适配 (小于 600px 的屏幕) --- */
 @media screen and (max-width: 600px) {
+    body {
+        align-items: flex-start;
+        /* 从顶部开始，防止垂直居中导致标题被推出屏幕 */
+        overflow-y: auto;
+        /* 允许滚动 */
+    }
+
     .container {
-        height: 100vh;
-        /* 手机上撑满 */
-        padding: 5px;
-        padding-bottom: 20px;
-        /* 底部留出空间 */
+        height: auto;
+        /* 不强制高度 */
+        min-height: 100vh;
+        padding: 10px;
+        padding-top: 2rem;
+        /* 顶部安全边距 */
+        padding-bottom: 80px;
+        /* 底部留出按钮空间 */
+        justify-content: flex-start;
+        gap: 0.5rem;
     }
 
     .site-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
         /* 标题改小 */
-        margin-top: 1rem;
+        margin-top: 0;
+        margin-bottom: 0;
     }
 
     .subtitle {
