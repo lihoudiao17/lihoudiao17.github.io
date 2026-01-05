@@ -110,7 +110,7 @@ body::before {
 .poem-content {
     /* 核心：竖排文字 */
     writing-mode: vertical-rl;
-    background-color: #fff; 
+    background-color: #f1f8f1; /* 修改为淡绿色 */
     
     /* 背景图移至 ::before */
     
@@ -280,7 +280,7 @@ h2 {
 
 /* 按钮通用样式：长方形红色印章 */
 #next-btn, #mode-btn, #prev-btn {
-    writing-mode: vertical-rl; /* 竖排文字 */
+    writing-mode: vertical-rl; /* 默认竖排文字 */
     background: rgba(255, 255, 255, 0.9); 
     border: 2px solid #a83f3f; 
     padding: 12px 4px; 
@@ -298,6 +298,41 @@ h2 {
     position: static; 
     transform: none;
     margin: 0;
+}
+
+/* 核心修改：排版切换按钮改为正方形印章 */
+#mode-btn {
+    writing-mode: horizontal-tb; /* 改回横向流，以便控制换行 */
+    width: 40px;  
+    height: 40px; 
+    padding: 2px; 
+    line-height: 1.1; 
+    font-size: 11px; /* 统一字号 */
+    font-weight: bold;
+    font-family: 'Ma Shan Zheng', cursive; /* 统一字体 */
+    color: #a83f3f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    word-break: break-all; /* 强制换行形成 2x2 */
+    transition: all 0.3s ease;
+}
+
+/* 蓝色模式：当显示蓝玫瑰（横排版式）时激活 */
+#mode-btn.blue-mode,
+#prev-btn.blue-mode,
+#next-btn.blue-mode {
+    color: #3f72a8; /* 深雅蓝，匹配蓝玫瑰 */
+    border-color: #3f72a8;
+}
+
+#mode-btn.blue-mode:hover,
+#prev-btn.blue-mode:hover,
+#next-btn.blue-mode:hover {
+    background: #3f72a8;
+    color: #fff;
+    border-color: #3f72a8;
 }
 
 #next-btn:hover, #mode-btn:hover, #prev-btn:hover {
@@ -362,39 +397,38 @@ h2 {
     pointer-events: none; /* 关键：不阻挡鼠标点击文字和按钮 */
 }
 
-/* --- 音乐控制模块 --- */
+/* --- 挂件控制模块 --- */
 .music-wrapper {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 25px;
+    right: 25px;
     z-index: 1000;
     display: flex;
-    flex-direction: column;
-    align-items: flex-end; /* 右对齐 */
+    flex-direction: row; /* 核心：水平并排 */
+    align-items: center; /* 垂直居中 */
+    gap: 15px; /* 元素之间的固定间距，防止重叠 */
 }
 
-/* 新增：背景音乐提示印章 */
+/* 背景音乐提示印章 */
 .music-label {
-    position: absolute;
-    right: 50px; /* 在图标左侧 */
-    top: 4px;    /* 垂直居中微调：(40px图标 - 32px印章)/2 = 4px */
-    width: 32px;
-    height: 32px;
-    border: 2px solid #a83f3f; /* 红色边框 */
+    position: static; 
+    width: 40px;  
+    height: 40px; 
+    border: 2px solid #a83f3f; 
     color: #a83f3f;
-    font-size: 11px;
+    font-size: 11px; /* 统一字号 */
     font-weight: bold;
-    line-height: 1.1;
-    text-align: center;
+    line-height: 1.1; 
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 2px; /* 稍微方一点，更像印章 */
-    font-family: 'Ma Shan Zheng', cursive; /* 书法体 */
+    text-align: center;
+    border-radius: 2px;
+    font-family: 'Ma Shan Zheng', cursive; /* 统一字体 */
     background-color: rgba(255, 255, 255, 0.9);
     pointer-events: none;
-    /* 增加一个极其微弱的红色发光，模拟朱砂效果 */
     box-shadow: 0 0 2px rgba(168, 63, 63, 0.2);
+    box-sizing: border-box; 
 }
 
 .music-control {
@@ -409,7 +443,8 @@ h2 {
     transition: all 0.3s ease;
     border: 1px solid rgba(0,0,0,0.1);
     color: #444;
-    margin-bottom: 5px; /* 和歌单的间距 */
+    /* 移除 margin-bottom，因为现在是水平排列 */
+    position: relative; /* 为歌单定位提供参考 */
 }
 
 .music-wrapper:hover .music-control {
@@ -422,8 +457,11 @@ h2 {
     height: 20px;
 }
 
-/* 歌单列表 */
+/* 歌单列表：调整定位使其对齐到最右侧的音乐按钮下方 */
 .music-list {
+    position: absolute;
+    top: 50px;
+    right: 0;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -431,7 +469,7 @@ h2 {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     width: 120px;
-    opacity: 0; /* 默认隐藏 */
+    opacity: 0; 
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;

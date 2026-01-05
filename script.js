@@ -1,60 +1,20 @@
-const poems = [
-    {
-        title: "七律·自况",
-        author: "当代 | 理工博士",
-        content: [
-            "硬语盘空字字真，诗词无羽拂纤尘。",
-            "推崇奋发探原委，克制强行论果因。",
-            "既恐他人期待己，还忧自己索求人。",
-            "痴迷一件难平事，解放才情有限身。"
-        ]
-    },
-    {
-        title: "七律·落差",
-        author: "当代 | 理工博士",
-        content: [
-            "静气凝神窗外光，焉知此刻不彷徨？",
-            "伊人一点眉间蹙，博士浑身蜗角慌。",
-            "惧怕落差安赫尔，迷茫处在太平洋。",
-            "三生石约牵南北，缘分留诗多少行。"
-        ]
-    },
-    {
-        title: "七律·微时",
-        author: "当代 | 理工博士",
-        content: [
-            "不复博闻强记身，灵台懒惰早蒙尘。",
-            "一杯共醉隔空酒，万里相逢孤独人。",
-            "试问谁无心上锁，自知我乃井中鳞。",
-            "诗歌伴奏微时趣，难免小山思小蘋。"
-        ]
-    },
-    {
-        // 测试数据：带括号，全角半角混用测试
-        title: "七律·纠缠(通韵)", 
-        author: "当代 | 理工博士",
-        content: [
-            "一树梧桐绕绿萝，缠绵悱恻爱生活。",
-            "以为地理银河少，却是深情汉界多。",
-            "状态不明薛定谔，形姿难测海森伯。",
-            "对屏回首空余想，笑笑相逢犹在昨。"
-        ]
-    },
-    {
-        title: "七律·问卦",
-        author: "当代 | 理工博士",
-        content: [
-            "无趣灵魂无趣吟，看天看地看飞禽。",
-            "空楼独享韩娥曲，开卷隔离丝竹音。",
-            "男士文章男士品，女人字句女人心。",
-            "占星问卦神仙语，传说诗中有子衿。"
-        ]
-    }
-];
-
+let poems = [];
 let currentIndex = 0;
 
+async function loadPoems() {
+    try {
+        const response = await fetch('data/poems.json');
+        poems = await response.json();
+        // 随机开始
+        currentIndex = Math.floor(Math.random() * poems.length);
+        renderPoem(currentIndex);
+    } catch (error) {
+        console.error("加载诗词数据失败:", error);
+    }
+}
+
 function renderPoem(index) {
+    if (poems.length === 0) return;
     const poem = poems[index];
     const card = document.querySelector('.poem-content');
     
@@ -117,15 +77,22 @@ function prevPoem() {
 function toggleMode() {
     const card = document.querySelector('.poem-content');
     const btn = document.getElementById('mode-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
     
     // 切换 class
     card.classList.toggle('horizontal-mode');
     
+    // 联动颜色切换：所有按钮一起变色
+    btn.classList.toggle('blue-mode');
+    prevBtn.classList.toggle('blue-mode');
+    nextBtn.classList.toggle('blue-mode');
+    
     // 修改按钮文字
     if (card.classList.contains('horizontal-mode')) {
-        btn.innerText = "竖排"; // 当前是横排，提示用户点击变竖排
+        btn.innerText = "竖排模式"; // 当前是横排，提示用户点击变竖排
     } else {
-        btn.innerText = "横排"; // 当前是竖排，提示用户点击变横排
+        btn.innerText = "横排模式"; // 当前是竖排，提示用户点击变横排
     }
 }
 
@@ -186,9 +153,7 @@ function initMusic() {
 
 // 初始化
 document.addEventListener('DOMContentLoaded', () => {
-    // 随机开始
-    currentIndex = Math.floor(Math.random() * poems.length);
-    renderPoem(currentIndex);
+    loadPoems();
     
     // 初始化音乐
     initMusic();

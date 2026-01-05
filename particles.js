@@ -33,20 +33,26 @@ class Particle {
         this.y = y;
         this.directionX = directionX;
         this.directionY = directionY;
+        this.baseSize = size; // 记录基础大小
         this.size = size;
         this.color = color;
+        this.angle = Math.random() * 6.2; // 随机初始相位
     }
 
     // 绘制单个粒子
     draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = '#ffffff'; // 粒子颜色：纯白
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'; // 稍微透明一点，更有层次感
         ctx.fill();
     }
 
     // 更新粒子位置
     update() {
+        // 呼吸效果：根据正弦函数动态调整粒子大小
+        this.angle += 0.02;
+        this.size = this.baseSize + Math.sin(this.angle) * 0.8;
+
         // 边界检查（反弹）
         if (this.x > canvas.width || this.x < 0) {
             this.directionX = -this.directionX;
@@ -111,9 +117,9 @@ function connect() {
             
             // 如果距离小于阈值（比如 120px），就连线
             if (distance < (canvas.width/7) * (canvas.height/7)) {
-                opacityValue = 1 - (distance/20000); // 距离越远线越淡
-                ctx.strokeStyle = 'rgba(255, 255, 255,' + opacityValue * 0.2 + ')'; // 线条非常淡 (0.2透明度)
-                ctx.lineWidth = 1;
+                opacityValue = 1 - (distance/25000); // 稍微调大分母，让线更亮一点点
+                ctx.strokeStyle = 'rgba(255, 255, 255,' + opacityValue * 0.35 + ')'; // 透明度从 0.2 升到 0.35
+                ctx.lineWidth = 0.8;
                 ctx.beginPath();
                 ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
                 ctx.lineTo(particlesArray[b].x, particlesArray[b].y);

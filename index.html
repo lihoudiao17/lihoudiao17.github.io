@@ -16,12 +16,15 @@
     <!-- 粒子特效画布 -->
     <canvas id="particle-canvas"></canvas>
     
-    <!-- 音乐模块容器 -->
+    <!-- 挂件控制组 -->
     <div class="music-wrapper">
-        <!-- 新增：背景音乐提示印章 -->
+        <!-- 排版模式切换 (40x40 方印) -->
+        <button id="mode-btn" onclick="toggleMode()">横排模式</button>
+
+        <!-- 背景音乐提示印章 -->
         <div class="music-label">背景<br>音乐</div>
         
-        <!-- 旋转图标 -->
+        <!-- 音乐控制图标 (40x40 圆形) -->
         <div id="music-control" class="music-control">
             <svg class="music-icon" viewBox="0 0 24 24">
                 <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" fill="currentColor"/>
@@ -81,7 +84,6 @@
             
             <!-- 按钮移到这里，作为悬浮挂件组 -->
             <div class="control-panel">
-                <button id="mode-btn" onclick="toggleMode()">横排</button>
                 <button id="prev-btn" onclick="prevPoem()">上一首</button>
                 <button id="next-btn" onclick="nextPoem()">下一首</button>
             </div>
