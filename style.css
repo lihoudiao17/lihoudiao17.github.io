@@ -561,11 +561,41 @@ h2 {
     border: 1px solid rgba(0,0,0,0.05);
 }
 
-/* 鼠标悬停整个区域时显示歌单 */
-.music-wrapper:hover .music-list {
+/* 鼠标悬停逻辑修复：仅当悬停在音乐相关元素（标签、图标、列表）时显示 */
+.music-label:hover ~ .music-list,
+.music-control:hover + .music-list,
+.music-list:hover {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+}
+
+.music-label {
+    position: static; 
+    width: 40px;  
+    height: 40px; 
+    border: 2px solid #a83f3f; 
+    color: #a83f3f;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 1.1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 2px;
+    font-family: 'Ma Shan Zheng', cursive;
+    background-color: rgba(255, 255, 255, 0.9);
+    pointer-events: auto; /* 关键：允许鼠标交互 */
+    cursor: pointer;      /* 关键：显示手型指针 */
+    box-shadow: 0 0 2px rgba(168, 63, 63, 0.2);
+    box-sizing: border-box; 
+    transition: all 0.3s ease;
+}
+
+.music-label:hover {
+    background-color: #a83f3f;
+    color: #fff;
 }
 
 .music-list li {
