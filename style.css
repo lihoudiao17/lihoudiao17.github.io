@@ -300,39 +300,123 @@ h2 {
     margin: 0;
 }
 
-/* 核心修改：排版切换按钮改为正方形印章 */
-#mode-btn {
-    writing-mode: horizontal-tb; /* 改回横向流，以便控制换行 */
+/* 核心修改：排版切换按钮和名录按钮 */
+#mode-btn, #toc-btn {
+    writing-mode: horizontal-tb;
     width: 40px;  
     height: 40px; 
     padding: 2px; 
     line-height: 1.1; 
-    font-size: 11px; /* 统一字号 */
+    font-size: 11px;
     font-weight: bold;
-    font-family: 'Ma Shan Zheng', cursive; /* 统一字体 */
+    font-family: 'Ma Shan Zheng', cursive;
     color: #a83f3f;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #a83f3f;
+    border-radius: 2px;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    word-break: break-all; /* 强制换行形成 2x2 */
+    word-break: break-all;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+#mode-btn.blue-mode, #toc-btn.blue-mode {
+    color: #3f72a8;
+    border-color: #3f72a8;
+}
+
+#mode-btn:hover, #toc-btn:hover {
+    background: #a83f3f;
+    color: #fff;
+}
+
+#mode-btn.blue-mode:hover, #toc-btn.blue-mode:hover {
+    background: #3f72a8;
+    color: #fff;
+}
+
+/* --- 名录遮罩层 --- */
+.toc-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
     transition: all 0.3s ease;
 }
 
-/* 蓝色模式：当显示蓝玫瑰（横排版式）时激活 */
-#mode-btn.blue-mode,
-#prev-btn.blue-mode,
-#next-btn.blue-mode {
-    color: #3f72a8; /* 深雅蓝，匹配蓝玫瑰 */
-    border-color: #3f72a8;
+.toc-overlay.active {
+    opacity: 1;
+    visibility: visible;
 }
 
-#mode-btn.blue-mode:hover,
-#prev-btn.blue-mode:hover,
-#next-btn.blue-mode:hover {
-    background: #3f72a8;
-    color: #fff;
-    border-color: #3f72a8;
+.toc-card {
+    background: #f1f8f1; /* 匹配诗词卡片的淡绿色 */
+    width: 300px;
+    max-height: 70vh;
+    padding: 2rem;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.toc-title {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(168, 63, 63, 0.2);
+    width: 100%;
+    text-align: center;
+    padding-bottom: 0.5rem;
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.toc-list li {
+    padding: 12px;
+    text-align: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.toc-list li:hover {
+    background: rgba(168, 63, 63, 0.1);
+    color: var(--accent-color);
+    transform: scale(1.05);
+}
+
+.toc-close {
+    margin-top: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.toc-close:hover {
+    color: var(--accent-color);
 }
 
 #next-btn:hover, #mode-btn:hover, #prev-btn:hover {

@@ -5,12 +5,36 @@ async function loadPoems() {
     try {
         const response = await fetch('data/poems.json');
         poems = await response.json();
+        
+        // 渲染名录
+        renderTOC();
+
         // 随机开始
         currentIndex = Math.floor(Math.random() * poems.length);
         renderPoem(currentIndex);
     } catch (error) {
         console.error("加载诗词数据失败:", error);
     }
+}
+
+function renderTOC() {
+    const tocList = document.getElementById('toc-list');
+    tocList.innerHTML = '';
+    poems.forEach((poem, index) => {
+        const li = document.createElement('li');
+        li.innerText = poem.title;
+        li.onclick = () => {
+            currentIndex = index;
+            renderPoem(index);
+            toggleTOC();
+        };
+        tocList.appendChild(li);
+    });
+}
+
+function toggleTOC() {
+    const overlay = document.getElementById('toc-overlay');
+    overlay.classList.toggle('active');
 }
 
 function renderPoem(index) {
@@ -77,6 +101,7 @@ function prevPoem() {
 function toggleMode() {
     const card = document.querySelector('.poem-content');
     const btn = document.getElementById('mode-btn');
+    const tocBtn = document.getElementById('toc-btn');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
     
@@ -85,6 +110,7 @@ function toggleMode() {
     
     // 联动颜色切换：所有按钮一起变色
     btn.classList.toggle('blue-mode');
+    tocBtn.classList.toggle('blue-mode');
     prevBtn.classList.toggle('blue-mode');
     nextBtn.classList.toggle('blue-mode');
     
