@@ -433,6 +433,11 @@ h2 {
 
 /* --- 底部页脚信息 --- */
 .site-footer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     /* 核心调整：底部边距增加到 60px */
     margin-bottom: 60px; 
     /* 新增：向上位移 50px，主动去“追”上面的模块2，缩小间距 */
@@ -440,14 +445,18 @@ h2 {
     font-size: 1rem;
     font-weight: bold;
     color: #1a1a1a; 
-    text-align: center;
-    line-height: 1.6;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5); 
     opacity: 1; 
 }
 
+.footer-info {
+    text-align: left; /* 关键：内部文字左对齐 */
+    display: inline-block; /* 关键：宽度随内容，方便被父级居中 */
+    line-height: 2; /* 增加一点行间距，更透气 */
+}
+
 .site-footer p {
-    margin: 3px 0;
+    margin: 0; /* 清除默认间距，由 line-height 控制 */
 }
 
 .footer-stars {
