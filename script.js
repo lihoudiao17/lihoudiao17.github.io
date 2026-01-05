@@ -5,7 +5,7 @@ async function loadPoems() {
     try {
         const response = await fetch('data/poems.json');
         poems = await response.json();
-        
+
         // 渲染名录
         renderTOC();
 
@@ -41,10 +41,10 @@ function renderPoem(index) {
     if (poems.length === 0) return;
     const poem = poems[index];
     const card = document.querySelector('.poem-content');
-    
+
     // 淡出动画
     card.style.opacity = 0;
-    
+
     setTimeout(() => {
         // --- 自动化处理逻辑开始 ---
         let displayTitle = poem.title;
@@ -64,7 +64,7 @@ function renderPoem(index) {
         // --- 自动化处理逻辑结束 ---
 
         document.getElementById('poem-title').innerText = displayTitle;
-        
+
         const bodyDiv = document.getElementById('poem-body');
         bodyDiv.innerHTML = ''; // 清空
         poem.content.forEach(line => {
@@ -77,10 +77,10 @@ function renderPoem(index) {
         if (displayNote) {
             const noteP = document.createElement('p');
             noteP.innerText = displayNote;
-            noteP.className = 'poem-note'; 
+            noteP.className = 'poem-note';
             bodyDiv.appendChild(noteP);
         }
-        
+
         // 淡入动画
         card.style.opacity = 1;
     }, 500);
@@ -104,16 +104,18 @@ function toggleMode() {
     const tocBtn = document.getElementById('toc-btn');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
-    
+    const musicLabel = document.querySelector('.music-label');
+
     // 切换 class
     card.classList.toggle('horizontal-mode');
-    
+
     // 联动颜色切换：所有按钮一起变色
     btn.classList.toggle('blue-mode');
     tocBtn.classList.toggle('blue-mode');
     prevBtn.classList.toggle('blue-mode');
     nextBtn.classList.toggle('blue-mode');
-    
+    if (musicLabel) musicLabel.classList.toggle('blue-mode');
+
     // 修改按钮文字
     if (card.classList.contains('horizontal-mode')) {
         btn.innerText = "竖排模式"; // 当前是横排，提示用户点击变竖排
@@ -155,7 +157,7 @@ function initMusic() {
     playlistItems.forEach(item => {
         item.addEventListener('click', (e) => {
             e.stopPropagation(); // 防止冒泡触发其他点击
-            
+
             const newSrc = item.dataset.src;
             // 切换高亮
             playlistItems.forEach(li => li.classList.remove('active'));
@@ -168,7 +170,7 @@ function initMusic() {
                 audio.play().then(() => {
                     musicCtrl.classList.add('music-playing');
                     isPlaying = true;
-                }).catch(e => {});
+                }).catch(e => { });
             } else {
                 // 如果点的就是当前这首，就切换播放状态
                 togglePlay();
@@ -180,7 +182,7 @@ function initMusic() {
 // 初始化
 document.addEventListener('DOMContentLoaded', () => {
     loadPoems();
-    
+
     // 初始化音乐
     initMusic();
 });

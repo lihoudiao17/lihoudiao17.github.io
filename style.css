@@ -26,16 +26,16 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    
+
     /* 核心修改：添加网格纹理叠加在背景图之上 */
-    background-image: 
+    background-image:
         /* 垂直线 */
         linear-gradient(90deg, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
         /* 水平线 */
         linear-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
         /* 原背景图 */
         url('background.jpg');
-        
+
     /* 设置网格大小为 30px * 30px */
     background-size: 30px 30px, 30px 30px, cover;
     background-position: center;
@@ -53,7 +53,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.1); 
+    background-color: rgba(0, 0, 0, 0.1);
     z-index: -1;
     pointer-events: none;
 }
@@ -68,26 +68,28 @@ body::before {
     justify-content: space-between;
     align-items: center;
     position: relative;
-    z-index: 1; /* 确保整个容器都在背景层之上 */
+    z-index: 1;
+    /* 确保整个容器都在背景层之上 */
     /* 核心调整：底部增加到 90px，继续把整体内容向上平移，防止大屏底部被遮挡 */
-    padding-bottom: 90px; 
+    padding-bottom: 90px;
 }
 
 .site-title {
     font-family: 'Ma Shan Zheng', cursive;
-    font-size: 3.5rem; 
+    font-size: 3.5rem;
     color: var(--text-color);
     margin-bottom: 0.5rem;
     /* 去掉透明度，增加白色发光效果，让字从背景中浮出来 */
-    opacity: 1; 
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.6), 
-                 -1px -1px 0 rgba(255, 255, 255, 0.3); 
+    opacity: 1;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.6),
+        -1px -1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .subtitle {
-    font-size: 1.1rem; 
+    font-size: 1.1rem;
     font-weight: bold;
-    color: #1a1a1a; /* 改为深墨黑色，与页脚呼应 */
+    color: #1a1a1a;
+    /* 改为深墨黑色，与页脚呼应 */
     letter-spacing: 2px;
     margin-top: 10px;
     /* 调整阴影：改为白色柔光，衬托黑字 */
@@ -102,69 +104,79 @@ body::before {
     align-items: center;
     width: 100%;
     padding: 2rem;
-    position: relative; /* 关键：为了定位按钮 */
+    position: relative;
+    /* 关键：为了定位按钮 */
     /* 核心微调：将模块2和模块3整体视觉上移 30px，缩短与标题的距离 */
-    transform: translateY(-30px); 
+    transform: translateY(-30px);
 }
 
 .poem-content {
     /* 核心：竖排文字 */
     writing-mode: vertical-rl;
-    background-color: #f1f8f1; /* 修改为淡绿色 */
-    
+    background-color: #f1f8f1;
+    /* 修改为淡绿色 */
+
     /* 背景图移至 ::before */
-    
+
     /* 核心调整：固定尺寸，防止切换版式时跳动 */
     width: 500px;
     height: 600px;
-    
+
     /* 这里的 padding 仅作为内部留白，不再撑大盒子（需配合 box-sizing） */
     padding: 3rem;
-    box-sizing: border-box; 
-    
+    box-sizing: border-box;
+
     /* 3D 悬浮感核心：多层阴影 */
-    box-shadow: 
-        0 1px 2px rgba(0,0,0,0.07), 
-        0 2px 4px rgba(0,0,0,0.07), 
-        0 4px 8px rgba(0,0,0,0.07), 
-        0 8px 16px rgba(0,0,0,0.07),
-        0 16px 32px rgba(0,0,0,0.07), 
-        0 32px 64px rgba(0,0,0,0.07); 
-        
-    border-radius: 2px; 
-    border: 1px solid rgba(0,0,0,0.05); 
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.07),
+        0 2px 4px rgba(0, 0, 0, 0.07),
+        0 4px 8px rgba(0, 0, 0, 0.07),
+        0 8px 16px rgba(0, 0, 0, 0.07),
+        0 16px 32px rgba(0, 0, 0, 0.07),
+        0 32px 64px rgba(0, 0, 0, 0.07);
+
+    border-radius: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
     /* max-height: 80vh;  移除 max-height，改用 fixed height */
-    
+
     position: relative;
-    transition: opacity 0.5s ease; /* 移除 all/transform transition，避免尺寸变化动画 */
-    
-    display: flex; 
+    transition: opacity 0.5s ease;
+    /* 移除 all/transform transition，避免尺寸变化动画 */
+
+    display: flex;
     flex-direction: column;
-    justify-content: center; 
-    align-items: center; /* 内容居中 */
-    overflow: hidden; 
+    justify-content: center;
+    align-items: center;
+    /* 内容居中 */
+    overflow: hidden;
 }
 
 /* 旋转的背景图层 */
 .poem-content::before {
     content: "";
     position: absolute;
-    bottom: -95px; /* 回调 1/3 */
-    right: -95px;  /* 回调 1/3 */
-    width: 400px;  
+    bottom: -95px;
+    /* 回调 1/3 */
+    right: -95px;
+    /* 回调 1/3 */
+    width: 400px;
     height: 400px;
     background-image: url('rose.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-    opacity: 0.8; 
-    transform: rotate(-148deg); /* 继续逆时针转 3 度 */
-    z-index: 0; 
+    opacity: 0.8;
+    transform: rotate(-148deg);
+    /* 继续逆时针转 3 度 */
+    z-index: 0;
     pointer-events: none;
 }
 
 /* 确保文字在背景之上 */
-h2, .body-text, .stamps-container, .decoration-branch {
+h2,
+.body-text,
+.stamps-container,
+.decoration-branch {
     position: relative;
     z-index: 1;
 }
@@ -174,7 +186,7 @@ h2, .body-text, .stamps-container, .decoration-branch {
     position: absolute;
     top: 0;
     right: 0;
-    width: 150px; 
+    width: 150px;
     height: 150px;
     opacity: 0.9;
     pointer-events: none;
@@ -182,16 +194,16 @@ h2, .body-text, .stamps-container, .decoration-branch {
 
 h2 {
     font-family: 'Ma Shan Zheng', cursive;
-    font-size: 2.4rem; 
-    margin: 0 0 0 3rem; 
+    font-size: 2.4rem;
+    margin: 0 0 0 3rem;
     letter-spacing: 2px;
-    text-align: center; 
+    text-align: center;
     padding-top: 0;
 }
 
 .body-text {
-    font-size: 1.5rem; 
-    line-height: 3rem; 
+    font-size: 1.5rem;
+    line-height: 3rem;
     letter-spacing: 5px;
     text-align: justify;
 }
@@ -202,12 +214,13 @@ h2 {
 
 /* 诗词备注（通韵等） */
 .poem-note {
-    font-size: 1.1rem; /* 调整为比正文(1.5rem)稍小一号，更清晰 */
+    font-size: 1.1rem;
+    /* 调整为比正文(1.5rem)稍小一号，更清晰 */
     color: #999;
-    margin-top: 1.5rem; 
+    margin-top: 1.5rem;
     padding-top: 0;
-    text-align: center; 
-    width: 100%; 
+    text-align: center;
+    width: 100%;
 }
 
 /* 印章容器：左下角，L型布局 */
@@ -216,19 +229,20 @@ h2 {
     bottom: 20px;
     left: 20px;
     display: grid;
-    grid-template-columns: 30px 30px; 
-    grid-template-rows: 30px 30px;    
-    gap: 5px; 
+    grid-template-columns: 30px 30px;
+    grid-template-rows: 30px 30px;
+    gap: 5px;
     pointer-events: none;
-    writing-mode: horizontal-tb; 
+    writing-mode: horizontal-tb;
 }
 
 .seal {
     width: 30px;
-    height: 30px; /* 强制正方形 */
+    height: 30px;
+    /* 强制正方形 */
     border: 2px solid var(--accent-color);
     color: var(--accent-color);
-    font-size: 10px; 
+    font-size: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -236,13 +250,14 @@ h2 {
     border-radius: 4px;
     font-family: 'Ma Shan Zheng', cursive;
     opacity: 0.8;
-    line-height: 1; 
+    line-height: 1;
     background-color: rgba(255, 255, 255, 0.8);
 }
 
-.seal:nth-child(1), .seal:nth-child(2) {
+.seal:nth-child(1),
+.seal:nth-child(2) {
     font-size: 9px;
-    letter-spacing: -1px; 
+    letter-spacing: -1px;
 }
 
 /* 理工博士：放在左上角 (Grid 1,1) */
@@ -266,26 +281,34 @@ h2 {
 /* --- 控制面板组（模块3） --- */
 .control-panel {
     position: absolute;
-    bottom: 2rem; /* 整体距离底部的位置 */
-    right: 50%;   /* 参考中心线 */
+    bottom: 2rem;
+    /* 整体距离底部的位置 */
+    right: 50%;
+    /* 参考中心线 */
     /* 容器整体平移：250px(半宽) + 20px(间距) + 微调 */
-    transform: translateX(290px); 
+    transform: translateX(290px);
     z-index: 10;
-    
+
     display: flex;
-    flex-direction: column; /* 竖向排列 */
-    gap: 1.5rem; /* 核心：按钮之间的等间距 */
-    align-items: center; /* 确保它们中心对齐 */
+    flex-direction: column;
+    /* 竖向排列 */
+    gap: 1.5rem;
+    /* 核心：按钮之间的等间距 */
+    align-items: center;
+    /* 确保它们中心对齐 */
 }
 
 /* 按钮通用样式：长方形红色印章 */
-#next-btn, #mode-btn, #prev-btn {
-    writing-mode: vertical-rl; /* 默认竖排文字 */
-    background: rgba(255, 255, 255, 0.9); 
-    border: 2px solid #a83f3f; 
-    padding: 12px 4px; 
-    font-family: 'Ma Shan Zheng', cursive; 
-    color: #a83f3f; 
+#next-btn,
+#mode-btn,
+#prev-btn {
+    writing-mode: vertical-rl;
+    /* 默认竖排文字 */
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #a83f3f;
+    padding: 12px 4px;
+    font-family: 'Ma Shan Zheng', cursive;
+    color: #a83f3f;
     cursor: pointer;
     transition: all 0.3s;
     border-radius: 2px;
@@ -293,20 +316,21 @@ h2 {
     font-weight: bold;
     text-shadow: none;
     box-shadow: 0 0 2px rgba(168, 63, 63, 0.2);
-    
+
     /* 移除之前的绝对定位属性，由父容器接管 */
-    position: static; 
+    position: static;
     transform: none;
     margin: 0;
 }
 
 /* 核心修改：排版切换按钮和名录按钮 */
-#mode-btn, #toc-btn {
+#mode-btn,
+#toc-btn {
     writing-mode: horizontal-tb;
-    width: 48px;  
-    height: 48px; 
-    padding: 2px; 
-    line-height: 1.1; 
+    width: 48px;
+    height: 48px;
+    padding: 2px;
+    line-height: 1.1;
     font-size: 13.5px;
     font-weight: bold;
     font-family: 'Ma Shan Zheng', cursive;
@@ -324,19 +348,26 @@ h2 {
     box-sizing: border-box;
 }
 
-#mode-btn.blue-mode, #toc-btn.blue-mode,
-#prev-btn.blue-mode, #next-btn.blue-mode {
+#mode-btn.blue-mode,
+#toc-btn.blue-mode,
+#prev-btn.blue-mode,
+#next-btn.blue-mode,
+.music-label.blue-mode {
     color: #3f72a8;
     border-color: #3f72a8;
 }
 
-#mode-btn:hover, #toc-btn:hover {
+#mode-btn:hover,
+#toc-btn:hover {
     background: #a83f3f;
     color: #fff;
 }
 
-#mode-btn.blue-mode:hover, #toc-btn.blue-mode:hover,
-#prev-btn.blue-mode:hover, #next-btn.blue-mode:hover {
+#mode-btn.blue-mode:hover,
+#toc-btn.blue-mode:hover,
+#prev-btn.blue-mode:hover,
+#next-btn.blue-mode:hover,
+.music-label.blue-mode:hover {
     background: #3f72a8;
     color: #fff;
 }
@@ -365,12 +396,13 @@ h2 {
 }
 
 .toc-card {
-    background: #f1f8f1; /* 匹配诗词卡片的淡绿色 */
+    background: #f1f8f1;
+    /* 匹配诗词卡片的淡绿色 */
     width: 300px;
     max-height: 70vh;
     padding: 2rem;
     border-radius: 4px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -401,7 +433,7 @@ h2 {
     font-size: 1.2rem;
     cursor: pointer;
     transition: all 0.2s;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .toc-list li:hover {
@@ -421,7 +453,9 @@ h2 {
     color: var(--accent-color);
 }
 
-#next-btn:hover, #mode-btn:hover, #prev-btn:hover {
+#next-btn:hover,
+#mode-btn:hover,
+#prev-btn:hover {
     background: #a83f3f;
     color: #fff;
     border-color: #a83f3f;
@@ -429,7 +463,8 @@ h2 {
 
 /* --- 横排模式样式 --- */
 .poem-content.horizontal-mode {
-    writing-mode: horizontal-tb; /* 核心：改为横排 */
+    writing-mode: horizontal-tb;
+    /* 核心：改为横排 */
     /* 尺寸和 padding 现在是固定的，不再在这里修改，保证框不动 */
 }
 
@@ -441,19 +476,25 @@ h2 {
 
 /* 横排时的标题微调：字体调小 */
 .poem-content.horizontal-mode h2 {
-    font-size: 2.0rem; /* 从 2.4rem 降下来 */
-    margin: 0 0 1.5rem 0; 
+    font-size: 2.0rem;
+    /* 从 2.4rem 降下来 */
+    margin: 0 0 1.5rem 0;
     writing-mode: horizontal-tb;
     text-align: center;
-    transform: translateY(-30px); /* 向上平移一个格子的距离 */
+    transform: translateY(-30px);
+    /* 向上平移一个格子的距离 */
 }
 
 /* 横排时的正文微调：字体调小，行间距压缩 */
 .poem-content.horizontal-mode .body-text {
-    font-size: 1.2rem; /* 从 1.5rem 降下来 */
-    line-height: 2.2rem; /* 配合字体缩小行高 */
-    letter-spacing: 3px; /* 稍微紧凑一点 */
-    transform: translateY(-30px); /* 向上平移一个格子的距离 */
+    font-size: 1.2rem;
+    /* 从 1.5rem 降下来 */
+    line-height: 2.2rem;
+    /* 配合字体缩小行高 */
+    letter-spacing: 3px;
+    /* 稍微紧凑一点 */
+    transform: translateY(-30px);
+    /* 向上平移一个格子的距离 */
 }
 
 .poem-content.horizontal-mode .body-text p {
@@ -468,7 +509,8 @@ h2 {
 /* 因为按钮现在是绝对定位的，我们需要确保在大屏下它不会跑太远 */
 @media screen and (min-width: 1025px) {
     .poem-card {
-        overflow: visible; /* 允许按钮显示在框外 */
+        overflow: visible;
+        /* 允许按钮显示在框外 */
     }
 }
 
@@ -479,8 +521,10 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0; /* 在背景之上，内容之下 */
-    pointer-events: none; /* 关键：不阻挡鼠标点击文字和按钮 */
+    z-index: 0;
+    /* 在背景之上，内容之下 */
+    pointer-events: none;
+    /* 关键：不阻挡鼠标点击文字和按钮 */
 }
 
 /* --- 挂件控制模块 --- */
@@ -490,31 +534,36 @@ h2 {
     right: 25px;
     z-index: 1000;
     display: flex;
-    flex-direction: row; /* 核心：水平并排 */
-    align-items: center; /* 垂直居中 */
-    gap: 15px; /* 元素之间的固定间距，防止重叠 */
+    flex-direction: row;
+    /* 核心：水平并排 */
+    align-items: center;
+    /* 垂直居中 */
+    gap: 15px;
+    /* 元素之间的固定间距，防止重叠 */
 }
 
 /* 背景音乐提示印章 */
 .music-label {
-    position: static; 
-    width: 48px;  
-    height: 48px; 
-    border: 2px solid #a83f3f; 
+    position: static;
+    width: 48px;
+    height: 48px;
+    border: 2px solid #a83f3f;
     color: #a83f3f;
-    font-size: 13.5px; /* 统一字号 */
+    font-size: 13.5px;
+    /* 统一字号 */
     font-weight: bold;
-    line-height: 1.1; 
+    line-height: 1.1;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     border-radius: 2px;
-    font-family: 'Ma Shan Zheng', cursive; /* 统一字体 */
+    font-family: 'Ma Shan Zheng', cursive;
+    /* 统一字体 */
     background-color: rgba(255, 255, 255, 0.9);
     pointer-events: none;
     box-shadow: 0 0 2px rgba(168, 63, 63, 0.2);
-    box-sizing: border-box; 
+    box-sizing: border-box;
 }
 
 .music-control {
@@ -527,10 +576,11 @@ h2 {
     align-items: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     color: #444;
     /* 移除 margin-bottom，因为现在是水平排列 */
-    position: relative; /* 为歌单定位提供参考 */
+    position: relative;
+    /* 为歌单定位提供参考 */
 }
 
 .music-wrapper:hover .music-control {
@@ -553,19 +603,19 @@ h2 {
     margin: 0;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     width: 120px;
-    opacity: 0; 
+    opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;
     overflow: hidden;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 /* 鼠标悬停逻辑修复：仅当悬停在音乐相关元素（标签、图标、列表）时显示 */
-.music-label:hover ~ .music-list,
-.music-control:hover + .music-list,
+.music-label:hover~.music-list,
+.music-control:hover+.music-list,
 .music-list:hover {
     opacity: 1;
     visibility: visible;
@@ -573,14 +623,14 @@ h2 {
 }
 
 .music-label {
-    position: static; 
-    width: 48px;  
-    height: 48px; 
-    border: 2px solid #a83f3f; 
+    position: static;
+    width: 48px;
+    height: 48px;
+    border: 2px solid #a83f3f;
     color: #a83f3f;
     font-size: 13.5px;
     font-weight: bold;
-    line-height: 1.1; 
+    line-height: 1.1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -588,10 +638,12 @@ h2 {
     border-radius: 2px;
     font-family: 'Ma Shan Zheng', cursive;
     background-color: rgba(255, 255, 255, 0.9);
-    pointer-events: auto; /* 关键：允许鼠标交互 */
-    cursor: pointer;      /* 关键：显示手型指针 */
+    pointer-events: auto;
+    /* 关键：允许鼠标交互 */
+    cursor: pointer;
+    /* 关键：显示手型指针 */
     box-shadow: 0 0 2px rgba(168, 63, 63, 0.2);
-    box-sizing: border-box; 
+    box-sizing: border-box;
     transition: all 0.3s ease;
 }
 
@@ -605,7 +657,7 @@ h2 {
     font-size: 0.9rem;
     color: #444;
     cursor: pointer;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     text-align: center;
     transition: background 0.2s;
 }
@@ -620,14 +672,20 @@ h2 {
 }
 
 .music-list li.active {
-    color: var(--accent-color); /* 正在播放的歌高亮 */
+    color: var(--accent-color);
+    /* 正在播放的歌高亮 */
     font-weight: bold;
 }
 
 /* 旋转动画 */
 @keyframes rotate-music {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .music-playing .music-icon {
@@ -642,85 +700,102 @@ h2 {
     align-items: center;
     justify-content: center;
     /* 核心调整：底部边距增加到 60px */
-    margin-bottom: 60px; 
+    margin-bottom: 60px;
     /* 新增：向上位移 50px，主动去“追”上面的模块2，缩小间距 */
     transform: translateY(-50px);
     font-size: 1rem;
     font-weight: bold;
-    color: #1a1a1a; 
-    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5); 
-    opacity: 1; 
+    color: #1a1a1a;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+    opacity: 1;
 }
 
 .footer-info {
-    text-align: left; /* 关键：内部文字左对齐 */
-    display: inline-block; /* 关键：宽度随内容，方便被父级居中 */
-    line-height: 2; /* 增加一点行间距，更透气 */
+    text-align: left;
+    /* 关键：内部文字左对齐 */
+    display: inline-block;
+    /* 关键：宽度随内容，方便被父级居中 */
+    line-height: 2;
+    /* 增加一点行间距，更透气 */
 }
 
 .site-footer p {
-    margin: 0; /* 清除默认间距，由 line-height 控制 */
+    margin: 0;
+    /* 清除默认间距，由 line-height 控制 */
 }
 
 .footer-stars {
-    letter-spacing: 5px; /* 让星星散开一点，更有格调 */
+    letter-spacing: 5px;
+    /* 让星星散开一点，更有格调 */
     margin-top: 10px !important;
-    opacity: 0.7; /* 稍微淡一点，不要太抢眼 */
+    opacity: 0.7;
+    /* 稍微淡一点，不要太抢眼 */
 }
 
 /* --- 移动端适配 (小于 600px 的屏幕) --- */
 @media screen and (max-width: 600px) {
     .container {
-        height: 100vh; /* 手机上撑满 */
+        height: 100vh;
+        /* 手机上撑满 */
         padding: 10px;
     }
 
     .site-title {
-        font-size: 2.5rem; /* 标题改小 */
+        font-size: 2.5rem;
+        /* 标题改小 */
     }
-    
+
     .subtitle {
-        font-size: 0.9rem; /* 副标题改小 */
+        font-size: 0.9rem;
+        /* 副标题改小 */
     }
 
     .poem-card {
-        padding: 0.5rem; /* 卡片外边距减小 */
-        flex-direction: row; /* 手机上横向排列（按钮在旁边会挤） -> 还是保持 column 吧，或者按钮放下面 */
+        padding: 0.5rem;
+        /* 卡片外边距减小 */
+        flex-direction: row;
+        /* 手机上横向排列（按钮在旁边会挤） -> 还是保持 column 吧，或者按钮放下面 */
         align-items: center;
     }
 
     .poem-content {
-        padding: 2rem 2rem; /* 内边距大幅减小 */
+        padding: 2rem 2rem;
+        /* 内边距大幅减小 */
         padding-top: 2rem;
-        padding-bottom: 6rem; /* 给印章留位 */
+        padding-bottom: 6rem;
+        /* 给印章留位 */
         max-height: 70vh;
     }
 
     h2 {
-        font-size: 1.8rem; /* 诗题改小 */
-        margin-left: 1.5rem; /* 间距改小 */
+        font-size: 1.8rem;
+        /* 诗题改小 */
+        margin-left: 1.5rem;
+        /* 间距改小 */
     }
 
     .body-text {
-        font-size: 1.1rem; /* 正文改小，防溢出 */
+        font-size: 1.1rem;
+        /* 正文改小，防溢出 */
         line-height: 2rem;
         letter-spacing: 2px;
     }
-    
+
     /* 花也要小一点 */
     .decoration-branch {
         width: 100px;
         height: 100px;
     }
-    
+
     /* 印章位置微调 */
     .stamps-container {
         bottom: 10px;
         left: 10px;
-        transform: scale(0.8); /* 整体缩小印章 */
+        transform: scale(0.8);
+        /* 整体缩小印章 */
         transform-origin: bottom left;
     }
-    
+
     /* 手机上按钮如果不方便竖排，可以改回横排放在下面 */
     #next-btn {
         writing-mode: horizontal-tb;
@@ -733,13 +808,16 @@ h2 {
 /* --- 平板/iPad 适配 (601px - 1024px) --- */
 @media screen and (min-width: 601px) and (max-width: 1024px) {
     .container {
-        height: 95vh; /* 平板上稍微给多点高度 */
+        height: 95vh;
+        /* 平板上稍微给多点高度 */
         padding: 1rem;
-        justify-content: center; /* 居中对齐 */
+        justify-content: center;
+        /* 居中对齐 */
     }
 
     .site-title {
-        font-size: 3rem; /* 标题适中 */
+        font-size: 3rem;
+        /* 标题适中 */
     }
 
     .poem-card {
@@ -748,19 +826,22 @@ h2 {
 
     .poem-content {
         /* 平板上内边距介于手机和电脑之间 */
-        padding: 3rem 4rem; 
+        padding: 3rem 4rem;
         padding-top: 2.5rem;
-        padding-bottom: 7rem; /* 给印章留位 */
-        max-height: 75vh; /* 防止过高 */
+        padding-bottom: 7rem;
+        /* 给印章留位 */
+        max-height: 75vh;
+        /* 防止过高 */
     }
 
     h2 {
-        font-size: 2.2rem; 
+        font-size: 2.2rem;
         margin-left: 2rem;
     }
 
     .body-text {
-        font-size: 1.3rem; /* 字体稍微比电脑版小一点 */
+        font-size: 1.3rem;
+        /* 字体稍微比电脑版小一点 */
         line-height: 2.5rem;
         letter-spacing: 3px;
     }
