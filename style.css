@@ -314,7 +314,7 @@ h2 {
 
 /* 核心：横排时切换为蓝色玫瑰 */
 .poem-content.horizontal-mode::before {
-    background-image: url('bluerose.png');
+    background-image: url('bulerose2.png');
     /* 保持原有的旋转和位置，如果蓝色玫瑰需要微调位置，可以在这里覆盖 bottom/right/transform */
 }
 
