@@ -324,7 +324,8 @@ h2 {
     box-sizing: border-box;
 }
 
-#mode-btn.blue-mode, #toc-btn.blue-mode {
+#mode-btn.blue-mode, #toc-btn.blue-mode,
+#prev-btn.blue-mode, #next-btn.blue-mode {
     color: #3f72a8;
     border-color: #3f72a8;
 }
@@ -334,7 +335,8 @@ h2 {
     color: #fff;
 }
 
-#mode-btn.blue-mode:hover, #toc-btn.blue-mode:hover {
+#mode-btn.blue-mode:hover, #toc-btn.blue-mode:hover,
+#prev-btn.blue-mode:hover, #next-btn.blue-mode:hover {
     background: #3f72a8;
     color: #fff;
 }
