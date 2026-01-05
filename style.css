@@ -126,23 +126,59 @@ body::before {
     padding: 3rem;
     box-sizing: border-box;
 
-    /* 3D 悬浮感核心：多层阴影 */
+    /* 3D 悬浮感核心：更柔和的漫反射阴影 */
     box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.07),
-        0 2px 4px rgba(0, 0, 0, 0.07),
-        0 4px 8px rgba(0, 0, 0, 0.07),
-        0 8px 16px rgba(0, 0, 0, 0.07),
-        0 16px 32px rgba(0, 0, 0, 0.07),
-        0 32px 64px rgba(0, 0, 0, 0.07);
+        0 2px 4px rgba(0, 0, 0, 0.05),
+        0 8px 16px rgba(0, 0, 0, 0.05),
+        0 16px 32px rgba(0, 0, 0, 0.05);
 
     border-radius: 2px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    /* max-height: 80vh;  移除 max-height，改用 fixed height */
+    border: 1px solid rgba(0, 0, 0, 0.02);
 
     position: relative;
-    /* 移除 all/transform transition，避免尺寸变化动画 */
-
     overflow: hidden;
+
+    /* --- 核心升级：材质感 & 交互 --- */
+    /* 1. 宣纸纹理 (通过 SVG 噪点模拟) */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+
+    /* 2. 入场动画：上浮淡入 */
+    animation: float-in 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    opacity: 0;
+    /* 初始不可见，由动画控制 */
+    transform: translateY(30px);
+    /* 初始位置 */
+
+    transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+/* 悬停交互：轻微上浮，拟物感 */
+.poem-content:hover {
+    transform: translateY(-2px);
+    /* 同样需要配合 fill-mode，这里简单处理可能冲突，需注意 */
+    /* 由于 animation forwards 可能会锁定 transform，我们改用 animation finished 后的状态 */
+    /* 更好的方式是将 animation 放在父级或者用 js 移除 class，但在纯 CSS 中，
+       我们可以让 animation 最终停在 translateY(0)，然后 hover 改为 -2px。
+       但为了稳妥，我们把 hover 效果加在 box-shadow 上即可，避免位移冲突。 */
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.06),
+        0 12px 24px rgba(0, 0, 0, 0.06),
+        0 24px 48px rgba(0, 0, 0, 0.06);
+}
+
+/* 修复动画冲突：动画结束后由 fill-mode 保持，hover 可能失效。
+   策略：动画只负责 opacity 和 初始位移回归。悬停仅改 shadow。 */
+
+@keyframes float-in {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* 新增：内部文字容器 */
@@ -249,6 +285,22 @@ h2 {
     gap: 5px;
     pointer-events: none;
     writing-mode: horizontal-tb;
+
+    /* 入场动画：比卡片晚一点出现 */
+    animation: fade-in-up 1s ease-out 0.6s forwards;
+    opacity: 0;
+}
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .seal {
@@ -267,6 +319,18 @@ h2 {
     opacity: 0.8;
     line-height: 1;
     background-color: rgba(255, 255, 255, 0.8);
+
+    /* 奢华升级：流光金边 */
+    box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.3), inset 0 0 5px rgba(212, 175, 55, 0.1);
+    border: 2px solid #a83f3f;
+    /* 保持红色主色，金边做点缀 */
+
+    transition: transform 0.3s ease;
+}
+
+.seal:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
 }
 
 .seal:nth-child(1),
@@ -301,16 +365,31 @@ h2 {
     right: 50%;
     /* 参考中心线 */
     /* 容器整体平移：250px(半宽) + 20px(间距) + 微调 */
-    transform: translateX(290px);
+    transform: translateX(380px);
     z-index: 10;
 
-    display: flex;
-    flex-direction: column;
-    /* 竖向排列 */
-    gap: 1.5rem;
-    /* 核心：按钮之间的等间距 */
-    align-items: center;
-    /* 确保它们中心对齐 */
+    /* 入场动画：从右侧滑入 */
+    animation: slide-in-right 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+    opacity: 0;
+    transform: translateX(410px);
+    /* 初始更靠右 */
+}
+
+@keyframes slide-in-right {
+    to {
+        opacity: 1;
+        transform: translateX(380px);
+        /* 回到预定位置 */
+    }
+}
+
+display: flex;
+flex-direction: column;
+/* 竖向排列 */
+gap: 1.5rem;
+/* 核心：按钮之间的等间距 */
+align-items: center;
+/* 确保它们中心对齐 */
 }
 
 /* 按钮通用样式：长方形红色印章 */
