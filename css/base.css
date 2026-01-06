@@ -172,6 +172,14 @@ header {
     text-align: center;
 }
 
+/* 横排模式下的注释 - 显示在正文下方 */
+.poem-content.horizontal-mode .poem-note {
+    position: static;
+    transform: none;
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
 /* ===== 控制按钮 ===== */
 .control-panel {
     display: flex;
