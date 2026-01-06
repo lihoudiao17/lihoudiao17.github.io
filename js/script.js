@@ -42,8 +42,9 @@ function renderPoem(index) {
     const poem = poems[index];
     const textContainer = document.getElementById('poem-text-container');
 
-    // 淡出动画
-    textContainer.style.opacity = 0;
+    // 水墨晕染淡出动画
+    textContainer.classList.remove('ink-fade-in');
+    textContainer.classList.add('ink-fade-out');
 
     setTimeout(() => {
         // --- 自动化处理逻辑开始 ---
@@ -81,9 +82,10 @@ function renderPoem(index) {
             bodyDiv.appendChild(noteP);
         }
 
-        // 淡入动画
-        textContainer.style.opacity = 1;
-    }, 500);
+        // 水墨晕染淡入动画
+        textContainer.classList.remove('ink-fade-out');
+        textContainer.classList.add('ink-fade-in');
+    }, 400);
 }
 
 function nextPoem() {
@@ -105,6 +107,8 @@ function toggleMode() {
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
     const musicLabel = document.querySelector('.music-label');
+    const themeBtn = document.getElementById('theme-btn');
+    const playmodeBtn = document.getElementById('playmode-btn');
 
     // 切换 class
     card.classList.toggle('horizontal-mode');
@@ -115,6 +119,8 @@ function toggleMode() {
     prevBtn.classList.toggle('blue-mode');
     nextBtn.classList.toggle('blue-mode');
     if (musicLabel) musicLabel.classList.toggle('blue-mode');
+    if (themeBtn) themeBtn.classList.toggle('blue-mode');
+    if (playmodeBtn) playmodeBtn.classList.toggle('blue-mode');
 
     // 修改按钮文字
     if (card.classList.contains('horizontal-mode')) {
@@ -179,10 +185,110 @@ function initMusic() {
     });
 }
 
+// ===== 深色/浅色模式切换 =====
+function toggleTheme() {
+    const body = document.body;
+    const btn = document.getElementById('theme-btn');
+
+    if (body.dataset.theme === 'dark') {
+        body.dataset.theme = 'light';
+        btn.innerHTML = '日间<br>模式';
+        localStorage.setItem('theme', 'light');
+    } else {
+        body.dataset.theme = 'dark';
+        btn.innerHTML = '夜间<br>模式';
+        localStorage.setItem('theme', 'dark');
+    }
+}
+
+// 初始化主题
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    const btn = document.getElementById('theme-btn');
+
+    document.body.dataset.theme = savedTheme;
+    btn.innerHTML = savedTheme === 'dark' ? '夜间<br>模式' : '日间<br>模式';
+}
+
+// ===== 音乐播放模式 =====
+let playMode = 'loop'; // 'loop' = 单曲循环, 'shuffle' = 随机播放
+
+function togglePlayMode() {
+    const btn = document.getElementById('playmode-btn');
+    const audio = document.getElementById('bg-music');
+
+    if (playMode === 'loop') {
+        playMode = 'shuffle';
+        audio.loop = false;
+        btn.innerHTML = '随机<br>播放';
+    } else {
+        playMode = 'loop';
+        audio.loop = true;
+        btn.innerHTML = '单曲<br>循环';
+    }
+    localStorage.setItem('playMode', playMode);
+}
+
+// 初始化播放模式
+function initPlayMode() {
+    const savedMode = localStorage.getItem('playMode') || 'loop';
+    const btn = document.getElementById('playmode-btn');
+    const audio = document.getElementById('bg-music');
+
+    playMode = savedMode;
+    if (playMode === 'shuffle') {
+        audio.loop = false;
+        btn.innerHTML = '随机<br>播放';
+    } else {
+        audio.loop = true;
+        btn.innerHTML = '单曲<br>循环';
+    }
+
+    // 监听播放结束事件（用于随机播放）
+    audio.addEventListener('ended', () => {
+        if (playMode === 'shuffle') {
+            playRandomSong();
+        }
+    });
+}
+
+// 随机播放下一首
+function playRandomSong() {
+    const playlistItems = document.querySelectorAll('.music-list li');
+    const audio = document.getElementById('bg-music');
+    const musicCtrl = document.getElementById('music-control');
+
+    // 获取当前播放的索引
+    let currentIdx = -1;
+    playlistItems.forEach((item, idx) => {
+        if (item.classList.contains('active')) currentIdx = idx;
+    });
+
+    // 随机选择一个不同的索引
+    let newIdx;
+    do {
+        newIdx = Math.floor(Math.random() * playlistItems.length);
+    } while (newIdx === currentIdx && playlistItems.length > 1);
+
+    // 切换高亮和播放
+    playlistItems.forEach(li => li.classList.remove('active'));
+    playlistItems[newIdx].classList.add('active');
+    audio.src = playlistItems[newIdx].dataset.src;
+    audio.play().then(() => {
+        musicCtrl.classList.add('music-playing');
+    }).catch(e => { });
+}
+
 // 初始化
 document.addEventListener('DOMContentLoaded', () => {
     loadPoems();
 
-    // 初始化音乐
+    // 初始化主题
+    initTheme();
+
+    // 初始化音乐（先设置音频源）
     initMusic();
+
+    // 初始化播放模式（后设置loop属性）
+    initPlayMode();
 });
