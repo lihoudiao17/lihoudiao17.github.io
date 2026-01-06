@@ -118,9 +118,9 @@ function toggleMode() {
 
     // 修改按钮文字
     if (card.classList.contains('horizontal-mode')) {
-        btn.innerText = "竖排模式"; // 当前是横排，提示用户点击变竖排
+        btn.innerHTML = "竖排<br>模式"; // 当前是横排，提示用户点击变竖排
     } else {
-        btn.innerText = "横排模式"; // 当前是竖排，提示用户点击变横排
+        btn.innerHTML = "横排<br>模式"; // 当前是竖排，提示用户点击变横排
     }
 }
 

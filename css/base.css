@@ -1,0 +1,553 @@
+/*
+ * base.css - 移动优先基础样式
+ * 核心原则：可读、可滚动、不卡顿
+ * 无 position:fixed、无复杂动画
+ */
+
+/* ===== CSS Reset & Variables ===== */
+:root {
+    --bg-color: #f5f5f5;
+    --text-color: #2c2c2c;
+    --accent-color: #a83f3f;
+    --accent-blue: #3f72a8;
+    --card-bg: #f1f8f1;
+    --font-title: 'Ma Shan Zheng', cursive;
+    --font-body: 'Noto Serif SC', serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    min-height: 100vh;
+    line-height: 1.6;
+    /* 移动端：允许自然滚动 */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ===== 背景 - 简化版 ===== */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #e8f0e8 0%, #f5f0e8 100%);
+    z-index: -1;
+}
+
+/* ===== 主容器 ===== */
+.container {
+    width: 100%;
+    max-width: 100%;
+    padding: 1rem;
+    padding-top: env(safe-area-inset-top, 1rem);
+    padding-bottom: env(safe-area-inset-bottom, 5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* ===== 页头 ===== */
+header {
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+.site-title {
+    font-family: var(--font-title);
+    font-size: 2rem;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
+}
+
+.subtitle {
+    font-size: 0.85rem;
+    color: #555;
+    letter-spacing: 1px;
+}
+
+.header-stars {
+    letter-spacing: 5px;
+    font-size: 0.8rem;
+    color: #999;
+    opacity: 0.7;
+    margin-top: 0.5rem;
+}
+
+/* ===== 诗词卡片 ===== */
+.poem-card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.poem-content {
+    width: 95%;
+    max-width: 400px;
+    background-color: var(--card-bg);
+    border-radius: 4px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    position: relative;
+}
+
+/* 诗词文字容器 - 默认竖排 */
+#poem-text-container {
+    writing-mode: vertical-rl;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    transition: opacity 0.3s ease;
+}
+
+/* 诗词标题 */
+#poem-title {
+    font-family: var(--font-title);
+    font-size: 1.6rem;
+    margin: 0 0 0 1.5rem;
+    letter-spacing: 2px;
+}
+
+/* 诗词正文 */
+.body-text {
+    font-size: 1.2rem;
+    line-height: 2.5rem;
+    letter-spacing: 3px;
+}
+
+.body-text p {
+    margin: 0 0.4rem;
+}
+
+/* 诗词备注 */
+.poem-note {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: 1rem;
+}
+
+/* ===== 横排模式 ===== */
+.poem-content.horizontal-mode #poem-text-container {
+    writing-mode: horizontal-tb;
+    min-height: auto;
+}
+
+.poem-content.horizontal-mode #poem-title {
+    font-size: 1.4rem;
+    margin: 0 0 1rem 0;
+    text-align: center;
+}
+
+.poem-content.horizontal-mode .body-text {
+    font-size: 1.1rem;
+    line-height: 2rem;
+    letter-spacing: 2px;
+}
+
+.poem-content.horizontal-mode .body-text p {
+    margin: 0.5rem 0;
+    text-align: center;
+}
+
+/* ===== 控制按钮 ===== */
+.control-panel {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+#prev-btn,
+#next-btn {
+    font-family: var(--font-title);
+    font-size: 1rem;
+    color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid var(--accent-color);
+    border-radius: 4px;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#prev-btn:active,
+#next-btn:active {
+    background: var(--accent-color);
+    color: #fff;
+    transform: scale(0.95);
+}
+
+/* 蓝色模式按钮 */
+#prev-btn.blue-mode,
+#next-btn.blue-mode {
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+#prev-btn.blue-mode:active,
+#next-btn.blue-mode:active {
+    background: var(--accent-blue);
+    color: #fff;
+}
+
+/* ===== 挂件组 - 移动端简化 ===== */
+.music-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+/* 通用挂件按钮样式 */
+.widget-btn,
+#mode-btn {
+    font-family: var(--font-title);
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid var(--accent-color);
+    border-radius: 4px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    line-height: 1.1;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.widget-btn.blue-mode,
+#mode-btn.blue-mode {
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+/* 音乐标签 */
+.music-label {
+    font-family: var(--font-title);
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid var(--accent-color);
+    border-radius: 4px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    line-height: 1.1;
+}
+
+.music-label.blue-mode {
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+/* 音乐控制图标 */
+.music-control {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.music-icon {
+    width: 18px;
+    height: 18px;
+}
+
+@keyframes rotate-music {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.music-playing .music-icon {
+    animation: rotate-music 3s linear infinite;
+}
+
+/* 歌单列表 */
+.music-list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    list-style: none;
+    min-width: 120px;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.music-list.show {
+    display: block;
+}
+
+.music-list li {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+.music-list li:last-child {
+    border-bottom: none;
+}
+
+.music-list li.active {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+/* ===== 名录弹窗 ===== */
+.toc-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.toc-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.toc-card {
+    background: var(--card-bg);
+    width: 85%;
+    max-width: 300px;
+    max-height: 70vh;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.toc-title {
+    font-family: var(--font-title);
+    font-size: 1.6rem;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(168, 63, 63, 0.2);
+    width: 100%;
+    text-align: center;
+}
+
+.toc-list {
+    list-style: none;
+    width: 100%;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.toc-list li {
+    padding: 10px;
+    text-align: center;
+    font-size: 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.toc-list li:active {
+    background: rgba(168, 63, 63, 0.1);
+    color: var(--accent-color);
+}
+
+.toc-close {
+    margin-top: 1rem;
+    color: #666;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+/* ===== 页脚 ===== */
+.site-footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 1rem;
+}
+
+.footer-info p {
+    margin: 0.25rem 0;
+}
+
+.footer-stars {
+    letter-spacing: 3px;
+    opacity: 0.6;
+    margin-top: 0.5rem;
+}
+
+/* ===== 装饰元素 - 移动端隐藏 ===== */
+.decoration-branch,
+.stamps-container,
+#particle-canvas {
+    display: none;
+}
+
+/* 玫瑰背景 - 移动端简化 */
+.poem-content::before {
+    display: none;
+}
+
+/* ===== iPad 断点 (768px+) ===== */
+@media (min-width: 768px) {
+    .container {
+        padding: 2rem;
+        gap: 1.5rem;
+    }
+
+    .site-title {
+        font-size: 2.8rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .poem-content {
+        width: 85%;
+        max-width: 500px;
+        padding: 2.5rem;
+    }
+
+    #poem-text-container {
+        min-height: 480px;
+    }
+
+    #poem-title {
+        font-size: 2rem;
+        margin: 0 0 0 2rem;
+    }
+
+    .body-text {
+        font-size: 1.4rem;
+        line-height: 2.8rem;
+        letter-spacing: 4px;
+    }
+
+    .body-text p {
+        margin: 0 0.5rem;
+    }
+
+    .control-panel {
+        gap: 3rem;
+    }
+
+    #prev-btn,
+    #next-btn {
+        font-size: 1.1rem;
+        padding: 0.8rem 1.5rem;
+    }
+
+    .music-wrapper {
+        gap: 1rem;
+    }
+
+    .widget-btn,
+    #mode-btn,
+    .music-label,
+    .music-control {
+        width: 45px;
+        height: 45px;
+    }
+
+    .site-footer {
+        font-size: 1rem;
+    }
+}
+
+/* ===== 桌面断点预备 (1024px+) ===== */
+/* 核心布局调整，美学层由 desktop.css 提供 */
+@media (min-width: 1024px) {
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+
+    .container {
+        height: 90vh;
+        max-width: 800px;
+        justify-content: space-between;
+        padding: 2rem;
+    }
+
+    .site-title {
+        font-size: 3.5rem;
+    }
+
+    .poem-content {
+        width: 500px;
+        height: 600px;
+        max-width: none;
+    }
+
+    #poem-text-container {
+        min-height: 100%;
+    }
+
+    #poem-title {
+        font-size: 2.4rem;
+        margin: 0 0 0 3rem;
+    }
+
+    .body-text {
+        font-size: 1.5rem;
+        line-height: 3rem;
+        letter-spacing: 5px;
+    }
+}

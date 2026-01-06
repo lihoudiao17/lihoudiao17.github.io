@@ -1,50 +1,58 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>七律空间</title>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- 引入 Noto Serif SC (宋体) 和 Ma Shan Zheng (书法体) -->
-    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;700&display=swap"
+        rel="stylesheet">
+
+    <!-- 移动优先基础样式 -->
+    <link rel="stylesheet" href="css/base.css">
+
+    <!-- 桌面美学层 - 仅在大屏加载 -->
+    <link rel="stylesheet" href="css/desktop.css" media="(min-width: 1024px)">
 </head>
+
 <body>
-    <div class="background-layer"></div>
-    
-    <!-- 粒子特效画布 -->
+    <!-- 粒子画布 (仅桌面端显示) -->
     <canvas id="particle-canvas"></canvas>
-    
+
     <!-- 挂件控制组 -->
     <div class="music-wrapper">
-        <!-- 名录按钮 (40x40 方印) -->
-        <button id="toc-btn" class="widget-btn" onclick="toggleTOC()">作品名录</button>
+        <!-- 名录按钮 -->
+        <button id="toc-btn" class="widget-btn" onclick="toggleTOC()">作品<br>名录</button>
 
-        <!-- 排版模式切换 (40x40 方印) -->
-        <button id="mode-btn" onclick="toggleMode()">横排模式</button>
+        <!-- 排版模式切换 -->
+        <button id="mode-btn" onclick="toggleMode()">横排<br>模式</button>
 
         <!-- 背景音乐提示印章 -->
-        <div class="music-label">背景<br>音乐</div>
-        
-        <!-- 音乐控制图标 (40x40 圆形) -->
+        <div class="music-label" id="music-label-btn">背景<br>音乐</div>
+
+        <!-- 音乐控制图标 -->
         <div id="music-control" class="music-control">
             <svg class="music-icon" viewBox="0 0 24 24">
-                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" fill="currentColor"/>
+                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"
+                    fill="currentColor" />
             </svg>
         </div>
-        
+
         <!-- 隐藏歌单 -->
         <ul id="music-list" class="music-list">
-            <li data-src="backgroundmusic.mp3" class="active">阳关三叠</li>
-            <li data-src="music02.mp3">梁祝</li>
-            <li data-src="music03.mp3">琵琶语</li>
-            <li data-src="music04.mp3">渔歌唱晚</li>
+            <li data-src="assets/backgroundmusic.mp3" class="active">阳关三叠</li>
+            <li data-src="assets/music02.mp3">梁祝</li>
+            <li data-src="assets/music03.mp3">琵琶语</li>
+            <li data-src="assets/music04.mp3">渔歌唱晚</li>
         </ul>
-        
+
         <audio id="bg-music" loop></audio>
     </div>
-    
+
     <div class="container">
         <header>
             <h1 class="site-title">七律空间</h1>
@@ -55,18 +63,21 @@
             <div class="poem-content">
                 <!-- 右上角装饰枝条 SVG -->
                 <svg class="decoration-branch" viewBox="0 0 100 100" width="100" height="100">
-                    <path d="M100,0 Q60,20 30,50" fill="none" stroke="#a8bba8" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M70,25 Q80,40 75,55" fill="none" stroke="#a8bba8" stroke-width="1.5" stroke-linecap="round"/>
-                    <path d="M45,40 Q30,30 20,35" fill="none" stroke="#a8bba8" stroke-width="1.5" stroke-linecap="round"/>
-                    <circle cx="30" cy="50" r="3" fill="#d48888" opacity="0.8"/>
-                    <circle cx="75" cy="55" r="2.5" fill="#d48888" opacity="0.7"/>
-                    <circle cx="20" cy="35" r="2" fill="#d48888" opacity="0.6"/>
-                    <circle cx="60" cy="20" r="2" fill="#d48888" opacity="0.5"/>
+                    <path d="M100,0 Q60,20 30,50" fill="none" stroke="#a8bba8" stroke-width="2"
+                        stroke-linecap="round" />
+                    <path d="M70,25 Q80,40 75,55" fill="none" stroke="#a8bba8" stroke-width="1.5"
+                        stroke-linecap="round" />
+                    <path d="M45,40 Q30,30 20,35" fill="none" stroke="#a8bba8" stroke-width="1.5"
+                        stroke-linecap="round" />
+                    <circle cx="30" cy="50" r="3" fill="#d48888" opacity="0.8" />
+                    <circle cx="75" cy="55" r="2.5" fill="#d48888" opacity="0.7" />
+                    <circle cx="20" cy="35" r="2" fill="#d48888" opacity="0.6" />
+                    <circle cx="60" cy="20" r="2" fill="#d48888" opacity="0.5" />
                 </svg>
 
                 <div id="poem-text-container">
                     <h2 id="poem-title">七律 · 落差</h2>
-                    
+
                     <div id="poem-body" class="body-text">
                         <p>静气凝神窗外光</p>
                         <p>焉知此刻不彷徨</p>
@@ -78,7 +89,7 @@
                         <p>缘分留诗多少行</p>
                     </div>
                 </div>
-                
+
                 <!-- 印章容器 -->
                 <div class="stamps-container">
                     <div class="seal">当代<br>作品</div>
@@ -86,15 +97,15 @@
                     <div class="seal">珍藏</div>
                 </div>
             </div>
-            
-            <!-- 按钮移到这里，作为悬浮挂件组 -->
+
+            <!-- 控制按钮 -->
             <div class="control-panel">
                 <button id="prev-btn" onclick="prevPoem()">上一首</button>
                 <button id="next-btn" onclick="nextPoem()">下一首</button>
             </div>
         </main>
-        
-        <!-- 新增：底部页脚信息 -->
+
+        <!-- 底部页脚信息 -->
         <footer class="site-footer">
             <div class="footer-info">
                 <p>感谢进入我的七律空间，希望文字给您美的享受！</p>
@@ -104,6 +115,7 @@
         </footer>
     </div>
 
+    <!-- 名录弹窗 -->
     <div id="toc-overlay" class="toc-overlay" onclick="toggleTOC()">
         <div class="toc-card" onclick="event.stopPropagation()">
             <h3 class="toc-title">作品名录</h3>
@@ -114,7 +126,17 @@
         </div>
     </div>
 
-    <script src="particles.js"></script>
-    <script src="script.js"></script>
+    <!-- 核心脚本 -->
+    <script src="js/script.js"></script>
+
+    <!-- 粒子效果 - 仅桌面端加载 -->
+    <script>
+        if (window.innerWidth >= 1024) {
+            const script = document.createElement('script');
+            script.src = 'js/particles.js';
+            document.body.appendChild(script);
+        }
+    </script>
 </body>
+
 </html>

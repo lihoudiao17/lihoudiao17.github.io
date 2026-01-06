@@ -1,0 +1,375 @@
+/*
+ * desktop.css - 桌面端美学层
+ * 仅在 1024px+ 加载
+ * 包含：粒子背景、印章、动画、固定挂件
+ */
+
+/* ===== 背景增强 ===== */
+body::before {
+    background-image:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+        url('../assets/background.jpg');
+    background-size: 30px 30px, 30px 30px, cover;
+    background-position: center;
+    background-repeat: repeat, repeat, no-repeat;
+    filter: saturate(0.4) brightness(0.7) blur(2px);
+}
+
+/* ===== 粒子画布 ===== */
+#particle-canvas {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ===== 诗词卡片增强 ===== */
+.poem-card {
+    position: relative;
+}
+
+.poem-content {
+    /* 宣纸纹理 */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+
+    /* 3D 悬浮阴影 */
+    box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.05),
+        0 8px 16px rgba(0, 0, 0, 0.05),
+        0 16px 32px rgba(0, 0, 0, 0.05);
+
+    /* 入场动画 */
+    animation: float-in 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    opacity: 0;
+    transform: translateY(30px);
+
+    transition: box-shadow 0.4s ease;
+
+    /* 防止玫瑰溢出 */
+    overflow: hidden;
+}
+
+.poem-content:hover {
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.06),
+        0 12px 24px rgba(0, 0, 0, 0.06),
+        0 24px 48px rgba(0, 0, 0, 0.06);
+}
+
+@keyframes float-in {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== 玫瑰背景图 ===== */
+.poem-content::before {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: -60px;
+    right: -60px;
+    width: 300px;
+    height: 300px;
+    background-image: url('../assets/rose.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.7;
+    transform: rotate(-148deg);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* 横排模式使用蓝玫瑰 */
+.poem-content.horizontal-mode::before {
+    background-image: url('../assets/bulerose2.png');
+}
+
+/* ===== 桌面端诗词文字排版 ===== */
+#poem-text-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+#poem-title {
+    font-size: 2.4rem;
+    margin: 0 0 0 3rem;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.body-text {
+    font-size: 1.5rem;
+    line-height: 3rem;
+    letter-spacing: 5px;
+    text-align: justify;
+}
+
+.body-text p {
+    margin: 0 0.5rem;
+}
+
+/* ===== 装饰枝条 ===== */
+.decoration-branch {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 150px;
+    opacity: 0.9;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ===== 印章容器 ===== */
+.stamps-container {
+    display: grid;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    grid-template-columns: 30px 30px;
+    grid-template-rows: 30px 30px;
+    gap: 5px;
+    pointer-events: none;
+    writing-mode: horizontal-tb;
+
+    /* 入场动画 */
+    animation: fade-in-up 1s ease-out 0.6s forwards;
+    opacity: 0;
+}
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.seal {
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 4px;
+    font-family: var(--font-title);
+    opacity: 0.8;
+    line-height: 1;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.3), inset 0 0 5px rgba(212, 175, 55, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.seal:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+}
+
+.seal:nth-child(1),
+.seal:nth-child(2) {
+    font-size: 9px;
+    letter-spacing: -1px;
+}
+
+/* Grid 定位 */
+.seal:nth-child(2) {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.seal:nth-child(3) {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.seal:nth-child(1) {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+/* ===== 控制面板 - 底部右侧固定 ===== */
+.control-panel {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    z-index: 10;
+    align-items: center;
+    /* 入场动画 */
+    animation: fade-in-up 1s ease-out 0.5s forwards;
+    opacity: 0;
+    width: auto;
+    margin-top: 0;
+}
+
+#prev-btn,
+#next-btn {
+    writing-mode: horizontal-tb;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--accent-color);
+    padding: 8px 16px;
+    font-family: var(--font-title);
+    color: var(--accent-color);
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 2px;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: auto;
+    height: auto;
+}
+
+#prev-btn:hover,
+#next-btn:hover {
+    background: var(--accent-color);
+    color: #fff;
+    border-color: var(--accent-color);
+}
+
+#prev-btn.blue-mode,
+#next-btn.blue-mode {
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+#prev-btn.blue-mode:hover,
+#next-btn.blue-mode:hover {
+    background: var(--accent-blue);
+    color: #fff;
+    border-color: var(--accent-blue);
+}
+
+/* ===== 挂件组 - 固定定位 ===== */
+.music-wrapper {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 1000;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.widget-btn,
+#mode-btn,
+.music-label {
+    width: 48px;
+    height: 48px;
+    font-size: 13.5px;
+}
+
+.widget-btn:hover,
+#mode-btn:hover {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+.widget-btn.blue-mode:hover,
+#mode-btn.blue-mode:hover {
+    background: var(--accent-blue);
+    color: #fff;
+}
+
+.music-label:hover {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+.music-label.blue-mode:hover {
+    background: var(--accent-blue);
+    color: #fff;
+}
+
+.music-control {
+    width: 48px;
+    height: 48px;
+}
+
+.music-wrapper:hover .music-control {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: scale(1.1);
+}
+
+/* 歌单悬停显示 */
+.music-label:hover~.music-list,
+.music-control:hover+.music-list,
+.music-list:hover {
+    display: block;
+}
+
+.music-list {
+    position: absolute;
+    top: 55px;
+    right: 0;
+}
+
+/* ===== 页头增强 ===== */
+.site-title {
+    opacity: 1;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.6),
+        -1px -1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.subtitle {
+    font-weight: bold;
+    color: #1a1a1a;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* ===== 页脚增强 ===== */
+.site-footer {
+    font-weight: bold;
+    color: #1a1a1a;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+    transform: translateY(-50px);
+    margin-bottom: 60px;
+}
+
+.footer-info {
+    text-align: left;
+    display: inline-block;
+    line-height: 2;
+}
+
+.footer-stars {
+    letter-spacing: 5px;
+}
+
+/* ===== 横排模式调整 ===== */
+.poem-content.horizontal-mode #poem-title {
+    font-size: 2rem;
+    transform: translateY(-30px);
+}
+
+.poem-content.horizontal-mode .body-text {
+    font-size: 1.2rem;
+    line-height: 2.2rem;
+    letter-spacing: 3px;
+    transform: translateY(-30px);
+}
