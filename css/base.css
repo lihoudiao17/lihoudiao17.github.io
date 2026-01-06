@@ -137,11 +137,16 @@ header {
     margin: 0 0.4rem;
 }
 
-/* 诗词备注 */
+/* 诗词备注 - 竖排时移到底部 */
 .poem-note {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #888;
-    margin-top: 1rem;
+    writing-mode: horizontal-tb;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
 }
 
 /* ===== 横排模式 ===== */
