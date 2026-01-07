@@ -92,9 +92,15 @@ body::before {
     pointer-events: none;
 }
 
-/* 横排模式使用蓝玫瑰 */
+/* 横排模式使用蓝玫瑰 - 恢复原位置和旋转 */
 .poem-content.horizontal-mode::before {
     background-image: url('../assets/bulerose2.png');
+    bottom: -60px;
+    right: -60px;
+    width: 300px;
+    height: 300px;
+    opacity: 0.7;
+    transform: rotate(-148deg);
 }
 
 /* ===== 桌面端诗词文字排版 ===== */
