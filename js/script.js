@@ -69,40 +69,23 @@ function renderPoem(index) {
     textContainer.classList.add('ink-fade-out');
 
     setTimeout(() => {
-        // --- 自动化处理逻辑开始 ---
+        // 处理标题（如果标题里有通韵标注则移除，备注通过弹窗显示）
         let displayTitle = poem.title;
-        let displayNote = poem.note || ""; // 如果数据里原本就有note，保留它
-
-        // 正则表达式：匹配 (通韵) 或 （通韵）
         const tongYunRegex = /[\(（]通韵[\)）]/;
-
         if (tongYunRegex.test(displayTitle)) {
-            // 1. 从标题中删除 (通韵)
             displayTitle = displayTitle.replace(tongYunRegex, "");
-            // 2. 自动添加备注（如果原来没有）
-            if (!displayNote) {
-                displayNote = "注：通韵";
-            }
         }
-        // --- 自动化处理逻辑结束 ---
 
         document.getElementById('poem-title').innerText = displayTitle;
 
+        // 渲染正文（不渲染备注，备注通过弹窗单独显示）
         const bodyDiv = document.getElementById('poem-body');
-        bodyDiv.innerHTML = ''; // 清空
+        bodyDiv.innerHTML = '';
         poem.content.forEach(line => {
             const p = document.createElement('p');
             p.innerText = line;
             bodyDiv.appendChild(p);
         });
-
-        // 渲染备注
-        if (displayNote) {
-            const noteP = document.createElement('p');
-            noteP.innerText = displayNote;
-            noteP.className = 'poem-note';
-            bodyDiv.appendChild(noteP);
-        }
 
         // 水墨晕染淡入动画
         textContainer.classList.remove('ink-fade-out');
