@@ -37,6 +37,28 @@ function toggleTOC() {
     overlay.classList.toggle('active');
 }
 
+// 切换作品注释弹窗
+function toggleNotes() {
+    const overlay = document.getElementById('notes-overlay');
+    const notesContent = document.getElementById('notes-content');
+
+    // 如果弹窗将要打开，先填充内容
+    if (!overlay.classList.contains('active')) {
+        const poem = poems[currentIndex];
+        const notes = poem.notes || [];
+
+        if (notes.length > 0) {
+            // 有注释：逐条显示
+            notesContent.innerHTML = notes.map(note => `<p>${note}</p>`).join('');
+        } else {
+            // 无注释
+            notesContent.innerHTML = '<p>暂无注释</p>';
+        }
+    }
+
+    overlay.classList.toggle('active');
+}
+
 function renderPoem(index) {
     if (poems.length === 0) return;
     const poem = poems[index];

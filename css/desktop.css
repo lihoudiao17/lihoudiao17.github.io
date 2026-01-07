@@ -316,8 +316,7 @@ body::before {
     transform: scale(1.1);
 }
 
-/* 歌单悬停显示 */
-.music-label:hover~.music-list,
+/* 歌单悬停显示 - 仅音乐控制图标触发 */
 .music-control:hover+.music-list,
 .music-list:hover {
     display: block;
