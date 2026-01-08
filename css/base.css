@@ -475,6 +475,87 @@ header {
     margin-top: 1rem;
 }
 
+/* ===== 更新通知喇叭 ===== */
+.update-notice {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid var(--accent-color);
+    border-radius: 20px;
+    padding: 8px 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    animation: notice-pulse 2s infinite;
+    transition: transform 0.3s ease;
+}
+
+.update-notice:hover {
+    transform: scale(1.05);
+}
+
+.notice-icon {
+    font-size: 1.2rem;
+    animation: shake 0.5s ease-in-out infinite;
+}
+
+.notice-text {
+    font-family: var(--font-title);
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+@keyframes notice-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 2px 10px rgba(168, 63, 63, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 2px 20px rgba(168, 63, 63, 0.4);
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-10deg);
+    }
+
+    75% {
+        transform: rotate(10deg);
+    }
+}
+
+/* 移动端喇叭适配 */
+@media (max-width: 768px) {
+    .update-notice {
+        top: 10px;
+        left: 10px;
+        padding: 6px 12px;
+        border-radius: 15px;
+    }
+
+    .notice-icon {
+        font-size: 1rem;
+    }
+
+    .notice-text {
+        font-size: 0.75rem;
+    }
+}
+
 .footer-info p {
     margin: 0.25rem 0;
 }
