@@ -41,24 +41,25 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(changeBackground, 5 * 60 * 1000); // 5分钟切换
 });
 
-// 更新通知配置（只在当天显示）
-const updateInfo = {
-    date: '2026-01-08',  // 格式：YYYY-MM-DD
-    displayDate: '2026年1月8日',
-    newWork: '《七律·悖论》'
+// 更新通知信息（从 poems.json 动态读取）
+let updateInfo = {
+    date: '',
+    latestWork: ''
 };
+
+// 获取北京时间的日期字符串（YYYY-MM-DD）
+function getBeijingDateString() {
+    const now = new Date();
+    const beijingTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+    return beijingTime.toISOString().split('T')[0];
+}
 
 // 检查是否显示通知（只在更新当天显示，按北京时间）
 function checkUpdateNotice() {
-    // 获取北京时间（UTC+8）的日期
-    const now = new Date();
-    // 修复：now.getTime() 已是 UTC 时间戳，只需 +8 小时即为北京时间
-    const beijingTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
-    const today = beijingTime.toISOString().split('T')[0];
-
+    const today = getBeijingDateString();
     const noticeEl = document.getElementById('update-notice');
 
-    if (today === updateInfo.date) {
+    if (updateInfo.date && today === updateInfo.date) {
         noticeEl.style.display = 'flex';
     } else {
         noticeEl.style.display = 'none';
@@ -73,19 +74,29 @@ function toggleUpdateNotice() {
     noticeExpanded = !noticeExpanded;
 
     if (noticeExpanded) {
-        textEl.innerHTML = `${updateInfo.displayDate}<br>新作：${updateInfo.newWork}`;
+        // 格式化日期显示（2026-01-08 → 2026年1月8日）
+        const dateParts = updateInfo.date.split('-');
+        const displayDate = `${dateParts[0]}年${parseInt(dateParts[1])}月${parseInt(dateParts[2])}日`;
+        textEl.innerHTML = `${displayDate}<br>新作：${updateInfo.latestWork}`;
     } else {
         textEl.textContent = '新作上线';
     }
 }
 
-// 页面加载时检查通知
-document.addEventListener('DOMContentLoaded', checkUpdateNotice);
-
 async function loadPoems() {
     try {
         const response = await fetch('data/poems.json');
-        poems = await response.json();
+        const data = await response.json();
+
+        // 读取更新信息
+        updateInfo.date = data.lastUpdate || '';
+        updateInfo.latestWork = data.latestWork || '';
+
+        // 读取诗词数组
+        poems = data.poems || data;
+
+        // 检查并显示更新通知
+        checkUpdateNotice();
 
         // 渲染名录
         renderTOC();
@@ -97,6 +108,7 @@ async function loadPoems() {
         console.error("加载诗词数据失败:", error);
     }
 }
+
 
 function renderTOC() {
     const tocList = document.getElementById('toc-list');
