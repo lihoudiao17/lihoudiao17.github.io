@@ -35,10 +35,10 @@ function changeBackground() {
     bgIndex = (bgIndex + 1) % backgrounds.length;
 }
 
-// 页面加载时显示第一张，每10秒顺序切换（预览模式）
+// 页面加载时随机背景，每5分钟切换一次
 document.addEventListener('DOMContentLoaded', () => {
     changeBackground();
-    setInterval(changeBackground, 10 * 1000); // 10秒切换
+    setInterval(changeBackground, 5 * 60 * 1000); // 5分钟切换
 });
 
 // 更新通知配置（只在当天显示）
