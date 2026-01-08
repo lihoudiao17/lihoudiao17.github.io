@@ -13,7 +13,7 @@ body::before {
     background-size: 30px 30px, 30px 30px, cover;
     background-position: center;
     background-repeat: repeat, repeat, no-repeat;
-    filter: saturate(0.4) brightness(0.7) blur(2px);
+    /* 滤镜已移除，背景原色显示 */
 }
 
 /* ===== 粒子画布 ===== */

@@ -1,15 +1,21 @@
 let poems = [];
 let currentIndex = 0;
 
-// 背景图随机切换
+// 背景图顺序切换（6张）
 const backgrounds = [
     'assets/background.jpg',
     'assets/background02.jpg',
-    'assets/background03.jpg'
+    'assets/background03.jpg',
+    'assets/background04.png',
+    'assets/background05.jpeg',
+    'assets/background06.jpg'
 ];
 
+let bgIndex = 0; // 当前背景索引
+const cacheBuster = Date.now(); // 时间戳破缓存
+
 function changeBackground() {
-    const randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    const currentBg = backgrounds[bgIndex];
     // 动态注入style覆盖body::before的背景
     let styleEl = document.getElementById('dynamic-bg');
     if (!styleEl) {
@@ -22,15 +28,17 @@ function changeBackground() {
             background-image:
                 linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
                 linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
-                url('${randomBg}') !important;
+                url('${currentBg}?v=${cacheBuster}') !important;
         }
     `;
+    // 顺序循环
+    bgIndex = (bgIndex + 1) % backgrounds.length;
 }
 
-// 页面加载时随机背景，每5分钟切换一次
+// 页面加载时显示第一张，每10秒顺序切换（预览模式）
 document.addEventListener('DOMContentLoaded', () => {
     changeBackground();
-    setInterval(changeBackground, 5 * 60 * 1000);
+    setInterval(changeBackground, 10 * 1000); // 10秒切换
 });
 
 // 更新通知配置（只在当天显示）
@@ -44,7 +52,8 @@ const updateInfo = {
 function checkUpdateNotice() {
     // 获取北京时间（UTC+8）的日期
     const now = new Date();
-    const beijingTime = new Date(now.getTime() + (8 * 60 * 60 * 1000) + (now.getTimezoneOffset() * 60 * 1000));
+    // 修复：now.getTime() 已是 UTC 时间戳，只需 +8 小时即为北京时间
+    const beijingTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
     const today = beijingTime.toISOString().split('T')[0];
 
     const noticeEl = document.getElementById('update-notice');
