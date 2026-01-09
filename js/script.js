@@ -517,4 +517,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 初始化播放模式（后设置loop属性）
     initPlayMode();
+
+    // 键盘快捷键
+    document.addEventListener('keydown', (e) => {
+        // 如果焦点在输入框则不处理
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        switch (e.key) {
+            case 'ArrowLeft':
+                prevPoem();
+                break;
+            case 'ArrowRight':
+                nextPoem();
+                break;
+            case ' ':
+                // 空格：播放/暂停音乐
+                e.preventDefault();
+                const audio = document.getElementById('bg-music');
+                const musicCtrl = document.getElementById('music-control');
+                if (audio && musicCtrl) {
+                    if (audio.paused) {
+                        audio.play().then(() => {
+                            musicCtrl.classList.add('music-playing');
+                        }).catch(() => { });
+                    } else {
+                        audio.pause();
+                        musicCtrl.classList.remove('music-playing');
+                    }
+                }
+                break;
+        }
+    });
+
+    // 触摸滑动切换诗词（移动端）
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const poemCard = document.getElementById('poem-card');
+
+    if (poemCard) {
+        poemCard.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        poemCard.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+
+            // 滑动距离超过50px才触发
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    // 左滑：下一首
+                    nextPoem();
+                } else {
+                    // 右滑：上一首
+                    prevPoem();
+                }
+            }
+        }, { passive: true });
+    }
 });
