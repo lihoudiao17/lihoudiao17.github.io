@@ -78,13 +78,13 @@ body::before {
     content: "";
     display: block;
     position: absolute;
-    bottom: -30px;
-    right: -30px;
+    bottom: 0;
+    right: -60px;
     width: 280px;
     height: 280px;
-    background-image: url('../assets/wenfangsibao.jpg');
+    background-image: url('../assets/fig4.png');
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: bottom right;
     background-size: contain;
     opacity: 0.6;
     transform: rotate(0deg);
@@ -357,8 +357,8 @@ body::before {
 }
 
 .footer-info {
-    text-align: left;
-    display: inline-block;
+    text-align: center;
+    display: block;
     line-height: 2;
 }
 
