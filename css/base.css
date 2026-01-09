@@ -748,3 +748,21 @@ header {
     color: #fff;
     border-color: var(--accent-color);
 }
+
+/* ===== 背景固定模式样式 ===== */
+#bg-btn.active-mode {
+    background: var(--accent-color);
+    color: #fff;
+    border-color: var(--accent-color);
+}
+
+/* ===== 键盘导航焦点样式 ===== */
+.widget-btn:focus-visible,
+#mode-btn:focus-visible,
+.music-label:focus-visible,
+.music-control:focus-visible,
+#prev-btn:focus-visible,
+#next-btn:focus-visible {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 2px;
+}
