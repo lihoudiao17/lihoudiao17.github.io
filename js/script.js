@@ -247,6 +247,7 @@ function toggleTOC() {
 function toggleNotes() {
     const overlay = document.getElementById('notes-overlay');
     const notesContent = document.getElementById('notes-content');
+    const noteBtn = document.getElementById('note-btn');
 
     // 如果弹窗将要打开，先填充内容
     if (!overlay.classList.contains('active')) {
@@ -256,6 +257,8 @@ function toggleNotes() {
         if (notes.length > 0) {
             // 有注释：逐条显示
             notesContent.innerHTML = notes.map(note => `<p>${note}</p>`).join('');
+            // 点击查看后移除高亮
+            if (noteBtn) noteBtn.classList.remove('has-notes');
         } else {
             // 无注释
             notesContent.innerHTML = '<p>暂无注释</p>';
@@ -292,6 +295,16 @@ function renderPoem(index) {
             p.innerText = line;
             bodyDiv.appendChild(p);
         });
+
+        // 检测是否有备注，高亮注释按钮
+        const noteBtn = document.getElementById('note-btn');
+        if (noteBtn) {
+            if (poem.notes && poem.notes.length > 0) {
+                noteBtn.classList.add('has-notes');
+            } else {
+                noteBtn.classList.remove('has-notes');
+            }
+        }
 
         // 水墨晕染淡入动画
         textContainer.classList.remove('ink-fade-out');
