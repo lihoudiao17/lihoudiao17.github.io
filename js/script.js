@@ -320,6 +320,7 @@ function toggleMode() {
     const musicLabel = document.querySelector('.music-label');
     const themeBtn = document.getElementById('theme-btn');
     const playmodeBtn = document.getElementById('playmode-btn');
+    const bgBtn = document.getElementById('bg-btn');
 
     // 切换 class
     card.classList.toggle('horizontal-mode');
@@ -332,6 +333,7 @@ function toggleMode() {
     if (musicLabel) musicLabel.classList.toggle('blue-mode');
     if (themeBtn) themeBtn.classList.toggle('blue-mode');
     if (playmodeBtn) playmodeBtn.classList.toggle('blue-mode');
+    if (bgBtn) bgBtn.classList.toggle('blue-mode');
 
     // 修改按钮文字（显示当前状态）
     if (card.classList.contains('horizontal-mode')) {
