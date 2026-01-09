@@ -75,9 +75,13 @@ function toggleUpdateNotice() {
 
     if (noticeExpanded) {
         // 格式化日期显示（2026-01-08 → 2026年1月8日）
-        const dateParts = updateInfo.date.split('-');
-        const displayDate = `${dateParts[0]}年${parseInt(dateParts[1])}月${parseInt(dateParts[2])}日`;
-        textEl.innerHTML = `${displayDate}<br>新作：${updateInfo.latestWork}`;
+        if (updateInfo.date && updateInfo.date.includes('-')) {
+            const dateParts = updateInfo.date.split('-');
+            const displayDate = `${dateParts[0]}年${parseInt(dateParts[1])}月${parseInt(dateParts[2])}日`;
+            textEl.innerHTML = `${displayDate}<br>新作：${updateInfo.latestWork}`;
+        } else {
+            textEl.innerHTML = `新作：${updateInfo.latestWork}`;
+        }
     } else {
         textEl.textContent = '新作上线';
     }
