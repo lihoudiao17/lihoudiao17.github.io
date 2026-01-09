@@ -259,6 +259,8 @@ header {
     justify-content: center;
     gap: 0.5rem;
     padding: 0.5rem;
+    position: relative;
+    /* 让子元素绝对定位生效 */
 }
 
 /* 通用挂件按钮样式 */
@@ -375,6 +377,48 @@ header {
 }
 
 .music-list li.active {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+/* 背景选择列表 */
+.bg-list {
+    display: none;
+    position: fixed;
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    list-style: none;
+    min-width: 90px;
+    z-index: 1000;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.bg-list.show {
+    display: block;
+}
+
+.bg-list li {
+    padding: 10px 15px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+.bg-list li:last-child {
+    border-bottom: none;
+}
+
+.bg-list li:hover,
+.bg-list li:active {
+    background: rgba(168, 63, 63, 0.1);
+    color: var(--accent-color);
+}
+
+.bg-list li.active {
     color: var(--accent-color);
     font-weight: bold;
 }

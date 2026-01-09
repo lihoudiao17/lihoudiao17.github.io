@@ -1,22 +1,29 @@
 let poems = [];
 let currentIndex = 0;
 
-// 背景图顺序切换（6张）
+// 背景图顺序切换（10张）
 const backgrounds = [
     'assets/background.jpg',
     'assets/background02.jpg',
     'assets/background03.jpg',
     'assets/background04.png',
     'assets/background05.jpeg',
-    'assets/background06.jpg'
+    'assets/background06.jpg',
+    'assets/background07.jpg',
+    'assets/background08.jpg',
+    'assets/background09.png',
+    'assets/background10.jpg'
 ];
 
 let bgIndex = 0; // 当前背景索引
 const cacheBuster = Date.now(); // 时间戳破缓存
+let bgMode = 'random'; // 背景模式：random（随机）或 fixed（固定）
+let bgIntervalId = null; // 背景切换定时器ID
+let fixedBgIndex = 0; // 固定模式下的背景索引
 
-function changeBackground() {
-    const currentBg = backgrounds[bgIndex];
-    // 动态注入style覆盖body::before的背景
+// 应用指定索引的背景
+function applyBackground(index) {
+    const currentBg = backgrounds[index];
     let styleEl = document.getElementById('dynamic-bg');
     if (!styleEl) {
         styleEl = document.createElement('style');
@@ -31,14 +38,116 @@ function changeBackground() {
                 url('${currentBg}?v=${cacheBuster}') !important;
         }
     `;
-    // 顺序循环
-    bgIndex = (bgIndex + 1) % backgrounds.length;
 }
 
-// 页面加载时随机背景，每5分钟切换一次
+// 随机切换背景
+function changeBackground() {
+    if (bgMode === 'fixed') return; // 固定模式不切换
+    bgIndex = Math.floor(Math.random() * backgrounds.length);
+    applyBackground(bgIndex);
+}
+
+// 切换背景模式（随机/固定）
+function toggleBgMode() {
+    const btn = document.getElementById('bg-btn');
+    if (bgMode === 'random') {
+        // 切换到固定模式
+        bgMode = 'fixed';
+        fixedBgIndex = bgIndex; // 固定当前背景
+        btn.innerHTML = '固定<br>背景';
+        btn.classList.add('active-mode');
+    } else {
+        // 切换到随机模式
+        bgMode = 'random';
+        btn.innerHTML = '随机<br>背景';
+        btn.classList.remove('active-mode');
+        changeBackground(); // 立即切换一次
+    }
+}
+
+// 选择指定背景并固定
+function selectBackground(index) {
+    bgMode = 'fixed';
+    fixedBgIndex = index;
+    bgIndex = index;
+    applyBackground(index);
+    const btn = document.getElementById('bg-btn');
+    btn.innerHTML = '固定<br>背景';
+    btn.classList.add('active-mode');
+}
+
+// 页面加载时初始化背景
 document.addEventListener('DOMContentLoaded', () => {
-    changeBackground();
-    setInterval(changeBackground, 5 * 60 * 1000); // 5分钟切换
+    // 初始随机背景
+    bgIndex = Math.floor(Math.random() * backgrounds.length);
+    applyBackground(bgIndex);
+
+    // 每5分钟切换一次
+    bgIntervalId = setInterval(changeBackground, 5 * 60 * 1000);
+
+    // 绑定背景按钮点击事件
+    const bgBtn = document.getElementById('bg-btn');
+    const bgList = document.getElementById('bg-list');
+
+    if (bgBtn && bgList) {
+        // 点击按钮：切换模式
+        bgBtn.addEventListener('click', toggleBgMode);
+
+        // 长按显示列表（移动端）
+        let longPressTimer = null;
+        bgBtn.addEventListener('touchstart', (e) => {
+            longPressTimer = setTimeout(() => {
+                e.preventDefault();
+                bgList.classList.add('show');
+            }, 500); // 500ms长按
+        });
+        bgBtn.addEventListener('touchend', () => {
+            clearTimeout(longPressTimer);
+        });
+        bgBtn.addEventListener('touchmove', () => {
+            clearTimeout(longPressTimer);
+        });
+
+        // 悬停显示列表（桌面端）
+        let hideTimer = null;
+        const showList = () => {
+            clearTimeout(hideTimer);
+            // 动态计算按钮位置，让列表显示在按钮下方
+            const rect = bgBtn.getBoundingClientRect();
+            bgList.style.top = (rect.bottom + 5) + 'px';
+            bgList.style.left = rect.left + 'px';
+            bgList.classList.add('show');
+        };
+        const hideList = () => {
+            hideTimer = setTimeout(() => {
+                bgList.classList.remove('show');
+            }, 200); // 延迟200ms隐藏，给用户时间移动到列表
+        };
+
+        bgBtn.addEventListener('mouseenter', showList);
+        bgBtn.addEventListener('mouseleave', hideList);
+        bgList.addEventListener('mouseenter', showList);
+        bgList.addEventListener('mouseleave', hideList);
+
+        // 点击列表项选择背景
+        bgList.querySelectorAll('li').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const index = parseInt(e.target.dataset.index);
+                selectBackground(index);
+                bgList.classList.remove('show');
+                // 更新激活状态
+                bgList.querySelectorAll('li').forEach(li => li.classList.remove('active'));
+                e.target.classList.add('active');
+            });
+        });
+
+        // 点击其他区域关闭列表
+        document.addEventListener('click', (e) => {
+            if (!bgBtn.contains(e.target) && !bgList.contains(e.target)) {
+                bgList.classList.remove('show');
+            }
+        });
+    }
 });
 
 // 更新通知信息（从 poems.json 动态读取）
