@@ -102,7 +102,7 @@ body::before {
     transform: none;
 }
 
-/* ===== 云笺模式2：card01背景布 ===== */
+/* ===== 云笺模式：动态背景布 ===== */
 .poem-content.yunjian-mode::after {
     content: "";
     position: absolute;
@@ -110,7 +110,7 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('../assets/card01.jpg');
+    background-image: var(--yunjian-bg, url('../assets/card01.jpg'));
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

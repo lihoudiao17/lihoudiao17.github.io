@@ -1,7 +1,7 @@
 let poems = [];
 let currentIndex = 0;
 
-// 背景图顺序切换（10张）
+// 背景图随机切换（10张）
 const backgrounds = [
     'assets/background.jpg',
     'assets/background02.jpg',
@@ -427,12 +427,16 @@ function selectTheme(mode) {
     const card = document.querySelector('.poem-content');
     const list = document.getElementById('theme-list');
 
-    if (mode === 'huajian') {
-        card.classList.add('yunjian-mode');
-        localStorage.setItem('noteMode', 'huajian');
-    } else {
+    if (mode === 'default') {
+        // 宣纸模式：移除云笺类和自定义背景
         card.classList.remove('yunjian-mode');
+        card.style.removeProperty('--yunjian-bg');
         localStorage.setItem('noteMode', 'default');
+    } else {
+        // 花笺模式：添加云笺类并设置对应背景图
+        card.classList.add('yunjian-mode');
+        card.style.setProperty('--yunjian-bg', `url('../assets/${mode}.jpg')`);
+        localStorage.setItem('noteMode', mode);
     }
 
     // 更新列表激活状态
