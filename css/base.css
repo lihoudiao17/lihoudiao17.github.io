@@ -22,7 +22,7 @@
 [data-theme="dark"] {
     --bg-color: #1a1a1a;
     --text-color: #e8e4dc;
-    --accent-color: #d4726a;
+    --accent-color: #e85a6b;
     --accent-blue: #6a9fd4;
     --card-bg: #2a2a2a;
     --overlay-bg: rgba(0, 0, 0, 0.85);
@@ -750,7 +750,8 @@ header {
 }
 
 /* ===== 背景固定模式样式 ===== */
-#bg-btn.active-mode {
+#bg-btn.active-mode,
+#playmode-btn.active-mode {
     background: var(--accent-color);
     color: #fff;
     border-color: var(--accent-color);

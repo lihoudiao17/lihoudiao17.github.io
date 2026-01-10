@@ -395,6 +395,17 @@ function initMusic() {
             playlistItems.forEach(li => li.classList.remove('active'));
             item.classList.add('active');
 
+            // 关闭歌单列表（使用force-hide覆盖CSS的hover显示）
+            const musicList = item.closest('.music-list');
+            if (musicList) {
+                musicList.classList.add('force-hide');
+                // 鼠标离开后移除force-hide，恢复hover功能
+                musicList.addEventListener('mouseleave', function handler() {
+                    musicList.classList.remove('force-hide');
+                    musicList.removeEventListener('mouseleave', handler);
+                });
+            }
+
             // 只有当源文件不同时才重载
             if (audio.getAttribute('src') !== newSrc) {
                 audio.src = newSrc;
@@ -447,10 +458,12 @@ function togglePlayMode() {
         playMode = 'shuffle';
         audio.loop = false;
         btn.innerHTML = '随机<br>播放';
+        btn.classList.remove('active-mode');
     } else {
         playMode = 'loop';
         audio.loop = true;
         btn.innerHTML = '单曲<br>循环';
+        btn.classList.add('active-mode');
     }
     localStorage.setItem('playMode', playMode);
 }
@@ -465,9 +478,11 @@ function initPlayMode() {
     if (playMode === 'shuffle') {
         audio.loop = false;
         btn.innerHTML = '随机<br>播放';
+        btn.classList.remove('active-mode');
     } else {
         audio.loop = true;
         btn.innerHTML = '单曲<br>循环';
+        btn.classList.add('active-mode');
     }
 
     // 监听播放结束事件（用于随机播放）

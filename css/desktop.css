@@ -328,6 +328,11 @@ body::before {
     display: block;
 }
 
+/* 点击选择后强制隐藏 */
+.music-list.force-hide {
+    display: none !important;
+}
+
 .music-list {
     position: absolute;
     top: 55px;
