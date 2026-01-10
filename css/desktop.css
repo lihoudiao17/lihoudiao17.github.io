@@ -91,9 +91,9 @@ body::before {
     pointer-events: none;
 }
 
-/* ===== 横排模式装饰：Seal2 ===== */
+/* ===== 横排模式装饰：Seal4（霁蓝） ===== */
 .poem-content.horizontal-mode::before {
-    background-image: url('../assets/Seal2.png');
+    background-image: url('../assets/Seal4.png');
     bottom: 20px;
     right: 20px;
     width: 66px;
