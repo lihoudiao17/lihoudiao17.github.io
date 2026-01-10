@@ -36,6 +36,36 @@
     box-sizing: border-box;
 }
 
+/* ===== 选区颜色 ===== */
+::selection {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+::-moz-selection {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+/* ===== 自定义滚动条（桌面端） ===== */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a01830;
+}
+
 html {
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
@@ -275,7 +305,9 @@ header {
     font-size: 0.75rem;
     font-weight: bold;
     color: var(--accent-color);
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 2px solid var(--accent-color);
     border-radius: 4px;
     width: 40px;
