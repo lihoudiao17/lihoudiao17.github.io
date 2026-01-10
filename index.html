@@ -67,7 +67,14 @@
         <div class="music-label" id="note-btn" onclick="toggleNotes()">作品<br>注释</div>
 
         <!-- 深色/浅色模式切换 -->
-        <button id="theme-btn" class="widget-btn" onclick="toggleTheme()">云笺<br>背景</button>
+        <!-- 云笺模式选择（带下拉列表） -->
+        <div class="widget-group" style="position: relative;">
+            <button id="theme-btn" class="widget-btn">云笺<br>模式</button>
+            <ul id="theme-list" class="selector-list">
+                <li data-value="default" class="active">宣纸</li>
+                <li data-value="huajian">花笺</li>
+            </ul>
+        </div>
 
         <!-- 音乐播放模式切换 -->
         <button id="playmode-btn" class="widget-btn" onclick="togglePlayMode()">单曲<br>循环</button>

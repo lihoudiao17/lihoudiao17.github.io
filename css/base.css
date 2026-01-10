@@ -9,7 +9,8 @@
     --bg-color: #f5f5f5;
     --text-color: #2c2c2c;
     --accent-color: #c41e3a;
-    --accent-blue: #3f72a8;
+    --accent-blue: #1A5599;
+    /* 霁蓝 - 更深邃典雅 */
     --card-bg: #ffffff;
     --font-title: 'Ma Shan Zheng', cursive;
     --font-body: 'Noto Serif SC', serif;
@@ -23,7 +24,8 @@
     --bg-color: #1a1a1a;
     --text-color: #e8e4dc;
     --accent-color: #e85a6b;
-    --accent-blue: #6a9fd4;
+    --accent-blue: #7CA5D6;
+    /* 稍亮的蓝，提高深色背景对比度 */
     --card-bg: #2a2a2a;
     --overlay-bg: rgba(0, 0, 0, 0.85);
     --gradient-start: #1a1a1a;
@@ -418,8 +420,9 @@ header {
     font-weight: bold;
 }
 
-/* 背景选择列表 */
-.bg-list {
+/* 背景选择列表 & 通用选择列表 */
+.bg-list,
+.selector-list {
     display: none;
     position: fixed;
     background: rgba(255, 255, 255, 0.98);
@@ -433,11 +436,13 @@ header {
     padding: 0;
 }
 
-.bg-list.show {
+.bg-list.show,
+.selector-list.show {
     display: block;
 }
 
-.bg-list li {
+.bg-list li,
+.selector-list li {
     padding: 10px 15px;
     font-size: 0.85rem;
     cursor: pointer;
@@ -445,17 +450,21 @@ header {
     text-align: center;
 }
 
-.bg-list li:last-child {
+.bg-list li:last-child,
+.selector-list li:last-child {
     border-bottom: none;
 }
 
 .bg-list li:hover,
-.bg-list li:active {
+.bg-list li:active,
+.selector-list li:hover,
+.selector-list li:active {
     background: rgba(168, 63, 63, 0.1);
     color: var(--accent-color);
 }
 
-.bg-list li.active {
+.bg-list li.active,
+.selector-list li.active {
     color: var(--accent-color);
     font-weight: bold;
 }

@@ -422,14 +422,64 @@ function initMusic() {
     });
 }
 
-// ===== 云笺背景切换（已脱钩日间/夜间模式） =====
-function toggleTheme() {
-    // 功能已脱钩，后续将添加云笺背景切换逻辑
+// ===== 云笺模式切换（下拉列表） =====
+function selectTheme(mode) {
+    const card = document.querySelector('.poem-content');
+    const list = document.getElementById('theme-list');
+
+    if (mode === 'huajian') {
+        card.classList.add('yunjian-mode');
+        localStorage.setItem('noteMode', 'huajian');
+    } else {
+        card.classList.remove('yunjian-mode');
+        localStorage.setItem('noteMode', 'default');
+    }
+
+    // 更新列表激活状态
+    if (list) {
+        list.querySelectorAll('li').forEach(li => {
+            li.classList.remove('active');
+            if (li.dataset.value === mode) li.classList.add('active');
+        });
+    }
 }
 
-// 初始化（已脱钩日间/夜间模式）
+// 初始化云笺模式交互
 function initTheme() {
-    // 功能已脱钩，保持默认状态
+    const savedMode = localStorage.getItem('noteMode') || 'default';
+    selectTheme(savedMode);
+
+    // 绑定下拉列表事件
+    const btn = document.getElementById('theme-btn');
+    const list = document.getElementById('theme-list');
+
+    if (btn && list) {
+        // 点击按钮显示/隐藏列表
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // 动态定位
+            const rect = btn.getBoundingClientRect();
+            list.style.top = (rect.bottom + 5) + 'px';
+            list.style.left = rect.left + 'px';
+            list.classList.toggle('show');
+        });
+
+        // 点击列表项
+        list.querySelectorAll('li').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const mode = e.target.dataset.value;
+                selectTheme(mode);
+                list.classList.remove('show');
+            });
+        });
+
+        // 点击外部关闭
+        document.addEventListener('click', (e) => {
+            if (!btn.contains(e.target) && !list.contains(e.target)) {
+                list.classList.remove('show');
+            }
+        });
+    }
 }
 
 // ===== 音乐播放模式 =====
