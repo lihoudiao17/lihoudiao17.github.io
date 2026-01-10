@@ -73,34 +73,33 @@ body::before {
     }
 }
 
-/* ===== 文房四宝背景图 ===== */
+/* ===== 竖排模式装饰：Seal1 ===== */
 .poem-content::before {
     content: "";
     display: block;
     position: absolute;
-    bottom: 0;
-    right: -60px;
-    width: 280px;
-    height: 280px;
-    background-image: url('../assets/fig4.png');
+    bottom: 20px;
+    right: 20px;
+    width: 66px;
+    height: 66px;
+    background-image: url('../assets/Seal1.png');
     background-repeat: no-repeat;
-    background-position: bottom right;
+    background-position: center;
     background-size: contain;
-    opacity: 0.6;
-    transform: rotate(0deg);
+    opacity: 0.8;
     z-index: 0;
     pointer-events: none;
 }
 
-/* 横排模式使用蓝玫瑰 - 恢复原位置和旋转 */
+/* ===== 横排模式装饰：Seal2 ===== */
 .poem-content.horizontal-mode::before {
-    background-image: url('../assets/bulerose2.png');
-    bottom: -60px;
-    right: -60px;
-    width: 300px;
-    height: 300px;
-    opacity: 0.7;
-    transform: rotate(-148deg);
+    background-image: url('../assets/Seal2.png');
+    bottom: 20px;
+    right: 20px;
+    width: 66px;
+    height: 66px;
+    opacity: 0.8;
+    transform: none;
 }
 
 /* ===== 桌面端诗词文字排版 ===== */

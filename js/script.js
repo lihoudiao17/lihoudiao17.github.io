@@ -422,29 +422,14 @@ function initMusic() {
     });
 }
 
-// ===== 深色/浅色模式切换 =====
+// ===== 云笺背景切换（已脱钩日间/夜间模式） =====
 function toggleTheme() {
-    const body = document.body;
-    const btn = document.getElementById('theme-btn');
-
-    if (body.dataset.theme === 'dark') {
-        body.dataset.theme = 'light';
-        btn.innerHTML = '日间<br>模式';
-        localStorage.setItem('theme', 'light');
-    } else {
-        body.dataset.theme = 'dark';
-        btn.innerHTML = '夜间<br>模式';
-        localStorage.setItem('theme', 'dark');
-    }
+    // 功能已脱钩，后续将添加云笺背景切换逻辑
 }
 
-// 初始化主题
+// 初始化（已脱钩日间/夜间模式）
 function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    const btn = document.getElementById('theme-btn');
-
-    document.body.dataset.theme = savedTheme;
-    btn.innerHTML = savedTheme === 'dark' ? '夜间<br>模式' : '日间<br>模式';
+    // 功能已脱钩，保持默认状态
 }
 
 // ===== 音乐播放模式 =====
