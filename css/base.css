@@ -547,6 +547,11 @@ header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+.toc-list li.new-work-highlight {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
 .toc-list li:active {
     background: rgba(168, 63, 63, 0.1);
     color: var(--accent-color);
