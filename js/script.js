@@ -382,40 +382,37 @@ function initMusic() {
         }
     };
 
-    // 图标点击事件
+    // 图标点击事件：播放/暂停
     musicCtrl.addEventListener('click', togglePlay);
 
     // 歌单点击切歌事件
     playlistItems.forEach(item => {
         item.addEventListener('click', (e) => {
-            e.stopPropagation(); // 防止冒泡触发其他点击
+            e.stopPropagation();
 
             const newSrc = item.dataset.src;
             // 切换高亮
             playlistItems.forEach(li => li.classList.remove('active'));
             item.classList.add('active');
 
-            // 关闭歌单列表（使用force-hide覆盖CSS的hover显示）
+            // 关闭歌单列表
             const musicList = item.closest('.music-list');
             if (musicList) {
                 musicList.classList.add('force-hide');
-                // 鼠标离开后移除force-hide，恢复hover功能
                 musicList.addEventListener('mouseleave', function handler() {
                     musicList.classList.remove('force-hide');
                     musicList.removeEventListener('mouseleave', handler);
                 });
             }
 
-            // 只有当源文件不同时才重载
+            // 切歌并播放
             if (audio.getAttribute('src') !== newSrc) {
                 audio.src = newSrc;
-                // 切歌后自动播放
                 audio.play().then(() => {
                     musicCtrl.classList.add('music-playing');
                     isPlaying = true;
                 }).catch(e => { });
             } else {
-                // 如果点的就是当前这首，就切换播放状态
                 togglePlay();
             }
         });
@@ -509,7 +506,8 @@ function togglePlayMode() {
 
 // 初始化播放模式
 function initPlayMode() {
-    const savedMode = localStorage.getItem('playMode') || 'loop';
+    // 默认随机播放，除非用户手动选择了歌曲
+    const savedMode = localStorage.getItem('playMode') || 'shuffle';
     const btn = document.getElementById('playmode-btn');
     const audio = document.getElementById('bg-music');
 

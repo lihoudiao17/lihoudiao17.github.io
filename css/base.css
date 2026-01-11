@@ -353,22 +353,38 @@ header {
     border-color: var(--accent-blue);
 }
 
-/* 音乐控制图标 */
+/* 音乐控制图标 - 方形边框+圆形内切 */
 .music-control {
     width: 40px;
     height: 40px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2px solid var(--accent-color);
+    border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    position: relative;
+}
+
+/* 内切圆背景 */
+.music-control::before {
+    content: "";
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .music-icon {
     width: 18px;
     height: 18px;
+    position: relative;
+    z-index: 1;
 }
 
 @keyframes rotate-music {
