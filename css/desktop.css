@@ -120,14 +120,14 @@ body::before {
 }
 
 /* ===== 横排模式装饰：Seal4（霁蓝） ===== */
+/* 默认状态：隐藏，等待 seal-landing 触发动画 */
 .poem-content.horizontal-mode::before {
     background-image: url('../assets/Seal4.png');
     bottom: 20px;
     right: 20px;
     width: 66px;
     height: 66px;
-    opacity: 0.8;
-    transform: none;
+    /* 不覆盖 opacity 和 transform，保持与竖排一致的动画行为 */
 }
 
 /* ===== 云笺模式：动态背景布 ===== */

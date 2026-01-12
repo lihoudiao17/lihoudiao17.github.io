@@ -54,8 +54,16 @@
             subtree: true
         });
 
-        // 初始加载时也播放一次
-        setTimeout(playAssemblyAnimation, 500);
+        // 首次加载时不播放动画（因为浏览器会静音，动画无声很违和）
+        // 印章直接显示，只有后续切换诗词才有动画+音效
+        setTimeout(() => {
+            const container = document.querySelector('.poem-content');
+            if (container) {
+                // 首次加载：直接显示印章，不播放动画
+                container.classList.add('seal-landing');
+                window._poemAnimationInitialized = true;
+            }
+        }, 500);
     }
 
     function playAssemblyAnimation() {
