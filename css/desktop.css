@@ -308,7 +308,29 @@ body::before {
     z-index: 1000;
     flex-direction: row;
     gap: 15px;
+    /* 为双螺旋背景留出空间 */
+    padding: 10px 0;
 }
+
+/* 双螺旋晶格链背景 */
+.music-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -20px;
+    right: -20px;
+    height: 40px;
+    /* 链条高度 */
+    transform: translateY(-50%);
+    z-index: -1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 40' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3C!-- 上链 --%3E%3Cpath d='M0,20 Q12.5,0 25,20 T50,20 T75,20 T100,20' vector-effect='non-scaling-stroke' stroke='%23d4af37' stroke-width='1.5' fill='none' opacity='0.6'/%3E%3C!-- 下链 --%3E%3Cpath d='M0,20 Q12.5,40 25,20 T50,20 T75,20 T100,20' vector-effect='non-scaling-stroke' stroke='%23C0C0C0' stroke-width='1.5' fill='none' opacity='0.6'/%3E%3C/svg%3E");
+    background-size: 63px 100%;
+    /* 单个波长略等于按钮宽度+间隙 */
+    background-repeat: repeat-x;
+    opacity: 0.8;
+    pointer-events: none;
+}
+
 
 .widget-btn,
 #mode-btn,
