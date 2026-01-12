@@ -318,20 +318,17 @@ body::before {
     content: "";
     position: absolute;
     top: 50%;
-    left: -22px;
-    /* 微调起始位置 */
-    right: -22px;
+    left: -8px;
+    /* 修正对齐：让波峰正好在按钮中心 */
+    right: -8px;
     height: 70px;
-    /* 增加高度以包裹按钮 */
     transform: translateY(-50%);
     z-index: -1;
     /* 
        ViewBox: 0 0 100 100
-       上链: M0,50 Q50,-15 100,50 (形成上拱)
-       下链: M0,50 Q50,115 100,50 (形成下凹)
-       形成一个个"眼睛"形状包裹按钮
+       使用三次贝塞尔曲线 (C) 替代二次 (Q)，使曲线更饱满，类似人眼/纺锤形包络
     */
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,50 Q50,-15 100,50' vector-effect='non-scaling-stroke' stroke='%23d4af37' stroke-width='1.5' fill='none' opacity='0.7'/%3E%3Cpath d='M0,50 Q50,115 100,50' vector-effect='non-scaling-stroke' stroke='%23C0C0C0' stroke-width='1.5' fill='none' opacity='0.7'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,50 C25,-10 75,-10 100,50' vector-effect='non-scaling-stroke' stroke='%23d4af37' stroke-width='2' fill='none' opacity='0.8'/%3E%3Cpath d='M0,50 C25,110 75,110 100,50' vector-effect='non-scaling-stroke' stroke='%23C0C0C0' stroke-width='2' fill='none' opacity='0.8'/%3E%3C/svg%3E");
     background-size: 63px 100%;
     /* 波长匹配按钮间距 */
     background-repeat: repeat-x;
