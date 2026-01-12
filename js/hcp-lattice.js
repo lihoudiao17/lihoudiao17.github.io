@@ -99,7 +99,7 @@
     // 为了视觉简洁，HCP通常只画六方柱框，中间原子悬浮
 
     let angleY = 0;
-    const angleX = 0.45; // 稍微俯视多一点
+    const angleX = 0.35; // 调整为 0.35 (与 FCC/BCC 一致，约20度俯视)
 
     function rotateY(point, angle) {
         const cos = Math.cos(angle), sin = Math.sin(angle);
@@ -149,6 +149,16 @@
         sortedAtoms.forEach(item => {
             // 中间层原子(后3个)稍微区别显示？统一金色即可
             const [x, y, z] = item.pos;
+            const index = item.index;
+
+            // 颜色逻辑：FCC风格 (顶点=黄，体心/面心/内部=白)
+            // HCP: 底面中心=0, 顶面中心=7, 中间层=14/15/16 -> 这些是白色 (Inside/Face)
+            // 顶点 = 1-6 (底面), 8-13 (顶面) -> 这些是金色 (Frame)
+
+            // 判断是否为顶点
+            const isVertex = (index >= 1 && index <= 6) || (index >= 8 && index <= 13);
+            const color = isVertex ? CONFIG.atomColor : '#FFFFFF';
+
             // 简单的深度缩放效果
             // z 值大概在 -cellSize 到 +cellSize 之间
             const depthFactor = z / (CONFIG.cellSize * 3); // 归一化深度
@@ -159,7 +169,7 @@
 
             ctx.beginPath();
             ctx.arc(x, y, radius, 0, Math.PI * 2);
-            ctx.fillStyle = CONFIG.atomColor;
+            ctx.fillStyle = color;
             ctx.globalAlpha = Math.max(0.2, Math.min(1, alpha));
             ctx.fill();
 

@@ -104,14 +104,21 @@
 
         sortedAtoms.forEach(item => {
             const [x, y, z] = item.pos;
+            const index = item.index; // 确保获取原始索引
+
             // 简单的深度缩放效果
             const scale = 1 + z / (CONFIG.size * 2);
             const radius = CONFIG.atomRadius * scale;
             const alpha = 0.6 + z / (CONFIG.size) * 0.4; // 深度也影响透明度
 
+            // 颜色逻辑：FCC风格 (顶点=黄，体心=白)
+            // BCC: 0-7 是顶点，8 是体心
+            const isCorner = index < 8;
+            const color = isCorner ? CONFIG.atomColor : '#FFFFFF';
+
             ctx.beginPath();
             ctx.arc(x, y, radius, 0, Math.PI * 2);
-            ctx.fillStyle = CONFIG.atomColor;
+            ctx.fillStyle = color;
             ctx.globalAlpha = Math.max(0.2, Math.min(1, alpha)); // 限制透明度范围
             ctx.fill();
 
