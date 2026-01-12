@@ -119,6 +119,7 @@
         });
 
         // ===== 第二阶段：小印章依次落位 + 音效 =====
+        // 间隔 0.5 秒，让每个音效清晰响起
         stamps.forEach((stamp, index) => {
             gsap.set(stamp, {
                 opacity: 0,
@@ -126,18 +127,18 @@
                 rotation: -15 + Math.random() * 30
             });
 
-            // 小印章动画
+            // 小印章动画（间隔 0.5 秒）
             tl.to(stamp, {
                 opacity: 1,
                 scale: 1,
                 rotation: 0,
-                duration: 0.3,
+                duration: 0.25,
                 ease: 'back.out(2)'
-            }, `>+${index * 0.12}`);
+            }, index === 0 ? '>' : `>+0.35`); // 第一个紧跟，后面间隔 0.35秒
 
-            // 每个小印章落位时播放音效（音量递增）
+            // 每个小印章落位时播放音效（音量递增，时长 400ms）
             tl.add(() => {
-                playSealSound(0.25 + index * 0.1, 600);
+                playSealSound(0.3 + index * 0.1, 400);
             }, '<'); // '<' 表示与上一个动画同时开始
         });
 
