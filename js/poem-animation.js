@@ -118,7 +118,7 @@
                 }, '>');
         });
 
-        // ===== 第二阶段：小印章依次落位 =====
+        // ===== 第二阶段：小印章依次落位（3连击） =====
         stamps.forEach((stamp, index) => {
             gsap.set(stamp, {
                 opacity: 0,
@@ -130,9 +130,13 @@
                 opacity: 1,
                 scale: 1,
                 rotation: 0,
-                duration: 0.3,
-                ease: 'back.out(2)'
-            }, `>+${index * 0.1}`);
+                duration: 0.25,
+                ease: 'back.out(2)',
+                onStart: () => {
+                    // 每个小印章落位时播放音效，音量递增：0.3 -> 0.4 -> 0.5
+                    playSealSound(0.3 + index * 0.1, 800);
+                }
+            }, `>+${index * 0.15}`); // 间隔拉大一点，让节奏更明显
         });
 
         // ===== 第三阶段：主印章重锤落下 =====
@@ -141,8 +145,8 @@
         tl.add(() => {
             container.classList.add('seal-landing');
 
-            // 播放盖章撞击音效（只播放前0.5秒）
-            playSealSound();
+            // 播放主印章撞击音效（最高音量压轴 0.9）
+            playSealSound(0.9, 1500);
 
             // 容器抖动效果
             gsap.to(container, {
@@ -162,12 +166,13 @@
 
     /**
      * 播放盖章撞击音效
-     * 只播放前0.5秒，避免15秒完整播放
+     * @param {number} volume - 音量 (0-1)，默认 0.7
+     * @param {number} duration - 播放时长(ms)，默认 1500
      */
-    function playSealSound() {
+    function playSealSound(volume = 0.7, duration = 1500) {
         try {
             const audio = new Audio('assets/hit-impact-impact-collision-6.mp3');
-            audio.volume = 0.6; // 音量60%，避免过响
+            audio.volume = Math.min(1, Math.max(0, volume)); // 限制在 0-1 范围
             audio.currentTime = 0;
 
             // 播放音频
@@ -175,15 +180,14 @@
 
             if (playPromise !== undefined) {
                 playPromise.then(() => {
-                    console.log('🔊 Seal sound playing...');
-                    // 1.5秒后停止播放（确保撞击声完整播放）
+                    // 指定时间后停止播放
                     setTimeout(() => {
                         audio.pause();
                         audio.currentTime = 0;
-                    }, 1500);
+                    }, duration);
                 }).catch(error => {
                     // 自动播放被浏览器阻止（用户未交互前）
-                    console.log('🔇 Sound blocked by browser (user interaction required)');
+                    // 静默处理，避免刷屏
                 });
             }
         } catch (e) {
