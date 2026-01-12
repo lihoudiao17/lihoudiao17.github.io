@@ -1,183 +1,158 @@
 /**
- * 边缘位错滑移动画
- * Edge Dislocation Glide Animation
+ * FCC 位错三维示意图
+ * 基于 Three.js 的交互式 3D 可视化
  * 位置：右下角
  */
 
 (function () {
     'use strict';
 
-    // 创建 Canvas
-    const canvas = document.createElement('canvas');
-    canvas.id = 'dislocation-canvas';
-    document.body.appendChild(canvas);
-    const ctx = canvas.getContext('2d');
+    // 检查 Three.js 是否已加载
+    if (typeof THREE === 'undefined') {
+        console.log('Loading Three.js...');
 
-    // 配置参数
-    const CONFIG = {
-        size: 240,
-        cellSize: 20,
-        atomRadius: 4.5,
-        opacity: 0.8,
-        atomColor: '#FFD700',
-        dislocationColor: '#FF4444',
-        bondColor: 'rgba(255, 255, 255, 0.2)',
-        bondWidth: 0.8,
-        gridRows: 7,
-        gridCols: 9,
-        dislocationSpeed: 0.012
-    };
+        // 加载 Three.js
+        const threeScript = document.createElement('script');
+        threeScript.src = 'https://cdn.jsdelivr.net/npm/three@0.109.0/build/three.min.js';
+        threeScript.onload = function () {
+            // 加载 OrbitControls
+            const controlsScript = document.createElement('script');
+            controlsScript.src = 'https://cdn.jsdelivr.net/npm/three@0.109.0/examples/js/controls/OrbitControls.js';
+            controlsScript.onload = initScene;
+            document.head.appendChild(controlsScript);
+        };
+        document.head.appendChild(threeScript);
+    } else {
+        initScene();
+    }
 
-    // 设置 Canvas 样式
-    canvas.width = CONFIG.size;
-    canvas.height = CONFIG.size;
-    canvas.style.position = 'fixed';
-    canvas.style.bottom = '25px';
-    canvas.style.right = '25px';  // 右下角
-    canvas.style.zIndex = '50';
-    canvas.style.pointerEvents = 'none';
-    canvas.style.opacity = CONFIG.opacity;
+    function initScene() {
+        // 配置
+        const CONFIG = {
+            size: 280,
+            opacity: 0.9
+        };
 
-    // 位错状态
-    let dislocationX = 0;
-    let dislocationDirection = 1;
+        // 创建容器
+        const container = document.createElement('div');
+        container.id = 'dislocation-3d';
+        container.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: ${CONFIG.size}px;
+            height: ${CONFIG.size}px;
+            z-index: 50;
+            border-radius: 8px;
+            overflow: hidden;
+            opacity: ${CONFIG.opacity};
+            pointer-events: auto;
+        `;
+        document.body.appendChild(container);
 
-    // 创建晶格
-    function createLattice() {
-        const atoms = [];
-        const startX = 25;
-        const startY = 35;
+        // 场景
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x1a1a2e);
 
-        for (let row = 0; row < CONFIG.gridRows; row++) {
-            for (let col = 0; col < CONFIG.gridCols; col++) {
-                const offsetX = (row % 2) * (CONFIG.cellSize / 2);
-                atoms.push({
-                    baseX: startX + col * CONFIG.cellSize + offsetX,
-                    baseY: startY + row * CONFIG.cellSize * 0.866,
-                    row, col, x: 0, y: 0
-                });
-            }
-        }
+        // 相机
+        const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
+        camera.position.set(3, 2.5, 4);
 
-        // 额外半平面原子
-        const extraRow = Math.floor(CONFIG.gridRows / 2);
-        for (let col = 0; col < Math.floor(CONFIG.gridCols / 2); col++) {
-            const offsetX = (extraRow % 2) * (CONFIG.cellSize / 2);
-            atoms.push({
-                baseX: startX + col * CONFIG.cellSize + offsetX - CONFIG.cellSize / 2,
-                baseY: startY + extraRow * CONFIG.cellSize * 0.866 - CONFIG.cellSize * 0.433,
-                row: extraRow - 0.5, col: col - 0.5,
-                isExtra: true, x: 0, y: 0
+        // 渲染器
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(CONFIG.size, CONFIG.size);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // 控制器（可拖拽旋转）
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableZoom = false; // 禁用缩放
+        controls.enablePan = false;  // 禁用平移
+        controls.autoRotate = true;  // 自动旋转
+        controls.autoRotateSpeed = 1.5;
+
+        // 光照
+        const light = new THREE.DirectionalLight(0xffffff, 0.8);
+        light.position.set(5, 5, 5);
+        scene.add(light);
+        scene.add(new THREE.AmbientLight(0x404040, 0.6));
+
+        // 坐标轴（缩短）
+        const axesHelper = new THREE.AxesHelper(1.2);
+        scene.add(axesHelper);
+
+        // 晶胞框架
+        const boxGeom = new THREE.BoxGeometry(2, 2, 2);
+        const edges = new THREE.EdgesGeometry(boxGeom);
+        const cubeEdges = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x888888 }));
+        scene.add(cubeEdges);
+
+        // {111} 滑移面
+        function createSlipPlane(normal, color) {
+            const size = 2.3;
+            const geom = new THREE.PlaneGeometry(size, size);
+            const mat = new THREE.MeshBasicMaterial({
+                color: color,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.15
             });
-        }
+            const plane = new THREE.Mesh(geom, mat);
 
-        return atoms;
-    }
-
-    const atoms = createLattice();
-
-    function calculateDisplacement(atom, dislocationPos) {
-        const coreX = 25 + dislocationPos * (CONFIG.gridCols - 1) * CONFIG.cellSize;
-        const dx = atom.baseX - coreX;
-        const midY = 35 + (CONFIG.gridRows / 2) * CONFIG.cellSize * 0.866;
-        const dy = atom.baseY - midY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const influence = Math.max(0, 1 - distance / (CONFIG.cellSize * 3));
-        const sign = dy < 0 ? 1 : -1;
-
-        let dispX = 0;
-        if (atom.isExtra) {
-            if (atom.baseX < coreX - CONFIG.cellSize / 2) {
-                dispX = CONFIG.cellSize;
+            const up = new THREE.Vector3(0, 0, 1);
+            const n = new THREE.Vector3(normal[0], normal[1], normal[2]).normalize();
+            const axis = new THREE.Vector3().crossVectors(up, n).normalize();
+            const angle = Math.acos(up.dot(n));
+            if (axis.length() > 0) {
+                plane.rotateOnAxis(axis, angle);
             }
-        } else {
-            dispX = sign * influence * CONFIG.cellSize * 0.25;
+
+            scene.add(plane);
         }
 
-        const dispY = influence * Math.abs(dx) < CONFIG.cellSize ?
-            -Math.abs(dy) * 0.04 * influence : 0;
+        createSlipPlane([1, 1, 1], 0xff4444);   // 红色
+        createSlipPlane([-1, 1, 1], 0x44ff44);  // 绿色
+        createSlipPlane([1, -1, 1], 0x4444ff);  // 蓝色
+        createSlipPlane([1, 1, -1], 0xffff44);  // 黄色
 
-        return { x: dispX, y: dispY };
-    }
-
-    function draw() {
-        ctx.clearRect(0, 0, CONFIG.size, CONFIG.size);
-
-        // 更新位错位置
-        dislocationX += CONFIG.dislocationSpeed * dislocationDirection;
-        if (dislocationX > 1) { dislocationX = 1; dislocationDirection = -1; }
-        else if (dislocationX < 0) { dislocationX = 0; dislocationDirection = 1; }
-
-        // 计算原子位置
-        atoms.forEach(atom => {
-            const disp = calculateDisplacement(atom, dislocationX);
-            atom.x = atom.baseX + disp.x;
-            atom.y = atom.baseY + disp.y;
-        });
-
-        // 绘制键
-        ctx.strokeStyle = CONFIG.bondColor;
-        ctx.lineWidth = CONFIG.bondWidth;
-        for (let i = 0; i < atoms.length; i++) {
-            for (let j = i + 1; j < atoms.length; j++) {
-                const dx = atoms[i].x - atoms[j].x;
-                const dy = atoms[i].y - atoms[j].y;
-                if (Math.sqrt(dx * dx + dy * dy) < CONFIG.cellSize * 1.15) {
-                    ctx.beginPath();
-                    ctx.moveTo(atoms[i].x, atoms[i].y);
-                    ctx.lineTo(atoms[j].x, atoms[j].y);
-                    ctx.stroke();
-                }
-            }
+        // 位错线
+        function createDislocation(points, color, lineWidth) {
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const material = new THREE.LineBasicMaterial({ color: color, linewidth: lineWidth || 2 });
+            const line = new THREE.Line(geometry, material);
+            scene.add(line);
         }
 
-        // 滑移面
-        const midY = 35 + (CONFIG.gridRows / 2) * CONFIG.cellSize * 0.866;
-        ctx.strokeStyle = 'rgba(255, 100, 100, 0.25)';
-        ctx.lineWidth = 1.5;
-        ctx.setLineDash([4, 4]);
-        ctx.beginPath();
-        ctx.moveTo(15, midY);
-        ctx.lineTo(CONFIG.size - 15, midY);
-        ctx.stroke();
-        ctx.setLineDash([]);
+        // 多条位错线
+        createDislocation([new THREE.Vector3(-1, -0.5, 0.5), new THREE.Vector3(0.5, 0.5, -0.5)], 0xff8800);
+        createDislocation([new THREE.Vector3(-0.5, 1, -0.5), new THREE.Vector3(0.5, -1, 0.5)], 0x00ffff);
+        createDislocation([new THREE.Vector3(-1, 0.8, 0.8), new THREE.Vector3(1, -0.8, -0.8)], 0xff00ff);
+        createDislocation([new THREE.Vector3(0.8, -1, 0.8), new THREE.Vector3(-0.8, 1, -0.8)], 0xffffff);
 
-        // 绘制原子
-        const coreX = 25 + dislocationX * (CONFIG.gridCols - 1) * CONFIG.cellSize;
-        atoms.forEach(atom => {
-            const distToCore = Math.abs(atom.x - coreX);
-            const nearCore = distToCore < CONFIG.cellSize * 1.3 &&
-                Math.abs(atom.y - midY) < CONFIG.cellSize * 1.3;
+        // 添加标题
+        const title = document.createElement('div');
+        title.textContent = 'FCC {111} Slip Systems';
+        title.style.cssText = `
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
+            font-family: "Noto Serif SC", serif;
+            pointer-events: none;
+        `;
+        container.appendChild(title);
 
-            const color = (nearCore || atom.isExtra) ? CONFIG.dislocationColor : CONFIG.atomColor;
-            const radius = atom.isExtra ? CONFIG.atomRadius * 1.15 : CONFIG.atomRadius;
+        // 动画循环
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
 
-            ctx.beginPath();
-            ctx.arc(atom.x, atom.y, radius, 0, Math.PI * 2);
-            ctx.fillStyle = color;
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.arc(atom.x - radius * 0.3, atom.y - radius * 0.3, radius * 0.2, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-            ctx.fill();
-        });
-
-        // 位错符号
-        ctx.fillStyle = '#FF4444';
-        ctx.font = 'bold 18px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('⊥', coreX, midY + 30);
-
-        // 标题
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-        ctx.font = '11px "Noto Serif SC", serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('Edge Dislocation Glide', CONFIG.size / 2, CONFIG.size - 8);
-
-        requestAnimationFrame(draw);
+        console.log('FCC 3D Dislocation Visualization initialized');
     }
-
-    draw();
-    console.log('Edge Dislocation Animation initialized');
 })();
