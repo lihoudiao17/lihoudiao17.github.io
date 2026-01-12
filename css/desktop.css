@@ -372,12 +372,12 @@ body::before {
     left: -11px;
     /* 调整位置，使其正好覆盖在SVG的交点上 */
     right: -11px;
-    height: 6px;
-    /* 原子大小 */
+    height: 8px;
+    /* 略微增大原子 */
     transform: translateY(-50%);
     z-index: -1;
     /* 使用径向渐变模拟原子，颜色跟随主题色 (accent-color) */
-    background-image: radial-gradient(circle, var(--accent-color) 40%, transparent 45%);
+    background-image: radial-gradient(circle, var(--accent-color) 35%, rgba(212, 175, 55, 0.3) 50%, transparent 60%);
     background-size: 63px 100%;
     /* 间距与螺旋一致 */
     background-position: 0 center;
@@ -385,10 +385,25 @@ body::before {
     background-repeat: repeat-x;
     opacity: 1;
     pointer-events: none;
-    /* 
-       让原子颜色跟随模式变化
-       默认为红色，蓝色模式下 accent-color 变为蓝色，无需额外 CSS
-    */
+    /* 微发光效果 */
+    filter: drop-shadow(0 0 3px var(--accent-color));
+    /* 脉冲呼吸动画 */
+    animation: atom-pulse 2s ease-in-out infinite;
+}
+
+/* 原子脉冲呼吸效果 */
+@keyframes atom-pulse {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 2px var(--accent-color));
+        opacity: 0.9;
+    }
+
+    50% {
+        filter: drop-shadow(0 0 6px var(--accent-color));
+        opacity: 1;
+    }
 }
 
 
