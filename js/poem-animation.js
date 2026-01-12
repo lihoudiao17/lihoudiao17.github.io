@@ -118,7 +118,7 @@
                 }, '>');
         });
 
-        // ===== 第二阶段：小印章依次落位（3连击） =====
+        // ===== 第二阶段：小印章依次落位 =====
         stamps.forEach((stamp, index) => {
             gsap.set(stamp, {
                 opacity: 0,
@@ -130,13 +130,9 @@
                 opacity: 1,
                 scale: 1,
                 rotation: 0,
-                duration: 0.25,
-                ease: 'back.out(2)',
-                onStart: () => {
-                    // 每个小印章落位时播放音效，音量递增：0.3 -> 0.4 -> 0.5
-                    playSealSound(0.3 + index * 0.1, 800);
-                }
-            }, `>+${index * 0.15}`); // 间隔拉大一点，让节奏更明显
+                duration: 0.3,
+                ease: 'back.out(2)'
+            }, `>+${index * 0.1}`);
         });
 
         // ===== 第三阶段：主印章重锤落下 =====
