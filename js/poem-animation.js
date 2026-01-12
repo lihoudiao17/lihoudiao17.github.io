@@ -119,28 +119,27 @@
         });
 
         // ===== 第二阶段：小印章依次落位 + 音效（接力式） =====
-        // 音频峰值在 500-800ms，印章下落 800ms 正好对上
-        // 间隔 800ms 接力，余音 1500ms
+        // 每个印章间隔 800ms，等上一个完全落位后再下一个
         stamps.forEach((stamp, index) => {
             gsap.set(stamp, {
                 opacity: 0,
-                scale: 2.5, // 放大初始尺寸，增加下落感
+                scale: 2.5,
                 rotation: -15 + Math.random() * 30
             });
 
-            // 小印章下落动画（800ms，与音频峰值同步）
+            // 小印章下落动画（800ms）
             tl.to(stamp, {
                 opacity: 1,
                 scale: 1,
                 rotation: 0,
-                duration: 0.8, // 800ms 下落
-                ease: 'power2.out' // 减速落下
-            }, index === 0 ? '>' : `>+0.01`); // 接力：等上一个动画结束后立即开始
+                duration: 0.8,
+                ease: 'power2.out'
+            }, '>'); // '>' 等上一个动画结束后开始
 
             // 音效与下落同时开始（1500ms 含余音）
             tl.add(() => {
                 playSealSound(0.35 + index * 0.1, 1500);
-            }, '<'); // '<' 与动画同时
+            }, '<');
         });
 
         // ===== 第三阶段：主印章重锤落下 =====
