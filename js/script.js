@@ -38,6 +38,51 @@ function applyBackground(index) {
                 url('${currentBg}?v=${cacheBuster}') !important;
         }
     `;
+
+    // 分析背景亮度并触发主题变更
+    analyzeBackground(currentBg);
+}
+
+// 分析背景图片亮度
+function analyzeBackground(url) {
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.src = url;
+
+    img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 1;
+        canvas.height = 1;
+
+        // 绘制图片到 1x1 画布以获取平均色
+        ctx.drawImage(img, 0, 0, 1, 1);
+        const p = ctx.getImageData(0, 0, 1, 1).data;
+
+        // 计算亮度 (Luminance)
+        // Formula: 0.299*R + 0.587*G + 0.114*B
+        const brightness = 0.299 * p[0] + 0.587 * p[1] + 0.114 * p[2];
+        const isDark = brightness < 128;
+
+        console.log(`Background: ${url}, Brightness: ${brightness.toFixed(1)}, Mode: ${isDark ? 'Dark' : 'Light'}`);
+
+        // 触发自定义事件
+        const event = new CustomEvent('lattice-theme-change', {
+            detail: {
+                isDark: isDark,
+                brightness: brightness
+            }
+        });
+        window.dispatchEvent(event);
+    };
+
+    img.onerror = () => {
+        console.warn('Failed to analyze background:', url);
+        // 默认深色模式
+        window.dispatchEvent(new CustomEvent('lattice-theme-change', {
+            detail: { isDark: true, brightness: 0 }
+        }));
+    };
 }
 
 // 随机切换背景

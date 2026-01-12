@@ -14,16 +14,31 @@
     const ctx = canvas.getContext('2d');
 
     // 配置参数
+    // 配置参数
     const CONFIG = {
         size: 180,
         cellSize: 55,
         atomRadius: 7,
         rotationSpeed: 0.008,
         opacity: 0.75,
-        atomColor: '#FFD700',
+        atomColor: '#FFD700', // 默认金色 (深色模式)
         bondColor: 'rgba(255, 255, 255, 0.35)',
         bondWidth: 1.2
     };
+
+    // 监听背景主题变化 (反向变色龙)
+    window.addEventListener('lattice-theme-change', (e) => {
+        const isDark = e.detail.isDark;
+        if (isDark) {
+            // 深色背景 -> 金色原子
+            CONFIG.atomColor = '#FFD700';
+            CONFIG.bondColor = 'rgba(255, 255, 255, 0.35)';
+        } else {
+            // 浅色背景 -> 深蓝原子 (高对比度)
+            CONFIG.atomColor = '#00008B';
+            CONFIG.bondColor = 'rgba(0, 0, 0, 0.4)';
+        }
+    });
 
     // 设置 Canvas 样式
     canvas.width = CONFIG.size;

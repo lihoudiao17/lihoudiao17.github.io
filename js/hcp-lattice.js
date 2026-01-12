@@ -14,6 +14,7 @@
     const ctx = canvas.getContext('2d');
 
     // 配置参数
+    // 配置参数
     const CONFIG = {
         size: 170,          // 适中尺寸
         cellSize: 35,       // 六边形边长
@@ -21,10 +22,27 @@
         atomRadius: 6,
         rotationSpeed: 0.007,
         opacity: 0.75,
-        atomColor: '#FFD700', // 金色
+        atomColor: '#FFD700', // 默认金色 (深色模式)
+        secondaryColor: '#FFFFFF', // 默认白色 (深色模式)
         bondColor: 'rgba(255, 255, 255, 0.35)',
         bondWidth: 1.2
     };
+
+    // 监听背景主题变化 (反向变色龙)
+    window.addEventListener('lattice-theme-change', (e) => {
+        const isDark = e.detail.isDark;
+        if (isDark) {
+            // 深色背景
+            CONFIG.atomColor = '#FFD700';
+            CONFIG.secondaryColor = '#FFFFFF';
+            CONFIG.bondColor = 'rgba(255, 255, 255, 0.35)';
+        } else {
+            // 浅色背景 (高对比度)
+            CONFIG.atomColor = '#00008B';
+            CONFIG.secondaryColor = '#333333';
+            CONFIG.bondColor = 'rgba(0, 0, 0, 0.4)';
+        }
+    });
 
     // 设置 Canvas 样式
     canvas.width = CONFIG.size;
@@ -154,10 +172,10 @@
             const index = item.index;
 
             // 颜色逻辑：FCC风格
-            // 顶点 = 1-6 (底面), 8-13 (顶面) -> 金色
-            // 内部 = 0 (底心), 7 (顶心), 14-16 (中间层) -> 白色
+            // 顶点 = 1-6 (底面), 8-13 (顶面) -> 金色 (ThemeColor)
+            // 内部 = 0 (底心), 7 (顶心), 14-16 (中间层) -> 白色 (SecondaryColor)
             const isFrameVertex = (index >= 1 && index <= 6) || (index >= 8 && index <= 13);
-            const color = isFrameVertex ? CONFIG.atomColor : '#FFFFFF';
+            const color = isFrameVertex ? CONFIG.atomColor : CONFIG.secondaryColor;
 
             // 深度效果
             const depthFactor = z / (CONFIG.cellSize * 3);

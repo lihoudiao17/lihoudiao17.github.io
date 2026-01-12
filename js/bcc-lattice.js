@@ -14,16 +14,34 @@
     const ctx = canvas.getContext('2d');
 
     // 配置参数
+    // 配置参数
     const CONFIG = {
         size: 160,          // 略小于 FCC (180)
         cellSize: 50,       // 晶胞大小
         atomRadius: 6,      // 原子半径
         rotationSpeed: 0.006, // 旋转速度略慢
         opacity: 0.75,
-        atomColor: '#FFD700', // 金色
+        atomColor: '#FFD700', // 默认金色 (深色模式)
+        secondaryColor: '#FFFFFF', // 默认白色 (深色模式)
         bondColor: 'rgba(255, 255, 255, 0.35)',
         bondWidth: 1.2
     };
+
+    // 监听背景主题变化 (反向变色龙)
+    window.addEventListener('lattice-theme-change', (e) => {
+        const isDark = e.detail.isDark;
+        if (isDark) {
+            // 深色背景
+            CONFIG.atomColor = '#FFD700';
+            CONFIG.secondaryColor = '#FFFFFF';
+            CONFIG.bondColor = 'rgba(255, 255, 255, 0.35)';
+        } else {
+            // 浅色背景 (高对比度)
+            CONFIG.atomColor = '#00008B'; // 深蓝
+            CONFIG.secondaryColor = '#333333'; // 深灰
+            CONFIG.bondColor = 'rgba(0, 0, 0, 0.4)';
+        }
+    });
 
     // 设置 Canvas 样式
     canvas.width = CONFIG.size;
@@ -111,10 +129,10 @@
             const radius = CONFIG.atomRadius * scale;
             const alpha = 0.6 + z / (CONFIG.size) * 0.4; // 深度也影响透明度
 
-            // 颜色逻辑：FCC风格 (顶点=黄，体心=白)
+            // 颜色逻辑：FCC风格 (顶点=ThemeColor，体心=SecondaryColor)
             // BCC: 0-7 是顶点，8 是体心
             const isCorner = index < 8;
-            const color = isCorner ? CONFIG.atomColor : '#FFFFFF';
+            const color = isCorner ? CONFIG.atomColor : CONFIG.secondaryColor;
 
             ctx.beginPath();
             ctx.arc(x, y, radius, 0, Math.PI * 2);
