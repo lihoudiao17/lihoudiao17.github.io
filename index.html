@@ -211,6 +211,16 @@
             fccScript.src = 'js/fcc-lattice.js';
             document.body.appendChild(fccScript);
 
+            // [新增] BCC 晶格动画（左侧中上）
+            const bccScript = document.createElement('script');
+            bccScript.src = 'js/bcc-lattice.js';
+            document.body.appendChild(bccScript);
+
+            // [新增] HCP 晶格动画（左侧中下）
+            const hcpScript = document.createElement('script');
+            hcpScript.src = 'js/hcp-lattice.js';
+            document.body.appendChild(hcpScript);
+
             // 位错滑移动画（右下角）
             const dislocScript = document.createElement('script');
             dislocScript.src = 'js/dislocation.js';
