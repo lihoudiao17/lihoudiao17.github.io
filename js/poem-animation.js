@@ -137,6 +137,10 @@
         // 我们通过为容器添加一个动画类来触发
         tl.add(() => {
             container.classList.add('seal-landing');
+
+            // 播放盖章撞击音效（只播放前0.5秒）
+            playSealSound();
+
             // 容器抖动效果
             gsap.to(container, {
                 x: 3,
@@ -151,6 +155,36 @@
         }, '+=0.3');
 
         console.log('🏭 Industrial assembly animation played');
+    }
+
+    /**
+     * 播放盖章撞击音效
+     * 只播放前0.5秒，避免15秒完整播放
+     */
+    function playSealSound() {
+        try {
+            const audio = new Audio('assets/hit-impact-impact-collision-6.mp3');
+            audio.volume = 0.6; // 音量60%，避免过响
+            audio.currentTime = 0;
+
+            // 播放音频
+            const playPromise = audio.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    // 0.5秒后停止播放
+                    setTimeout(() => {
+                        audio.pause();
+                        audio.currentTime = 0;
+                    }, 500);
+                }).catch(error => {
+                    // 自动播放被浏览器阻止（用户未交互前）
+                    console.log('🔇 Sound blocked by browser (user interaction required)');
+                });
+            }
+        } catch (e) {
+            console.log('Sound playback error:', e);
+        }
     }
 
     // 暴露到全局，以便手动触发
