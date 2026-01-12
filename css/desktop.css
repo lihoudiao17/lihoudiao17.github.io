@@ -336,6 +336,33 @@ body::before {
     pointer-events: none;
 }
 
+/* 晶格节点原子 - 位于双螺旋交点 */
+.music-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -11px;
+    /* 调整位置，使其正好覆盖在SVG的交点上 */
+    right: -11px;
+    height: 6px;
+    /* 原子大小 */
+    transform: translateY(-50%);
+    z-index: -1;
+    /* 使用径向渐变模拟原子，颜色跟随主题色 (accent-color) */
+    background-image: radial-gradient(circle, var(--accent-color) 40%, transparent 45%);
+    background-size: 63px 100%;
+    /* 间距与螺旋一致 */
+    background-position: 0 center;
+    /* 对齐交点 */
+    background-repeat: repeat-x;
+    opacity: 1;
+    pointer-events: none;
+    /* 
+       让原子颜色跟随模式变化
+       默认为红色，蓝色模式下 accent-color 变为蓝色，无需额外 CSS
+    */
+}
+
 
 .widget-btn,
 #mode-btn,
