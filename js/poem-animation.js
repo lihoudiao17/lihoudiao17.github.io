@@ -67,6 +67,9 @@
 
         if (!poemLines.length || !container) return;
 
+        // 重置印章动画类（确保每次都能触发）
+        container.classList.remove('seal-landing');
+
         // 为容器添加 3D 透视
         gsap.set(container, {
             perspective: 1000,
@@ -172,11 +175,12 @@
 
             if (playPromise !== undefined) {
                 playPromise.then(() => {
-                    // 0.5秒后停止播放
+                    console.log('🔊 Seal sound playing...');
+                    // 1.5秒后停止播放（确保撞击声完整播放）
                     setTimeout(() => {
                         audio.pause();
                         audio.currentTime = 0;
-                    }, 500);
+                    }, 1500);
                 }).catch(error => {
                     // 自动播放被浏览器阻止（用户未交互前）
                     console.log('🔇 Sound blocked by browser (user interaction required)');
