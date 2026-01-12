@@ -37,86 +37,90 @@
     canvas.style.opacity = CONFIG.opacity;
 
     // HCP 晶胞生成逻辑
-    // 底面正六边形 + 顶面正六边形 + 中间层 3 个原子
+    // 调整：Y轴为高度轴 (c-axis)，六边形在 XZ 平面
+    // 这样六边形就在“上下”位置，晶胞直立
     const atomPositions = [];
 
-    // 辅助函数：根据角度生成六边形顶点 (ratio=1 为外接圆半径)
-    function hexVertex(angleDeg, z) {
+    // 辅助函数：生成 XZ 平面上的六边形顶点
+    // y 为高度层
+    function hexVertex(angleDeg, y) {
         const rad = angleDeg * Math.PI / 180;
-        return [Math.cos(rad), Math.sin(rad), z];
+        // x = cos, z = sin
+        return [Math.cos(rad), y, Math.sin(rad)];
     }
 
-    // 1. 底面 (z=0) - 7个原子 (中心+6角)
-    atomPositions.push([0, 0, 0]); // 中心
+    // 高度定义 (中心化，上下对称)
+    const hHalf = (CONFIG.heightScale * 1.0) / 2;
+
+    // 1. 底面 (y = hHalf) - 7个原子 (注意 Canvas Y 向下，所以底面可能是正值)
+    // 我们让 Y轴向上为负? 或者不管，反正 rotateX 会处理翻转
+    // 定义 y = hHalf 为“底”， y = -hHalf 为“顶”
+    const yBottom = hHalf;
+    const yTop = -hHalf;
+
+    // 底面原子
+    atomPositions.push([0, yBottom, 0]); // 中心
     for (let i = 0; i < 6; i++) {
-        atomPositions.push(hexVertex(i * 60, 0));
+        atomPositions.push(hexVertex(i * 60, yBottom));
     }
 
-    // 2. 顶面 (z=height) - 7个原子
-    const h = CONFIG.heightScale * 1.0; // 稍作归一化处理
-    atomPositions.push([0, 0, h]); // 中心
+    // 顶面原子
+    atomPositions.push([0, yTop, 0]); // 中心
     for (let i = 0; i < 6; i++) {
-        atomPositions.push(hexVertex(i * 60, h));
+        atomPositions.push(hexVertex(i * 60, yTop));
     }
 
-    // 3. 中间层 (z=h/2) - 3个原子 (位于底面三角形空隙上方)
-    // 角度分别为 30, 150, 270 度
-    const midZ = h / 2;
-    // 修正：HCP中间层原子的投影位置是底面相隔三角形的重心
-    // 对应角度 0, 120, 240 是A层原子，则B层在 60, 180, 300 还是 30? 
-    // 标准HCP中间层投影位置为：(1/3, 2/3) 或极坐标下的特定位置
-    // 简单起见，取 90, 210, 330 或者 30, 150, 270 (基于正三角形中心)
-    // 边长为1，中心到顶点距离1。重心距离中心 1/sqrt(3) ≈ 0.577 or similar.
-    // 简单视觉模拟：使用 0.577 半径，角度 30, 150, 270
+    // 3. 中间层 (y = 0)
+    // 投影位置在 XZ 平面的三角形重心
     const midR = 0.577;
-    atomPositions.push([midR * Math.cos(30 * Math.PI / 180), midR * Math.sin(30 * Math.PI / 180), midZ]);
-    atomPositions.push([midR * Math.cos(150 * Math.PI / 180), midR * Math.sin(150 * Math.PI / 180), midZ]);
-    atomPositions.push([midR * Math.cos(270 * Math.PI / 180), midR * Math.sin(270 * Math.PI / 180), midZ]);
+    atomPositions.push([midR * Math.cos(30 * Math.PI / 180), 0, midR * Math.sin(30 * Math.PI / 180)]);
+    atomPositions.push([midR * Math.cos(150 * Math.PI / 180), 0, midR * Math.sin(150 * Math.PI / 180)]);
+    atomPositions.push([midR * Math.cos(270 * Math.PI / 180), 0, midR * Math.sin(270 * Math.PI / 180)]);
 
 
-    // 键连接
+    // 键连接 (索引顺序未变，逻辑通用)
     const bonds = [];
 
-    // 底面连接 (中心连6角，6角顺次连)
+    // 底面连接 (0-6)
     for (let i = 1; i <= 6; i++) {
-        bonds.push([0, i]); // 中心连角
-        bonds.push([i, i === 6 ? 1 : i + 1]); // 角边框
+        bonds.push([0, i]);
+        bonds.push([i, i === 6 ? 1 : i + 1]);
     }
 
-    // 顶面连接 (同底面，索引偏移7)
+    // 顶面连接 (7-13)
     for (let i = 8; i <= 13; i++) {
         bonds.push([7, i]);
         bonds.push([i, i === 13 ? 8 : i + 1]);
     }
 
-    // 垂直棱 (6条)
+    // 垂直棱 (1-6 连 8-13)
+    // 索引对应关系：1->8 (0度), 2->9 (60度)...
     for (let i = 1; i <= 6; i++) {
         bonds.push([i, i + 7]);
     }
 
-    // 中间层连接 (视觉上连一下，不用太严谨的物理键，为了整体感)
-    // 3个中间原子互相不连，但连接此层的上下原子？太乱，仅显示原子即可，或者连到中心轴
-    // 为了视觉简洁，HCP通常只画六方柱框，中间原子悬浮
-
     let angleY = 0;
-    const angleX = 0.35; // 调整为 0.35 (与 FCC/BCC 一致，约20度俯视)
+    const angleX = 0.25; // 稍微减小倾角，更有立体感
 
+    // 绕 Y 轴旋转 (现在 Y 是中心轴，所以就是自转)
     function rotateY(point, angle) {
         const cos = Math.cos(angle), sin = Math.sin(angle);
+        // 绕 Y 轴：旋转 X 和 Z
         return [point[0] * cos - point[2] * sin, point[1], point[0] * sin + point[2] * cos];
     }
 
+    // 绕 X 轴旋转 (倾斜视图)
     function rotateX(point, angle) {
         const cos = Math.cos(angle), sin = Math.sin(angle);
+        // 绕 X 轴：旋转 Y 和 Z
         return [point[0], point[1] * cos - point[2] * sin, point[1] * sin + point[2] * cos];
     }
 
     function project(point) {
-        // HCP 居中偏移修正
         return [
             point[0] * CONFIG.cellSize + CONFIG.size / 2,
             point[1] * CONFIG.cellSize + CONFIG.size / 2,
-            point[2] * CONFIG.cellSize - (CONFIG.size * 0.2) // 垂直居中修正
+            point[2] * CONFIG.cellSize
         ];
     }
 
@@ -124,12 +128,11 @@
         ctx.clearRect(0, 0, CONFIG.size, CONFIG.size);
 
         const transformedAtoms = atomPositions.map(pos => {
-            // 中心化 (底面中心已经是0,0，Z轴向上)
-            // 需要将整体中心移到 (0,0, h/2)
-            let centered = [pos[0], pos[1], pos[2] - (CONFIG.heightScale * 1.0) / 2];
-            centered = rotateY(centered, angleY);
-            centered = rotateX(centered, angleX);
-            return project(centered);
+            // 已在生成时中心化，直接旋转
+            let p = [...pos];
+            p = rotateY(p, angleY);
+            p = rotateX(p, angleX);
+            return project(p);
         });
 
         // 绘制键
@@ -142,26 +145,22 @@
             ctx.stroke();
         });
 
-        // 按深度排序绘制原子
+        // 按深度排序绘制原子 (Z轴作为深度)
         const sortedAtoms = transformedAtoms.map((pos, index) => ({ pos, index }))
             .sort((a, b) => a.pos[2] - b.pos[2]);
 
         sortedAtoms.forEach(item => {
-            // 中间层原子(后3个)稍微区别显示？统一金色即可
             const [x, y, z] = item.pos;
             const index = item.index;
 
-            // 颜色逻辑：FCC风格 (顶点=黄，体心/面心/内部=白)
-            // HCP: 底面中心=0, 顶面中心=7, 中间层=14/15/16 -> 这些是白色 (Inside/Face)
-            // 顶点 = 1-6 (底面), 8-13 (顶面) -> 这些是金色 (Frame)
+            // 颜色逻辑：FCC风格
+            // 顶点 = 1-6 (底面), 8-13 (顶面) -> 金色
+            // 内部 = 0 (底心), 7 (顶心), 14-16 (中间层) -> 白色
+            const isFrameVertex = (index >= 1 && index <= 6) || (index >= 8 && index <= 13);
+            const color = isFrameVertex ? CONFIG.atomColor : '#FFFFFF';
 
-            // 判断是否为顶点
-            const isVertex = (index >= 1 && index <= 6) || (index >= 8 && index <= 13);
-            const color = isVertex ? CONFIG.atomColor : '#FFFFFF';
-
-            // 简单的深度缩放效果
-            // z 值大概在 -cellSize 到 +cellSize 之间
-            const depthFactor = z / (CONFIG.cellSize * 3); // 归一化深度
+            // 深度效果
+            const depthFactor = z / (CONFIG.cellSize * 3);
 
             const scale = 1 + depthFactor;
             const radius = CONFIG.atomRadius * scale;
@@ -180,7 +179,7 @@
             ctx.fill();
         });
 
-        ctx.globalAlpha = 1; // 重置全局透明度
+        ctx.globalAlpha = 1;
 
         // 标题
         ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
