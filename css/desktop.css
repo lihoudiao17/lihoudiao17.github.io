@@ -313,21 +313,29 @@ body::before {
 }
 
 /* 双螺旋晶格链背景 */
+/* 双螺旋晶格链 - 包络线风格 */
 .music-wrapper::before {
     content: "";
     position: absolute;
     top: 50%;
-    left: -20px;
-    right: -20px;
-    height: 40px;
-    /* 链条高度 */
+    left: -22px;
+    /* 微调起始位置 */
+    right: -22px;
+    height: 70px;
+    /* 增加高度以包裹按钮 */
     transform: translateY(-50%);
     z-index: -1;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 40' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3C!-- 上链 --%3E%3Cpath d='M0,20 Q12.5,0 25,20 T50,20 T75,20 T100,20' vector-effect='non-scaling-stroke' stroke='%23d4af37' stroke-width='1.5' fill='none' opacity='0.6'/%3E%3C!-- 下链 --%3E%3Cpath d='M0,20 Q12.5,40 25,20 T50,20 T75,20 T100,20' vector-effect='non-scaling-stroke' stroke='%23C0C0C0' stroke-width='1.5' fill='none' opacity='0.6'/%3E%3C/svg%3E");
+    /* 
+       ViewBox: 0 0 100 100
+       上链: M0,50 Q50,-15 100,50 (形成上拱)
+       下链: M0,50 Q50,115 100,50 (形成下凹)
+       形成一个个"眼睛"形状包裹按钮
+    */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,50 Q50,-15 100,50' vector-effect='non-scaling-stroke' stroke='%23d4af37' stroke-width='1.5' fill='none' opacity='0.7'/%3E%3Cpath d='M0,50 Q50,115 100,50' vector-effect='non-scaling-stroke' stroke='%23C0C0C0' stroke-width='1.5' fill='none' opacity='0.7'/%3E%3C/svg%3E");
     background-size: 63px 100%;
-    /* 单个波长略等于按钮宽度+间隙 */
+    /* 波长匹配按钮间距 */
     background-repeat: repeat-x;
-    opacity: 0.8;
+    opacity: 0.9;
     pointer-events: none;
 }
 
