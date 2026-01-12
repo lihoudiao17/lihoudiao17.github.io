@@ -29,8 +29,8 @@
     function initScene() {
         // 配置
         const CONFIG = {
-            size: 280,
-            opacity: 0.9
+            size: 196,  // 缩小到 0.7 倍
+            opacity: 0.85
         };
 
         // 创建容器
@@ -50,17 +50,18 @@
         `;
         document.body.appendChild(container);
 
-        // 场景
+        // 场景（无背景，透明）
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x1a1a2e);
+        // scene.background = null; // 透明背景
 
         // 相机
         const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
         camera.position.set(3, 2.5, 4);
 
-        // 渲染器
+        // 渲染器（透明背景）
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(CONFIG.size, CONFIG.size);
+        renderer.setClearColor(0x000000, 0); // 完全透明
         renderer.setPixelRatio(window.devicePixelRatio);
         container.appendChild(renderer.domElement);
 
