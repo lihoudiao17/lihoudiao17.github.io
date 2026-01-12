@@ -54,16 +54,10 @@
             subtree: true
         });
 
-        // 首次加载时不播放动画（因为浏览器会静音，动画无声很违和）
-        // 印章直接显示，只有后续切换诗词才有动画+音效
-        setTimeout(() => {
-            const container = document.querySelector('.poem-content');
-            if (container) {
-                // 首次加载：直接显示印章，不播放动画
-                container.classList.add('seal-landing');
-                window._poemAnimationInitialized = true;
-            }
-        }, 500);
+        // 首次加载：完全静态显示，不播放任何动画
+        // 印章在 CSS 中默认可见，无需 JS 干预
+        // 只有用户点击上下首时才触发动画
+        window._poemAnimationInitialized = true;
     }
 
     function playAssemblyAnimation() {
