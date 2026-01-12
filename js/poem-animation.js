@@ -69,8 +69,10 @@
 
         if (!poemLines.length || !container) return;
 
-        // 重置印章动画类（确保每次都能触发）
+        // 重置印章动画类
         container.classList.remove('seal-landing');
+        // 添加准备类，立即隐藏大印章（等三小印章完成后再动画显示）
+        container.classList.add('seal-preparing');
 
         // 为容器添加 3D 透视
         gsap.set(container, {
@@ -156,6 +158,8 @@
         // 注意：::before 伪元素无法直接用 GSAP 操控
         // 我们通过为容器添加一个动画类来触发
         tl.add(() => {
+            // 移除准备类，添加动画类
+            container.classList.remove('seal-preparing');
             container.classList.add('seal-landing');
 
             // 播放主印章撞击音效（最高音量压轴，2000ms）
