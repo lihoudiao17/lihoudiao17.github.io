@@ -9,7 +9,7 @@ body::before {
     background-image:
         linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
         linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
-        url('../assets/background.jpg');
+        url('../assets/background01.jpg');
     background-size: 30px 30px, 30px 30px, cover;
     background-position: center;
     background-repeat: repeat, repeat, no-repeat;
