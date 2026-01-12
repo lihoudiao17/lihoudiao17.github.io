@@ -172,6 +172,12 @@
 
         ctx.globalAlpha = 1; // 重置全局透明度
 
+        // 标题
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.font = '11px "Noto Serif SC", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('HCP Unit Cell', CONFIG.size / 2, CONFIG.size - 8);
+
         angleY += CONFIG.rotationSpeed;
         requestAnimationFrame(draw);
     }
