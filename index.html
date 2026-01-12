@@ -206,10 +206,15 @@
             script.src = 'js/particles.js';
             document.body.appendChild(script);
 
-            // FCC 晶格动画
+            // FCC 晶格动画（左下角）
             const fccScript = document.createElement('script');
             fccScript.src = 'js/fcc-lattice.js';
             document.body.appendChild(fccScript);
+
+            // 位错滑移动画（右下角）
+            const dislocScript = document.createElement('script');
+            dislocScript.src = 'js/dislocation.js';
+            document.body.appendChild(dislocScript);
         }
     </script>
 </body>
