@@ -3,7 +3,7 @@ let currentIndex = 0;
 
 // 背景图随机切换（10张）
 const backgrounds = [
-    'assets/background.jpg',
+    'assets/background01.jpg',
     'assets/background02.jpg',
     'assets/background03.jpg',
     'assets/background04.png',
