@@ -608,14 +608,17 @@ header {
     padding: 1rem 1.5rem;
     font-size: 0.9rem;
     color: #333;
-    margin-top: 1rem;
+    margin-top: 2rem;
     /* 半透明遮罩背景 */
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.75);
     backdrop-filter: blur(4px);
     border-radius: 8px;
     margin-left: auto;
     margin-right: auto;
-    max-width: 500px;
+    max-width: 420px;
+    /* 防止与内容重叠 */
+    position: relative;
+    z-index: 10;
 }
 
 /* ===== 更新通知喇叭 ===== */
