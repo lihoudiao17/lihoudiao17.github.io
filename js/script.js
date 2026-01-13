@@ -723,8 +723,8 @@ document.addEventListener('DOMContentLoaded', () => {
             clickCount++;
             lastClickTime = currentTime;
 
-            // 连续点击5次触发
-            if (clickCount === 5) {
+            // 连续点击7次触发
+            if (clickCount === 7) {
                 clickCount = 0; // 重置
 
                 // 标记为管理员
