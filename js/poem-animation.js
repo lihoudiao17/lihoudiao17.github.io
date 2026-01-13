@@ -37,11 +37,20 @@
             return;
         }
 
+        // 首次加载标志 - 用于跳过初始渲染的动画
+        let isFirstLoad = true;
+
         // 监听诗句容器变化，每次切换诗词时重新播放动画
         const observer = new MutationObserver((mutations) => {
             // 检查是否有新的诗句行被添加
             for (const mutation of mutations) {
                 if (mutation.addedNodes.length > 0) {
+                    // 首次加载时跳过动画，保持静态显示
+                    if (isFirstLoad) {
+                        isFirstLoad = false;
+                        console.log('First load - skipping animation, static display');
+                        return;
+                    }
                     // 延迟执行，确保 DOM 完全更新
                     setTimeout(playAssemblyAnimation, 50);
                     break;

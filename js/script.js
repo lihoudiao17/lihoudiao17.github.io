@@ -1,7 +1,7 @@
 let poems = [];
 let currentIndex = 0;
 
-// 背景图随机切换（10张）
+// 背景图随机切换（12张）
 const backgrounds = [
     'assets/background01.jpg',
     'assets/background02.jpg',
@@ -12,7 +12,9 @@ const backgrounds = [
     'assets/background07.jpg',
     'assets/background08.jpg',
     'assets/background09.png',
-    'assets/background10.jpg'
+    'assets/background10.jpg',
+    'assets/background11.jpg',
+    'assets/background12.jpg'
 ];
 
 let bgIndex = 0; // 当前背景索引
@@ -486,7 +488,9 @@ function selectTheme(mode) {
     } else {
         // 花笺模式：添加云笺类并设置对应背景图
         card.classList.add('yunjian-mode');
-        card.style.setProperty('--yunjian-bg', `url('../assets/${mode}.jpg')`);
+        // card06 使用 webp 格式，其他使用 jpg
+        const ext = mode === 'card06' ? 'webp' : 'jpg';
+        card.style.setProperty('--yunjian-bg', `url('../assets/${mode}.${ext}')`);
         localStorage.setItem('noteMode', mode);
     }
 

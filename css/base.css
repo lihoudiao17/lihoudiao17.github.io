@@ -124,6 +124,17 @@ header {
     margin-bottom: 0.25rem;
 }
 
+/* 标题石章装饰 - 不影响标题居中 */
+.title-seal {
+    height: 1.1em;
+    width: auto;
+    vertical-align: middle;
+    margin-left: 0.3em;
+    margin-right: -1.4em;
+    /* 抵消石章宽度对居中的影响 */
+    opacity: 0.9;
+}
+
 .subtitle {
     font-size: 0.85rem;
     color: #555;
@@ -685,7 +696,8 @@ header {
 /* ===== 装饰元素 - 移动端隐藏 ===== */
 .decoration-branch,
 .stamps-container,
-#particle-canvas {
+#particle-canvas,
+.guide-seal {
     display: none;
 }
 

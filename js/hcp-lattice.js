@@ -199,8 +199,8 @@
 
         ctx.globalAlpha = 1;
 
-        // 标题 (霁蓝)
-        ctx.fillStyle = 'rgba(58, 93, 143, 0.9)';
+        // 标题 (白色高亮)
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
         ctx.font = '11px "Noto Serif SC", serif';
         ctx.textAlign = 'center';
         ctx.fillText('HCP Unit Cell', CONFIG.size / 2, CONFIG.size - 8);
