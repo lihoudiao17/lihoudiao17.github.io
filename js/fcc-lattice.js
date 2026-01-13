@@ -136,11 +136,18 @@
             ctx.fill();
         });
 
-        // 标题 (白色高亮)
+        // 标题 (白色高亮 + 阴影增强可读性)
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = 1;
+        ctx.shadowOffsetY = 1;
         ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
         ctx.font = '11px "Noto Serif SC", serif';
         ctx.textAlign = 'center';
         ctx.fillText('FCC Unit Cell', CONFIG.size / 2, CONFIG.size - 8);
+        // 重置阴影
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
 
         angleY += CONFIG.rotationSpeed;
         requestAnimationFrame(draw);

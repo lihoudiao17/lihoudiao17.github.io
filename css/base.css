@@ -133,6 +133,19 @@ header {
     margin-right: -1.4em;
     /* 抵消石章宽度对居中的影响 */
     opacity: 0.9;
+    /* 微光效果 */
+    filter: drop-shadow(0 0 8px rgba(200, 50, 50, 0.4));
+    animation: seal-glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes seal-glow {
+    from {
+        filter: drop-shadow(0 0 6px rgba(200, 50, 50, 0.3));
+    }
+
+    to {
+        filter: drop-shadow(0 0 12px rgba(200, 50, 50, 0.6));
+    }
 }
 
 .subtitle {
@@ -592,10 +605,17 @@ header {
 /* ===== 页脚 ===== */
 .site-footer {
     text-align: center;
-    padding: 1rem;
-    font-size: 0.85rem;
-    color: #666;
+    padding: 1rem 1.5rem;
+    font-size: 0.9rem;
+    color: #333;
     margin-top: 1rem;
+    /* 半透明遮罩背景 */
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+    border-radius: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px;
 }
 
 /* ===== 更新通知喇叭 ===== */
