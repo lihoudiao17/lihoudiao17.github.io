@@ -39,7 +39,7 @@
         container.style.cssText = `
             position: fixed;
             top: 15px;
-            right: 100px;
+            left: 300px;
             width: ${CONFIG.size}px;
             height: ${CONFIG.size}px;
             z-index: 50;
