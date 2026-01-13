@@ -484,6 +484,8 @@ body::before {
     font-weight: bold;
     color: #1a1a1a;
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+    margin-bottom: -1rem;
+    /* 减少与卡片的间距 */
 }
 
 /* ===== 页脚增强 ===== */
