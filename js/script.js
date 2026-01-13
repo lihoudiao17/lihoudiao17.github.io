@@ -706,7 +706,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const title = document.querySelector('.site-title');
-    if (title) {
+    // 仅桌面端启用秘密入口（宽度>768px），移动端不可用以降低被发现风险
+    const isDesktop = window.innerWidth > 768;
+    if (title && isDesktop) {
         let clickCount = 0;
         let lastClickTime = 0;
 
@@ -724,6 +726,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // 连续点击5次触发
             if (clickCount === 5) {
                 clickCount = 0; // 重置
+
+                // 增加密码校验，防止误触
+                const pwd = prompt("请输入管理员口令：");
+                if (pwd !== "qilv") { // 默认密码 qilv
+                    alert("口令错误，无法查看秘密数据。");
+                    return;
+                }
 
                 // 标记为管理员
                 localStorage.setItem('qilv_admin', 'true');
