@@ -7,24 +7,16 @@
 (function () {
     'use strict';
 
-    // 检查 Three.js 是否已加载
-    if (typeof THREE === 'undefined') {
-        console.log('Loading Three.js...');
-
-        // 加载 Three.js
-        const threeScript = document.createElement('script');
-        threeScript.src = 'https://cdn.jsdelivr.net/npm/three@0.109.0/build/three.min.js';
-        threeScript.onload = function () {
-            // 加载 OrbitControls
-            const controlsScript = document.createElement('script');
-            controlsScript.src = 'https://cdn.jsdelivr.net/npm/three@0.109.0/examples/js/controls/OrbitControls.js';
-            controlsScript.onload = initScene;
-            document.head.appendChild(controlsScript);
-        };
-        document.head.appendChild(threeScript);
-    } else {
-        initScene();
+    // 等待 Three.js 和 OrbitControls 加载完成
+    function waitForThree(callback) {
+        if (typeof THREE !== 'undefined' && THREE.OrbitControls) {
+            callback();
+        } else {
+            setTimeout(() => waitForThree(callback), 100);
+        }
     }
+
+    waitForThree(initScene);
 
     function initScene() {
         // 配置
