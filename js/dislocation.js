@@ -38,7 +38,7 @@
         container.id = 'dislocation-3d';
         container.style.cssText = `
             position: fixed;
-            top: 15px;
+            top: 41%;
             left: 300px;
             width: ${CONFIG.size}px;
             height: ${CONFIG.size}px;
