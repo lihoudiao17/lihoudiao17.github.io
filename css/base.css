@@ -731,6 +731,26 @@ header {
 
 /* ===== iPad 断点 (768px+) ===== */
 @media (min-width: 768px) {
+    /* iPad/平板特别优化：隐藏所有3D特效和装饰，防止卡顿 */
+    @media (max-width: 1024px) {
+
+        /* 隐藏所有晶格 canvas */
+        #sc-lattice-canvas,
+        #bcc-lattice-canvas,
+        #hcp-lattice-canvas,
+        #fcc-lattice-canvas,
+        /* 隐藏所有位错 3D 容器 */
+        #sc-dislocation-3d,
+        #bcc-dislocation-3d,
+        #hcp-dislocation-3d,
+        #dislocation-3d,
+        /* 隐藏装饰石章 */
+        .stamps-container,
+        .guide-seal {
+            display: none !important;
+        }
+    }
+
     .container {
         padding: 2rem;
         gap: 1.5rem;
