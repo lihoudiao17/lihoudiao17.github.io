@@ -526,7 +526,7 @@ body::before {
     right: 10px;
     top: 55%;
     transform: translateY(-50%);
-    width: 55px;
+    width: 60px;
     height: auto;
     opacity: 0.85;
     z-index: 100;
