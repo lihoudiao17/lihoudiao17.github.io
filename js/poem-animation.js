@@ -70,13 +70,17 @@
     }
 
     function playAssemblyAnimation() {
+        // 移动端禁用印章动画和音效（看不到章印却听到声音很违和）
+        const isMobile = window.innerWidth <= 768;
+
         // 获取所有诗句行（竖排模式下是每一列，横排模式下是每一行）
         const poemLines = document.querySelectorAll('.body-text p');
-        const stamps = document.querySelectorAll('.stamps-container .seal');
+        const stamps = isMobile ? [] : document.querySelectorAll('.stamps-container .seal'); // 移动端不处理印章
         const mainSeal = document.querySelector('.poem-content::before'); // 主印章
         const container = document.querySelector('.poem-content');
 
         if (!poemLines.length || !container) return;
+
 
         // 重置印章动画类
         container.classList.remove('seal-landing');
@@ -163,29 +167,31 @@
         // 标记三个小印章全部结束的时间点
         tl.addLabel('stamps-done', `stamps-start+=${stamps.length * 0.8}`);
 
-        // ===== 第三阶段：主印章重锤落下 =====
+        // ===== 第三阶段：主印章重锤落下（仅桌面端） =====
         // 注意：::before 伪元素无法直接用 GSAP 操控
         // 我们通过为容器添加一个动画类来触发
-        tl.add(() => {
-            // 移除准备类，添加动画类
-            container.classList.remove('seal-preparing');
-            container.classList.add('seal-landing');
+        if (!isMobile) {
+            tl.add(() => {
+                // 移除准备类，添加动画类
+                container.classList.remove('seal-preparing');
+                container.classList.add('seal-landing');
 
-            // 播放主印章撞击音效（最高音量压轴，2000ms）
-            playSealSound(0.95, 2000);
+                // 播放主印章撞击音效（最高音量压轴，2000ms）
+                playSealSound(0.95, 2000);
 
-            // 容器抖动效果
-            gsap.to(container, {
-                x: 4,
-                yoyo: true,
-                repeat: 6,
-                duration: 0.04,
-                ease: 'power2.inOut',
-                onComplete: () => {
-                    gsap.set(container, { x: 0 });
-                }
-            });
-        }, 'stamps-done+=0.1'); // 三小印章全部结束后 100ms 开始大印章
+                // 容器抖动效果
+                gsap.to(container, {
+                    x: 4,
+                    yoyo: true,
+                    repeat: 6,
+                    duration: 0.04,
+                    ease: 'power2.inOut',
+                    onComplete: () => {
+                        gsap.set(container, { x: 0 });
+                    }
+                });
+            }, 'stamps-done+=0.1'); // 三小印章全部结束后 100ms 开始大印章
+        }
 
         console.log('🏭 Industrial assembly animation played');
     }
