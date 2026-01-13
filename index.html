@@ -234,7 +234,12 @@
             hcpScript.src = 'js/hcp-lattice.js';
             document.body.appendChild(hcpScript);
 
-            // 位错滑移动画（右下角）
+            // [新增] SC 简单立方晶格动画（左上角）
+            const scScript = document.createElement('script');
+            scScript.src = 'js/sc-lattice.js';
+            document.body.appendChild(scScript);
+
+            // 位错滑移动画（右侧）
             const dislocScript = document.createElement('script');
             dislocScript.src = 'js/dislocation.js';
             document.body.appendChild(dislocScript);

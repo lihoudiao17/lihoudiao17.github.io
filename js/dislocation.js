@@ -33,13 +33,13 @@
             opacity: 0.85
         };
 
-        // 创建容器
+        // 创建容器 - 移到右侧（向右平移约5个网格）
         const container = document.createElement('div');
         container.id = 'dislocation-3d';
         container.style.cssText = `
             position: fixed;
             top: 15px;
-            left: 20px;
+            right: 100px;
             width: ${CONFIG.size}px;
             height: ${CONFIG.size}px;
             z-index: 50;
