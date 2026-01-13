@@ -687,6 +687,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ===== 秘密功能：点击标题5次查看访客统计 =====
+    // 动态加载不蒜子统计
+    function loadBusuanzi() {
+        if (!document.getElementById('busuanzi-script')) {
+            const script = document.createElement('script');
+            script.id = 'busuanzi-script';
+            script.async = true;
+            script.src = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+            document.body.appendChild(script);
+        }
+    }
+
+    // 普通访客：自动加载统计
+    // 管理员：不自动加载（避免刷PV），仅在手动查看时加载
+    const isAdmin = localStorage.getItem('qilv_admin');
+    if (!isAdmin) {
+        loadBusuanzi();
+    }
+
     const title = document.querySelector('.site-title');
     if (title) {
         let clickCount = 0;
@@ -707,14 +725,23 @@ document.addEventListener('DOMContentLoaded', () => {
             if (clickCount === 5) {
                 clickCount = 0; // 重置
 
+                // 标记为管理员
+                localStorage.setItem('qilv_admin', 'true');
+
+                // 强制加载脚本以获取数据（如果未加载）
+                loadBusuanzi();
+
                 // 获取不蒜子统计数据
                 const uvSpan = document.getElementById('busuanzi_value_site_uv');
                 const pvSpan = document.getElementById('busuanzi_value_site_pv');
 
-                const uv = uvSpan ? uvSpan.innerText : '统计中...';
-                const pv = pvSpan ? pvSpan.innerText : '统计中...';
+                // 简单的轮询等待数据加载
+                setTimeout(() => {
+                    const uv = (uvSpan && uvSpan.innerText) ? uvSpan.innerText : '统计中...';
+                    const pv = (pvSpan && pvSpan.innerText) ? pvSpan.innerText : '统计中...';
 
-                alert(`㊙️ 秘密数据：\n\n👤 今日访客数 (UV): ${uv}\n👁️ 总访问量 (PV): ${pv}`);
+                    alert(`㊙️ 秘密数据 (管理员模式已激活)\n\n👤 今日访客数 (UV): ${uv}\n👁️ 总访问量 (PV): ${pv}\n\n⚠️ 注：您的访问今后将不再计入统计。`);
+                }, 500); // 延迟500ms等待脚本初始化
             }
         });
 
