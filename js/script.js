@@ -685,4 +685,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, { passive: true });
     }
+
+    // ===== 秘密功能：点击标题5次查看访客统计 =====
+    const title = document.querySelector('.site-title');
+    if (title) {
+        let clickCount = 0;
+        let lastClickTime = 0;
+
+        title.addEventListener('click', (e) => {
+            const currentTime = new Date().getTime();
+
+            // 如果两次点击间隔超过1秒，重置计数
+            if (currentTime - lastClickTime > 1000) {
+                clickCount = 0;
+            }
+
+            clickCount++;
+            lastClickTime = currentTime;
+
+            // 连续点击5次触发
+            if (clickCount === 5) {
+                clickCount = 0; // 重置
+
+                // 获取不蒜子统计数据
+                const uvSpan = document.getElementById('busuanzi_value_site_uv');
+                const pvSpan = document.getElementById('busuanzi_value_site_pv');
+
+                const uv = uvSpan ? uvSpan.innerText : '统计中...';
+                const pv = pvSpan ? pvSpan.innerText : '统计中...';
+
+                alert(`㊙️ 秘密数据：\n\n👤 今日访客数 (UV): ${uv}\n👁️ 总访问量 (PV): ${pv}`);
+            }
+        });
+
+        // 鼠标手型提示
+        title.style.cursor = 'pointer';
+        title.style.userSelect = 'none';
+    }
 });
