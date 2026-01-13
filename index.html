@@ -239,10 +239,26 @@
             scScript.src = 'js/sc-lattice.js';
             document.body.appendChild(scScript);
 
-            // 位错滑移动画（右侧）
-            const dislocScript = document.createElement('script');
-            dislocScript.src = 'js/dislocation.js';
-            document.body.appendChild(dislocScript);
+            // ===== 右列：对应位错滑移面 =====
+            // SC 位错滑移面（与SC晶格对应）
+            const scDislocScript = document.createElement('script');
+            scDislocScript.src = 'js/sc-dislocation.js';
+            document.body.appendChild(scDislocScript);
+
+            // BCC 位错滑移面（与BCC晶格对应）
+            const bccDislocScript = document.createElement('script');
+            bccDislocScript.src = 'js/bcc-dislocation.js';
+            document.body.appendChild(bccDislocScript);
+
+            // HCP 位错滑移面（与HCP晶格对应）
+            const hcpDislocScript = document.createElement('script');
+            hcpDislocScript.src = 'js/hcp-dislocation.js';
+            document.body.appendChild(hcpDislocScript);
+
+            // FCC 位错滑移面（与FCC晶格对应）
+            const fccDislocScript = document.createElement('script');
+            fccDislocScript.src = 'js/dislocation.js';
+            document.body.appendChild(fccDislocScript);
 
             // GSAP 诗句工业装配动画
             const poemAnimScript = document.createElement('script');
