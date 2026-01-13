@@ -727,13 +727,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (clickCount === 5) {
                 clickCount = 0; // 重置
 
-                // 增加密码校验，防止误触
-                const pwd = prompt("请输入管理员口令：");
-                if (pwd !== "qilv") { // 默认密码 qilv
-                    alert("口令错误，无法查看秘密数据。");
-                    return;
-                }
-
                 // 标记为管理员
                 localStorage.setItem('qilv_admin', 'true');
 
