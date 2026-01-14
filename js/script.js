@@ -210,12 +210,23 @@ function getBeijingDateString() {
     return beijingTime.toISOString().split('T')[0];
 }
 
-// 检查是否显示通知（只在更新当天显示，按北京时间）
+// 获取本地日期的字符串（YYYY-MM-DD）
+function getLocalDateString() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+// 检查是否显示通知（匹配北京时间 或 本地时间）
 function checkUpdateNotice() {
-    const today = getBeijingDateString();
+    const beijingDate = getBeijingDateString();
+    const localDate = getLocalDateString();
     const noticeEl = document.getElementById('update-notice');
 
-    if (updateInfo.date && today === updateInfo.date) {
+    // 只要更新日期等于“北京时间今天”或“本地时间今天”，都显示
+    if (updateInfo.date && (updateInfo.date === beijingDate || updateInfo.date === localDate)) {
         noticeEl.style.display = 'flex';
     } else {
         noticeEl.style.display = 'none';
