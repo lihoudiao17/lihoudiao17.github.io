@@ -815,7 +815,22 @@ function initCollapseMenu() {
     // 默认折叠状态
     wrapper.classList.add('collapsed');
 
-    // 所有子按钮点击后重置计时器
+    // 为整个容器添加鼠标交互监听（针对桌面端犹豫操作）
+    // 鼠标移入：清除倒计时，保持展开
+    wrapper.addEventListener('mouseenter', () => {
+        if (!menuCollapsed) {
+            clearTimeout(collapseTimer);
+        }
+    });
+
+    // 鼠标移出：重新开始5秒倒计时
+    wrapper.addEventListener('mouseleave', () => {
+        if (!menuCollapsed) {
+            resetCollapseTimer();
+        }
+    });
+
+    // 所有子按钮点击后重置计时器（针对移动端及点击操作）
     wrapper.querySelectorAll('.widget-btn, .music-label, #mode-btn, .music-control').forEach(btn => {
         btn.addEventListener('click', resetCollapseTimer);
     });
@@ -862,6 +877,11 @@ function resetCollapseTimer() {
         collapseTimer = setTimeout(() => {
             const wrapper = document.querySelector('.music-wrapper');
             const settingsBtn = document.getElementById('settings-btn');
+            // 双重检查：如果鼠标此时还在 wrapper 内（防止边缘case），则不收起 (仅限桌面端)
+            if (window.matchMedia('(hover: hover)').matches && wrapper.matches(':hover')) {
+                return;
+            }
+
             menuCollapsed = true;
             wrapper.classList.remove('expanded');
             wrapper.classList.add('collapsed');
