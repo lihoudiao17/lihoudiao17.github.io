@@ -805,12 +805,12 @@ let menuCollapsed = true;
 let collapseTimer = null;
 
 // 初始化：仅手机端生效
-function initMobileCollapseMenu() {
-    const isMobile = window.innerWidth <= 768;
+// 初始化：全平台生效
+function initCollapseMenu() {
     const wrapper = document.querySelector('.music-wrapper');
     const settingsBtn = document.getElementById('settings-btn');
 
-    if (!isMobile || !wrapper || !settingsBtn) return;
+    if (!wrapper || !settingsBtn) return;
 
     // 默认折叠状态
     wrapper.classList.add('collapsed');
@@ -872,17 +872,13 @@ function resetCollapseTimer() {
 }
 
 // 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', initMobileCollapseMenu);
+document.addEventListener('DOMContentLoaded', initCollapseMenu);
 
-// 窗口大小变化时重新初始化（适应横竖屏切换）
+// 窗口大小变化时重新初始化
 window.addEventListener('resize', () => {
-    const isMobile = window.innerWidth <= 768;
     const wrapper = document.querySelector('.music-wrapper');
-    if (!isMobile && wrapper) {
-        // 非手机端：移除折叠状态
-        wrapper.classList.remove('collapsed', 'expanded');
-    } else if (isMobile && wrapper && !wrapper.classList.contains('collapsed') && !wrapper.classList.contains('expanded')) {
-        // 手机端：初始化折叠
-        initMobileCollapseMenu();
+    // 如果没有任何状态类，重新初始化（防止resize导致状态丢失）
+    if (wrapper && !wrapper.classList.contains('collapsed') && !wrapper.classList.contains('expanded')) {
+        initCollapseMenu();
     }
 });
