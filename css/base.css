@@ -114,7 +114,23 @@ body::before {
 /* ===== 页头 ===== */
 header {
     text-align: center;
-    padding: 0.5rem 0;
+    padding: 0.8rem 1rem;
+    background-color: rgba(255, 255, 255, 0.65);
+    /* 遮光罩效果 */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 8px;
+    /* 与页脚一致 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+    /* 宽度与下方卡片对齐 */
+    width: 95%;
+    max-width: clamp(320px, 75vw, 600px);
+
+    /* 内部留白 */
+    margin-bottom: 0.5rem;
+    /* 顶部留白，防止与上方按钮重叠 */
+    margin-top: 0.5rem;
 }
 
 .site-title {
@@ -762,6 +778,13 @@ header {
 
     .subtitle {
         font-size: 1rem;
+    }
+
+    header {
+        width: 85%;
+        max-width: 500px;
+        padding: 1.5rem;
+        /* 增加内边距适配大屏 */
     }
 
     .poem-content {
