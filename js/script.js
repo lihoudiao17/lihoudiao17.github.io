@@ -818,28 +818,15 @@ let collapseTimer = null;
 function initMobileCollapseMenu() {
     const isMobile = window.innerWidth <= 768;
     const wrapper = document.querySelector('.music-wrapper');
-    const musicControl = document.getElementById('music-control');
+    const settingsBtn = document.getElementById('settings-btn');
 
-    if (!isMobile || !wrapper || !musicControl) return;
+    if (!isMobile || !wrapper || !settingsBtn) return;
 
     // 默认折叠状态
     wrapper.classList.add('collapsed');
-    // 保存原始音乐图标HTML
-    if (!musicControl.dataset.originalHtml) {
-        musicControl.dataset.originalHtml = musicControl.innerHTML;
-    }
-    // 折叠时显示"设置"文字
-    musicControl.innerHTML = '设置';
-    musicControl.classList.add('settings-trigger');
-
-    // 修改 #music-control 的点击行为
-    musicControl.onclick = function (e) {
-        e.stopPropagation();
-        toggleSettingsMenu();
-    };
 
     // 所有子按钮点击后重置计时器
-    wrapper.querySelectorAll('.widget-btn, .music-label, #mode-btn').forEach(btn => {
+    wrapper.querySelectorAll('.widget-btn, .music-label, #mode-btn, .music-control').forEach(btn => {
         btn.addEventListener('click', resetCollapseTimer);
     });
 }
@@ -847,26 +834,19 @@ function initMobileCollapseMenu() {
 // 切换展开/折叠
 function toggleSettingsMenu() {
     const wrapper = document.querySelector('.music-wrapper');
-    const musicControl = document.getElementById('music-control');
+    const settingsBtn = document.getElementById('settings-btn');
 
     menuCollapsed = !menuCollapsed;
 
     if (menuCollapsed) {
         wrapper.classList.remove('expanded');
         wrapper.classList.add('collapsed');
-        // 折叠时显示"设置"文字
-        musicControl.innerHTML = '设置';
-        musicControl.classList.add('settings-trigger');
-        musicControl.classList.add('settings-used');
+        // 展开过一次后，设置按钮变为白底红字
+        settingsBtn.classList.add('settings-used');
         clearTimeout(collapseTimer);
     } else {
         wrapper.classList.remove('collapsed');
         wrapper.classList.add('expanded');
-        // 展开时恢复音乐图标
-        if (musicControl.dataset.originalHtml) {
-            musicControl.innerHTML = musicControl.dataset.originalHtml;
-        }
-        musicControl.classList.remove('settings-trigger');
         // 播放发牌音效（仅前800ms）
         playShuffleSound();
         resetCollapseTimer();
@@ -891,16 +871,12 @@ function resetCollapseTimer() {
     if (!menuCollapsed) {
         collapseTimer = setTimeout(() => {
             const wrapper = document.querySelector('.music-wrapper');
-            const noteBtn = document.getElementById('note-btn');
+            const settingsBtn = document.getElementById('settings-btn');
             menuCollapsed = true;
             wrapper.classList.remove('expanded');
             wrapper.classList.add('collapsed');
-            // 折叠时显示"设置"
-            const musicControl = document.getElementById('music-control');
-            if (musicControl) {
-                musicControl.innerHTML = '设置';
-                musicControl.classList.add('settings-trigger');
-            }
+            // 自动收起后，设置按钮变为白底红字
+            if (settingsBtn) settingsBtn.classList.add('settings-used');
         }, 5000);
     }
 }
@@ -912,14 +888,9 @@ document.addEventListener('DOMContentLoaded', initMobileCollapseMenu);
 window.addEventListener('resize', () => {
     const isMobile = window.innerWidth <= 768;
     const wrapper = document.querySelector('.music-wrapper');
-    const musicControl = document.getElementById('music-control');
     if (!isMobile && wrapper) {
-        // 非手机端：移除折叠状态，恢复音乐图标
+        // 非手机端：移除折叠状态
         wrapper.classList.remove('collapsed', 'expanded');
-        if (musicControl && musicControl.dataset.originalHtml) {
-            musicControl.innerHTML = musicControl.dataset.originalHtml;
-            musicControl.classList.remove('settings-trigger', 'settings-used');
-        }
     } else if (isMobile && wrapper && !wrapper.classList.contains('collapsed') && !wrapper.classList.contains('expanded')) {
         // 手机端：初始化折叠
         initMobileCollapseMenu();
