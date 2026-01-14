@@ -809,3 +809,84 @@ document.addEventListener('DOMContentLoaded', () => {
         title.style.userSelect = 'none';
     }
 });
+
+// ===== 移动端按钮折叠菜单 =====
+let menuCollapsed = true;
+let collapseTimer = null;
+
+// 初始化：仅手机端生效
+function initMobileCollapseMenu() {
+    const isMobile = window.innerWidth <= 768;
+    const wrapper = document.querySelector('.music-wrapper');
+    const noteBtn = document.getElementById('note-btn');
+
+    if (!isMobile || !wrapper || !noteBtn) return;
+
+    // 默认折叠状态
+    wrapper.classList.add('collapsed');
+    noteBtn.innerHTML = '设置';
+
+    // 修改 #note-btn 的点击行为
+    noteBtn.onclick = function (e) {
+        e.stopPropagation();
+        toggleSettingsMenu();
+    };
+
+    // 所有子按钮点击后重置计时器
+    wrapper.querySelectorAll('.widget-btn, .music-control').forEach(btn => {
+        btn.addEventListener('click', resetCollapseTimer);
+    });
+}
+
+// 切换展开/折叠
+function toggleSettingsMenu() {
+    const wrapper = document.querySelector('.music-wrapper');
+    const noteBtn = document.getElementById('note-btn');
+
+    menuCollapsed = !menuCollapsed;
+
+    if (menuCollapsed) {
+        wrapper.classList.remove('expanded');
+        wrapper.classList.add('collapsed');
+        noteBtn.innerHTML = '设置';
+        clearTimeout(collapseTimer);
+    } else {
+        wrapper.classList.remove('collapsed');
+        wrapper.classList.add('expanded');
+        noteBtn.innerHTML = '作品<br>注释';
+        resetCollapseTimer();
+    }
+}
+
+// 5秒无操作自动收起
+function resetCollapseTimer() {
+    clearTimeout(collapseTimer);
+    if (!menuCollapsed) {
+        collapseTimer = setTimeout(() => {
+            const wrapper = document.querySelector('.music-wrapper');
+            const noteBtn = document.getElementById('note-btn');
+            menuCollapsed = true;
+            wrapper.classList.remove('expanded');
+            wrapper.classList.add('collapsed');
+            noteBtn.innerHTML = '设置';
+        }, 5000);
+    }
+}
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', initMobileCollapseMenu);
+
+// 窗口大小变化时重新初始化（适应横竖屏切换）
+window.addEventListener('resize', () => {
+    const isMobile = window.innerWidth <= 768;
+    const wrapper = document.querySelector('.music-wrapper');
+    if (!isMobile && wrapper) {
+        // 非手机端：移除折叠状态
+        wrapper.classList.remove('collapsed', 'expanded');
+        const noteBtn = document.getElementById('note-btn');
+        if (noteBtn) noteBtn.innerHTML = '作品<br>注释';
+    } else if (isMobile && wrapper && !wrapper.classList.contains('collapsed') && !wrapper.classList.contains('expanded')) {
+        // 手机端：初始化折叠
+        initMobileCollapseMenu();
+    }
+});

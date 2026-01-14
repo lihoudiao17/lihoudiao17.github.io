@@ -396,6 +396,48 @@ header {
     border-color: var(--accent-blue);
 }
 
+/* ===== 移动端按钮折叠菜单 ===== */
+/* 仅在手机端生效 (base.css 本身就是移动优先) */
+
+/* 折叠状态：所有按钮叠在中心 #note-btn 位置 */
+.music-wrapper.collapsed {
+    position: relative;
+}
+
+.music-wrapper.collapsed .widget-btn,
+.music-wrapper.collapsed #mode-btn,
+.music-wrapper.collapsed .music-control {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 5;
+}
+
+/* 设置按钮（替代 #note-btn 的文字） */
+.music-wrapper.collapsed #note-btn {
+    z-index: 10;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* 展开状态：按钮散开到两侧 */
+.music-wrapper.expanded .widget-btn,
+.music-wrapper.expanded #mode-btn,
+.music-wrapper.expanded .music-control,
+.music-wrapper.expanded #note-btn {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* 音乐控制图标 - 方形边框+圆形内切 */
 .music-control {
     width: 40px;
