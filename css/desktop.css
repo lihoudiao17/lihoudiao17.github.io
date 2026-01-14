@@ -54,6 +54,11 @@ body::before {
     overflow: hidden;
 }
 
+/* 桌面端：诗词居中对齐（覆盖移动端的靠右） */
+#poem-text-container {
+    justify-content: center;
+}
+
 .poem-content:hover {
     box-shadow:
         0 4px 8px rgba(0, 0, 0, 0.06),

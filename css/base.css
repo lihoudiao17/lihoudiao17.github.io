@@ -203,7 +203,8 @@ header {
     writing-mode: vertical-rl;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* 移动优先：靠右对齐减少右侧留白 */
+    justify-content: flex-start;
     align-items: center;
     /* 响应式最小高度 */
     min-height: clamp(350px, 60vw, 480px);
@@ -795,6 +796,8 @@ header {
 
     #poem-text-container {
         min-height: 480px;
+        /* 竖排文本靠右对齐（减少右侧留白） */
+        justify-content: flex-start;
     }
 
     #poem-title {
