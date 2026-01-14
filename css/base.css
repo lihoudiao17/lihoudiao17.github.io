@@ -426,21 +426,28 @@ header {
 /* 折叠状态 */
 .music-wrapper.collapsed {
     position: relative;
+    justify-content: flex-end;
+    /* 关键：让设置按钮靠右显示（音乐图标位置） */
+    min-height: 60px;
+    /* 保持高度防止跳变 */
 }
 
 /* 折叠时：显示独立设置按钮 */
 .music-wrapper.collapsed .settings-btn {
     display: flex;
+    /* 确保按钮本身不需要额外的定位，由 flex-end 控制 */
 }
 
-/* 折叠时：隐藏所有7个按钮（叠在音乐图标位置） */
+/* 折叠时：隐藏所有7个按钮（叠在右上角音乐图标位置） */
 .music-wrapper.collapsed .widget-btn,
 .music-wrapper.collapsed #mode-btn,
 .music-wrapper.collapsed .music-label,
 .music-wrapper.collapsed .music-control {
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 0.5rem;
+    /* 对应 padding-right */
+    top: 0.5rem;
+    /* 对应 padding-top */
     opacity: 0;
     pointer-events: none;
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
