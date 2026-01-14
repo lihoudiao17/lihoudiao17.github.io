@@ -528,7 +528,8 @@ body::before {
     right: 10px;
     top: 55%;
     transform: translateY(-50%);
-    width: 60px;
+    width: 66px;
+    /* 放大 1.1 倍 (60 * 1.1) */
     height: auto;
     opacity: 0.85;
     z-index: 100;
