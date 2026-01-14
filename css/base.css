@@ -399,14 +399,15 @@ header {
 /* ===== 移动端按钮折叠菜单 ===== */
 /* 仅在手机端生效 (base.css 本身就是移动优先) */
 
-/* 折叠状态：所有按钮叠在中心 #note-btn 位置 */
+/* 折叠状态：所有按钮叠在 #music-control (音乐图标) 位置 */
 .music-wrapper.collapsed {
     position: relative;
 }
 
+/* 折叠时隐藏所有按钮（除了 #music-control） */
 .music-wrapper.collapsed .widget-btn,
 .music-wrapper.collapsed #mode-btn,
-.music-wrapper.collapsed .music-control {
+.music-wrapper.collapsed .music-label {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -417,18 +418,34 @@ header {
     z-index: 5;
 }
 
-/* 设置按钮（替代 #note-btn 的文字） */
-.music-wrapper.collapsed #note-btn {
+/* 设置按钮（#music-control 变身） */
+.music-wrapper.collapsed #music-control {
     z-index: 10;
     opacity: 1;
     pointer-events: auto;
+}
+
+/* 设置按钮的样式：红色高亮 */
+#music-control.settings-trigger {
+    font-family: var(--font-title);
+    font-size: 0.75rem;
+    font-weight: bold;
+    background: var(--accent-color);
+    color: #fff;
+    border-color: var(--accent-color);
+}
+
+/* 展开过一次后：白底红字 */
+#music-control.settings-used.settings-trigger {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--accent-color);
 }
 
 /* 展开状态：按钮散开到两侧 */
 .music-wrapper.expanded .widget-btn,
 .music-wrapper.expanded #mode-btn,
 .music-wrapper.expanded .music-control,
-.music-wrapper.expanded #note-btn {
+.music-wrapper.expanded .music-label {
     position: relative;
     top: auto;
     left: auto;

@@ -818,22 +818,28 @@ let collapseTimer = null;
 function initMobileCollapseMenu() {
     const isMobile = window.innerWidth <= 768;
     const wrapper = document.querySelector('.music-wrapper');
-    const noteBtn = document.getElementById('note-btn');
+    const musicControl = document.getElementById('music-control');
 
-    if (!isMobile || !wrapper || !noteBtn) return;
+    if (!isMobile || !wrapper || !musicControl) return;
 
     // 默认折叠状态
     wrapper.classList.add('collapsed');
-    noteBtn.innerHTML = '设置';
+    // 保存原始音乐图标HTML
+    if (!musicControl.dataset.originalHtml) {
+        musicControl.dataset.originalHtml = musicControl.innerHTML;
+    }
+    // 折叠时显示"设置"文字
+    musicControl.innerHTML = '设置';
+    musicControl.classList.add('settings-trigger');
 
-    // 修改 #note-btn 的点击行为
-    noteBtn.onclick = function (e) {
+    // 修改 #music-control 的点击行为
+    musicControl.onclick = function (e) {
         e.stopPropagation();
         toggleSettingsMenu();
     };
 
     // 所有子按钮点击后重置计时器
-    wrapper.querySelectorAll('.widget-btn, .music-control').forEach(btn => {
+    wrapper.querySelectorAll('.widget-btn, .music-label, #mode-btn').forEach(btn => {
         btn.addEventListener('click', resetCollapseTimer);
     });
 }
@@ -841,21 +847,26 @@ function initMobileCollapseMenu() {
 // 切换展开/折叠
 function toggleSettingsMenu() {
     const wrapper = document.querySelector('.music-wrapper');
-    const noteBtn = document.getElementById('note-btn');
+    const musicControl = document.getElementById('music-control');
 
     menuCollapsed = !menuCollapsed;
 
     if (menuCollapsed) {
         wrapper.classList.remove('expanded');
         wrapper.classList.add('collapsed');
-        noteBtn.innerHTML = '设置';
+        // 折叠时显示"设置"文字
+        musicControl.innerHTML = '设置';
+        musicControl.classList.add('settings-trigger');
+        musicControl.classList.add('settings-used');
         clearTimeout(collapseTimer);
     } else {
         wrapper.classList.remove('collapsed');
         wrapper.classList.add('expanded');
-        noteBtn.innerHTML = '作品<br>注释';
-        // 展开过一次后，标记为"已使用"，收起时撤销红色高亮
-        noteBtn.classList.add('settings-used');
+        // 展开时恢复音乐图标
+        if (musicControl.dataset.originalHtml) {
+            musicControl.innerHTML = musicControl.dataset.originalHtml;
+        }
+        musicControl.classList.remove('settings-trigger');
         // 播放发牌音效（仅前800ms）
         playShuffleSound();
         resetCollapseTimer();
@@ -884,7 +895,12 @@ function resetCollapseTimer() {
             menuCollapsed = true;
             wrapper.classList.remove('expanded');
             wrapper.classList.add('collapsed');
-            noteBtn.innerHTML = '设置';
+            // 折叠时显示"设置"
+            const musicControl = document.getElementById('music-control');
+            if (musicControl) {
+                musicControl.innerHTML = '设置';
+                musicControl.classList.add('settings-trigger');
+            }
         }, 5000);
     }
 }
@@ -896,11 +912,14 @@ document.addEventListener('DOMContentLoaded', initMobileCollapseMenu);
 window.addEventListener('resize', () => {
     const isMobile = window.innerWidth <= 768;
     const wrapper = document.querySelector('.music-wrapper');
+    const musicControl = document.getElementById('music-control');
     if (!isMobile && wrapper) {
-        // 非手机端：移除折叠状态
+        // 非手机端：移除折叠状态，恢复音乐图标
         wrapper.classList.remove('collapsed', 'expanded');
-        const noteBtn = document.getElementById('note-btn');
-        if (noteBtn) noteBtn.innerHTML = '作品<br>注释';
+        if (musicControl && musicControl.dataset.originalHtml) {
+            musicControl.innerHTML = musicControl.dataset.originalHtml;
+            musicControl.classList.remove('settings-trigger', 'settings-used');
+        }
     } else if (isMobile && wrapper && !wrapper.classList.contains('collapsed') && !wrapper.classList.contains('expanded')) {
         // 手机端：初始化折叠
         initMobileCollapseMenu();
