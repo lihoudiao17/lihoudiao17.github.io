@@ -203,9 +203,10 @@ header {
     writing-mode: vertical-rl;
     display: flex;
     flex-direction: column;
-    /* 移动优先：靠右对齐减少右侧留白 */
-    justify-content: flex-start;
+    /* 恢复居中对齐，配合父容器的flex实现完美居中 */
+    justify-content: center;
     align-items: center;
+    margin: 0 auto;
     /* 响应式最小高度 */
     min-height: clamp(350px, 60vw, 480px);
     transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s ease;
@@ -813,6 +814,9 @@ header {
         width: 85%;
         max-width: 500px;
         padding: 2.5rem;
+        /* 移动端垂直居中修正：确保内容整体居中 */
+        display: flex;
+        justify-content: center;
     }
 
     #poem-text-container {
