@@ -800,12 +800,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// ===== 移动端按钮折叠菜单 =====
+// ===== 按钮折叠菜单（全平台生效） =====
 let menuCollapsed = true;
 let collapseTimer = null;
 
-// 初始化：仅手机端生效
-// 初始化：全平台生效
+// 初始化折叠菜单
 function initCollapseMenu() {
     const wrapper = document.querySelector('.music-wrapper');
     const settingsBtn = document.getElementById('settings-btn');
@@ -831,7 +830,7 @@ function initCollapseMenu() {
     });
 
     // 所有子按钮点击后重置计时器（针对移动端及点击操作）
-    wrapper.querySelectorAll('.widget-btn, .music-label, #mode-btn, .music-control').forEach(btn => {
+    wrapper.querySelectorAll('.widget-btn, #mode-btn, .music-control').forEach(btn => {
         btn.addEventListener('click', resetCollapseTimer);
     });
 }

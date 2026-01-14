@@ -441,7 +441,6 @@ header {
 /* 折叠时：隐藏所有7个按钮（叠在右上角音乐图标位置） */
 .music-wrapper.collapsed .widget-btn,
 .music-wrapper.collapsed #mode-btn,
-.music-wrapper.collapsed .music-label,
 .music-wrapper.collapsed .music-control {
     position: absolute;
     right: 0.5rem;
@@ -461,8 +460,7 @@ header {
 /* 展开状态：按钮散开到各自位置 */
 .music-wrapper.expanded .widget-btn,
 .music-wrapper.expanded #mode-btn,
-.music-wrapper.expanded .music-control,
-.music-wrapper.expanded .music-label {
+.music-wrapper.expanded .music-control {
     position: relative;
     right: auto;
     top: auto;
