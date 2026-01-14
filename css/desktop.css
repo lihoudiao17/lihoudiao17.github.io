@@ -343,7 +343,8 @@ body::before {
 }
 
 /* ===== 挂件组 - 固定定位 ===== */
-.music-wrapper {
+.music-wrapper,
+.music-wrapper.collapsed {
     position: fixed;
     top: 25px;
     right: 25px;
@@ -352,6 +353,8 @@ body::before {
     gap: 15px;
     /* 为双螺旋背景留出空间 */
     padding: 10px 0;
+    justify-content: flex-end;
+    /* 确保折叠时靠右 */
 }
 
 /* 双螺旋晶格链背景 */
