@@ -192,8 +192,8 @@ header {
     max-width: clamp(320px, 75vw, 600px);
     background-color: var(--card-bg);
     border-radius: 4px;
-    /* 响应式内边距 */
-    padding: clamp(1rem, 3vw, 2rem);
+    /* 非对称内边距：左右较小，上下正常（针对竖排文本优化） */
+    padding: clamp(1rem, 3vw, 2rem) clamp(0.5rem, 2vw, 2rem);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     position: relative;
 }
