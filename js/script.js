@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // 更新通知信息（从 poems.json 动态读取）
 let updateInfo = {
     date: '',
-    latestWork: ''
+    latestWorks: []  // 改为数组，支持多首新作
 };
 
 // 获取北京时间的日期字符串（YYYY-MM-DD）
@@ -242,15 +242,19 @@ function toggleUpdateNotice() {
 
     if (noticeExpanded) {
         // 格式化日期显示（2026-01-08 → 2026年1月8日）
+        const count = updateInfo.latestWorks.length;
+        const worksList = updateInfo.latestWorks.join('、');
         if (updateInfo.date && updateInfo.date.includes('-')) {
             const dateParts = updateInfo.date.split('-');
             const displayDate = `${dateParts[0]}年${parseInt(dateParts[1])}月${parseInt(dateParts[2])}日`;
-            textEl.innerHTML = `${displayDate}<br>新作：${updateInfo.latestWork}`;
+            textEl.innerHTML = `${displayDate}<br>新作${count}首：${worksList}`;
         } else {
-            textEl.innerHTML = `新作：${updateInfo.latestWork}`;
+            textEl.innerHTML = `新作${count}首：${worksList}`;
         }
     } else {
-        textEl.textContent = '新作上线';
+        // 默认显示更新数量
+        const count = updateInfo.latestWorks.length;
+        textEl.textContent = count > 1 ? `今日更新${count}首` : '新作上线';
     }
 }
 
@@ -261,7 +265,8 @@ async function loadPoems() {
 
         // 读取更新信息
         updateInfo.date = data.lastUpdate || '';
-        updateInfo.latestWork = data.latestWork || '';
+        // 支持新格式 latestWorks 数组，兼容旧格式 latestWork 字符串
+        updateInfo.latestWorks = data.latestWorks || (data.latestWork ? [data.latestWork] : []);
 
         // 读取诗词数组
         poems = data.poems || data;
@@ -292,9 +297,9 @@ function renderTOC() {
 
         // 如果是最新作品且在通知有效期内（北京时间或本地时间当天），添加高亮类
         const isUpdateDay = updateInfo.date && (updateInfo.date === beijingDate || updateInfo.date === localDate);
-        if (updateInfo.latestWork && poem.title.includes(updateInfo.latestWork.replace(/《|》/g, '')) && isUpdateDay) {
-            li.classList.add('new-work-highlight');
-        } else if (updateInfo.latestWork === poem.title && isUpdateDay) {
+        // 检查当前诗词是否在 latestWorks 数组中
+        const isNewWork = updateInfo.latestWorks.some(work => poem.title.includes(work.replace(/《|》/g, '')));
+        if (isNewWork && isUpdateDay) {
             li.classList.add('new-work-highlight');
         }
 
