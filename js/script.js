@@ -283,16 +283,18 @@ async function loadPoems() {
 
 function renderTOC() {
     const tocList = document.getElementById('toc-list');
-    const today = getBeijingDateString();
+    const beijingDate = getBeijingDateString();
+    const localDate = getLocalDateString();
     tocList.innerHTML = '';
     poems.forEach((poem, index) => {
         const li = document.createElement('li');
         li.innerText = poem.title;
 
-        // 如果是最新作品且在通知有效期内（即当天），添加高亮类
-        if (updateInfo.latestWork && poem.title.includes(updateInfo.latestWork.replace(/《|》/g, '')) && updateInfo.date && today === updateInfo.date) {
+        // 如果是最新作品且在通知有效期内（北京时间或本地时间当天），添加高亮类
+        const isUpdateDay = updateInfo.date && (updateInfo.date === beijingDate || updateInfo.date === localDate);
+        if (updateInfo.latestWork && poem.title.includes(updateInfo.latestWork.replace(/《|》/g, '')) && isUpdateDay) {
             li.classList.add('new-work-highlight');
-        } else if (updateInfo.latestWork === poem.title && updateInfo.date && today === updateInfo.date) {
+        } else if (updateInfo.latestWork === poem.title && isUpdateDay) {
             li.classList.add('new-work-highlight');
         }
 
