@@ -400,13 +400,16 @@ function renderPoem(index) {
         });
 
         // 检测是否有备注，高亮注释按钮
+        // 检测是否有备注，高亮注释按钮及折叠设置按钮
         const noteBtn = document.getElementById('note-btn');
-        if (noteBtn) {
-            if (poem.notes && poem.notes.length > 0) {
-                noteBtn.classList.add('has-notes');
-            } else {
-                noteBtn.classList.remove('has-notes');
-            }
+        const settingsBtn = document.getElementById('settings-btn');
+
+        if (poem.notes && poem.notes.length > 0) {
+            if (noteBtn) noteBtn.classList.add('has-notes');
+            if (settingsBtn) settingsBtn.classList.add('has-notes');
+        } else {
+            if (noteBtn) noteBtn.classList.remove('has-notes');
+            if (settingsBtn) settingsBtn.classList.remove('has-notes');
         }
 
         // 水墨晕染淡入动画
