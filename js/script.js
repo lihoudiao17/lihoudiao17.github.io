@@ -200,10 +200,11 @@ document.addEventListener('DOMContentLoaded', () => {
 // 更新通知信息（从 poems.json 动态读取）
 let updateInfo = {
     date: '',
-    latestWorks: []  // 改为数组，支持多首新作
+    latestWorks: [],  // 改为数组，支持多首新作
+    modifiedWorks: [] // 修改的作品
 };
 
-// 获取北京时间的日期字符串（YYYY-MM-DD）
+
 function getBeijingDateString() {
     const now = new Date();
     const beijingTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
@@ -258,6 +259,40 @@ function toggleUpdateNotice() {
     }
 }
 
+// 检查是否显示修改通知（蓝喇叭）
+function checkModificationNotice() {
+    const noticeEl = document.getElementById('modification-notice');
+    // 如果没有修改作品，或者不在更新时间窗口内，隐藏
+    if (!updateInfo.modifiedWorks || updateInfo.modifiedWorks.length === 0) {
+        noticeEl.style.display = 'none';
+        return;
+    }
+
+    // 复用更新时间窗口逻辑 (48小时内)
+    const parts = updateInfo.date ? updateInfo.date.split('-') : null;
+    const updateUTC = parts ? Date.UTC(+parts[0], +parts[1] - 1, +parts[2], 0, 0, 0) - 8 * 3600000 : 0;
+    const hoursSince = parts ? (Date.now() - updateUTC) / 3600000 : 999;
+
+    if (hoursSince >= 0 && hoursSince <= 48) {
+        noticeEl.style.display = 'flex';
+    } else {
+        noticeEl.style.display = 'none';
+    }
+}
+
+let modNoticeExpanded = false;
+function toggleModificationNotice() {
+    const textEl = document.getElementById('mod-notice-text');
+    modNoticeExpanded = !modNoticeExpanded;
+
+    if (modNoticeExpanded) {
+        const list = updateInfo.modifiedWorks.join('、');
+        textEl.innerHTML = `修订：${list}`;
+    } else {
+        textEl.textContent = '旧作修订';
+    }
+}
+
 async function loadPoems() {
     try {
         const response = await fetch('data/poems.json');
@@ -267,12 +302,16 @@ async function loadPoems() {
         updateInfo.date = data.lastUpdate || '';
         // 支持新格式 latestWorks 数组，兼容旧格式 latestWork 字符串
         updateInfo.latestWorks = data.latestWorks || (data.latestWork ? [data.latestWork] : []);
+        updateInfo.modifiedWorks = data.modifiedWorks || [];
 
         // 读取诗词数组
         poems = data.poems || data;
 
-        // 检查并显示更新通知
+        // 检查并显示更新通知（红喇叭）
         checkUpdateNotice();
+
+        // 检查并显示修改通知（蓝喇叭）
+        checkModificationNotice();
 
         // 渲染名录
         renderTOC();
