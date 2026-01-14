@@ -1043,14 +1043,6 @@ header {
     border-color: var(--accent-color);
 }
 
-/* ===== 设置按钮有备注时高亮+抖动 (与 Note 按钮同步) ===== */
-.settings-btn.has-notes {
-    background: var(--accent-red) !important;
-    color: #fff !important;
-    border-color: var(--accent-red) !important;
-    animation: note-shake 0.6s ease-in-out infinite alternate !important;
-}
-
 /* ===== 键盘导航焦点样式 ===== */
 .widget-btn:focus-visible,
 #mode-btn:focus-visible,

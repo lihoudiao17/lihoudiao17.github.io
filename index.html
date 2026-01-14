@@ -55,26 +55,37 @@
         <!-- 背景控制按钮 -->
         <button id="bg-btn" class="widget-btn">随机<br>背景</button>
 
-        <!-- 背景切换 -->
-        <div id="bg-btn" class="widget-btn" onclick="toggleBgMode()">随机<br>背景</div>
+        <!-- 背景选择列表 -->
         <ul id="bg-list" class="bg-list">
-            <!-- 动态生成 -->
+            <li data-index="0">千里江山</li>
+            <li data-index="1">观音大士</li>
+            <li data-index="2">残阳如血</li>
+            <li data-index="3">妩媚青山</li>
+            <li data-index="4">梅花山水</li>
+            <li data-index="5">庄生蝴蝶</li>
+            <li data-index="6">蓝星一角</li>
+            <li data-index="7">珠峰银月</li>
+            <li data-index="8">五彩斑斓</li>
+            <li data-index="9">星空垂野</li>
+            <li data-index="10">光影森林</li>
+            <li data-index="11">荷花探戈</li>
         </ul>
 
-        <!-- 作品目录 -->
+        <!-- 名录按钮 -->
         <button id="toc-btn" class="widget-btn" onclick="toggleTOC()">作品<br>名录</button>
 
-        <!-- 横竖排切换 -->
-        <button id="mode-btn" class="widget-btn" onclick="toggleMode()">竖排<br>观赏</button>
+        <!-- 排版模式切换 -->
+        <button id="mode-btn" onclick="toggleMode()">竖排<br>观赏</button>
 
-        <!-- 作品注释 -->
-        <button id="note-btn" class="widget-btn" onclick="toggleNotes()">作品<br>注释</button>
+        <!-- 作品注释按钮 -->
+        <div class="music-label" id="note-btn" onclick="toggleNotes()">作品<br>注释</div>
 
-        <!-- 云笺模式 -->
-        <button id="theme-btn" class="widget-btn">云笺<br>模式</button>
-        <div class="theme-list-container">
-            <ul id="theme-list" class="theme-list">
-                <li data-value="default" class="active">宣纸（默认）</li>
+        <!-- 深色/浅色模式切换 -->
+        <!-- 云笺模式选择（带下拉列表） -->
+        <div class="widget-group" style="position: relative;">
+            <button id="theme-btn" class="widget-btn">云笺<br>花样</button>
+            <ul id="theme-list" class="selector-list">
+                <li data-value="default" class="active">宣纸</li>
                 <li data-value="card01">花笺一</li>
                 <li data-value="card02">花笺二</li>
                 <li data-value="card03">花笺三</li>
@@ -207,7 +218,7 @@
     </div>
 
     <!-- 核心逻辑 -->
-    <script src="js/script.js?v=20260114-note-alert"></script>
+    <script src="js/script.js?v=20260114-hover-fix"></script>
 
 
     <!-- 粒子效果 - 仅桌面端加载 -->
