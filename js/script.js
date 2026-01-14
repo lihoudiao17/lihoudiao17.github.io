@@ -225,10 +225,15 @@ function checkUpdateNotice() {
     const beijingDate = getBeijingDateString();
     const localDate = getLocalDateString();
     const noticeEl = document.getElementById('update-notice');
+    const textEl = document.getElementById('notice-text');
 
     // 只要更新日期等于“北京时间今天”或“本地时间今天”，都显示
     if (updateInfo.date && (updateInfo.date === beijingDate || updateInfo.date === localDate)) {
         noticeEl.style.display = 'flex';
+        // 直接显示具体数量
+        const count = updateInfo.latestWorks.length;
+        const worksList = updateInfo.latestWorks.join('、');
+        textEl.innerHTML = `新作 ${count} 首：${worksList}`;
     } else {
         noticeEl.style.display = 'none';
     }
@@ -237,31 +242,18 @@ function checkUpdateNotice() {
 // 通知状态
 let noticeExpanded = false;
 
+// 点击红喇叭：直接消失
 function toggleUpdateNotice() {
-    const textEl = document.getElementById('notice-text');
-    noticeExpanded = !noticeExpanded;
-
-    if (noticeExpanded) {
-        // 格式化日期显示（2026-01-08 → 2026年1月8日）
-        const count = updateInfo.latestWorks.length;
-        const worksList = updateInfo.latestWorks.join('、');
-        if (updateInfo.date && updateInfo.date.includes('-')) {
-            const dateParts = updateInfo.date.split('-');
-            const displayDate = `${dateParts[0]}年${parseInt(dateParts[1])}月${parseInt(dateParts[2])}日`;
-            textEl.innerHTML = `${displayDate}<br>新作${count}首：${worksList}`;
-        } else {
-            textEl.innerHTML = `新作${count}首：${worksList}`;
-        }
-    } else {
-        // 默认显示更新数量
-        const count = updateInfo.latestWorks.length;
-        textEl.textContent = count > 1 ? `今日更新${count}首` : '新作上线';
+    const noticeEl = document.getElementById('update-notice');
+    if (noticeEl) {
+        noticeEl.style.display = 'none';
     }
 }
 
 // 检查是否显示修改通知（蓝喇叭）
 function checkModificationNotice() {
     const noticeEl = document.getElementById('modification-notice');
+    const textEl = document.getElementById('mod-notice-text');
     // 如果没有修改作品，或者不在更新时间窗口内，隐藏
     if (!updateInfo.modifiedWorks || updateInfo.modifiedWorks.length === 0) {
         noticeEl.style.display = 'none';
@@ -275,21 +267,19 @@ function checkModificationNotice() {
 
     if (hoursSince >= 0 && hoursSince <= 48) {
         noticeEl.style.display = 'flex';
+        // 直接显示修订列表
+        const list = updateInfo.modifiedWorks.join('、');
+        textEl.innerHTML = `修订：${list}`;
     } else {
         noticeEl.style.display = 'none';
     }
 }
 
-let modNoticeExpanded = false;
+// 点击蓝喇叭：直接消失
 function toggleModificationNotice() {
-    const textEl = document.getElementById('mod-notice-text');
-    modNoticeExpanded = !modNoticeExpanded;
-
-    if (modNoticeExpanded) {
-        const list = updateInfo.modifiedWorks.join('、');
-        textEl.innerHTML = `修订：${list}`;
-    } else {
-        textEl.textContent = '旧作修订';
+    const noticeEl = document.getElementById('modification-notice');
+    if (noticeEl) {
+        noticeEl.style.display = 'none';
     }
 }
 
