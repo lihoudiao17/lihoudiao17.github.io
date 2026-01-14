@@ -856,8 +856,22 @@ function toggleSettingsMenu() {
         noteBtn.innerHTML = '作品<br>注释';
         // 展开过一次后，标记为"已使用"，收起时撤销红色高亮
         noteBtn.classList.add('settings-used');
+        // 播放发牌音效（仅前800ms）
+        playShuffleSound();
         resetCollapseTimer();
     }
+}
+
+// 发牌音效（仅播放前800ms）
+function playShuffleSound() {
+    const audio = new Audio('assets/the-shuffling-of-a-deck-of-playing-cards.mp3');
+    audio.volume = 0.5;
+    audio.play().catch(() => { }); // 忽略自动播放限制错误
+    // 800ms后停止
+    setTimeout(() => {
+        audio.pause();
+        audio.currentTime = 0;
+    }, 800);
 }
 
 // 5秒无操作自动收起
