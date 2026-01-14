@@ -371,20 +371,6 @@ header {
     border-color: var(--accent-blue);
 }
 
-/* 蓝色修改通知喇叭 */
-.modification-notice {
-    top: 160px;
-    border-color: #4A90E2;
-}
-
-/* 蓝色变色滤镜 */
-.modification-notice .notice-icon {
-    filter: hue-rotate(210deg);
-}
-
-.modification-notice .notice-text {
-    color: #2c5282;
-}
 
 /* 音乐标签 */
 .music-label {
@@ -690,6 +676,21 @@ header {
     font-size: 0.9rem;
     color: var(--accent-color);
     font-weight: bold;
+}
+
+/* 蓝色修改通知喇叭（放在此处以覆盖默认样式） */
+.modification-notice {
+    top: 160px;
+    border-color: #4A90E2;
+}
+
+/* 蓝色变色滤镜 */
+.modification-notice .notice-icon {
+    filter: hue-rotate(210deg);
+}
+
+.modification-notice .notice-text {
+    color: #2c5282;
 }
 
 @keyframes notice-pulse {
