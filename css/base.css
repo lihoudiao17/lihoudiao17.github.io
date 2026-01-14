@@ -986,6 +986,22 @@ header {
     /* 每次切换诗词后延迟2秒开始抖动 */
 }
 
+/* 折叠状态下的设置按钮：不抖动，但保持红色高亮 */
+.music-wrapper.collapsed #note-btn {
+    background: var(--accent-color);
+    color: #fff;
+    border-color: var(--accent-color);
+    animation: none !important;
+    /* 禁用抖动 */
+}
+
+/* 展开过一次后的设置按钮：恢复默认样式 */
+.music-wrapper.collapsed #note-btn.settings-used {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
 /* ===== 背景固定模式样式 ===== */
 #bg-btn.active-mode,
 #playmode-btn.active-mode {

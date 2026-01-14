@@ -854,6 +854,8 @@ function toggleSettingsMenu() {
         wrapper.classList.remove('collapsed');
         wrapper.classList.add('expanded');
         noteBtn.innerHTML = '作品<br>注释';
+        // 展开过一次后，标记为"已使用"，收起时撤销红色高亮
+        noteBtn.classList.add('settings-used');
         resetCollapseTimer();
     }
 }
