@@ -598,8 +598,242 @@ header {
     font-weight: bold;
 }
 
-/* 背景选择列表 & 通用选择列表 */
-.bg-list,
+/* 背景按钮容器 - 用于子菜单相对定位 */
+.bg-btn-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* 背景选择列表 (水平分叉印章菜单样式) */
+.bg-branch-group {
+    display: none;
+    position: absolute;
+    /* 相对于父容器（bg-btn-wrapper）居中 */
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 8px;
+
+    /* 横向排列 */
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+    /* 更紧凑的间距 */
+
+    z-index: 101;
+    padding: 5px;
+}
+
+/* 激活状态：显示 */
+.bg-branch-group.show {
+    display: flex;
+}
+
+/* 所有的分支项初始透明 */
+.bg-branch-group .branch-item {
+    opacity: 0;
+}
+
+/* 显示时的溅射动画 */
+/* 溅射动画：左边项 (需要向右偏移初始位置以重叠到中心) */
+@keyframes splatterLeft {
+    0% {
+        opacity: 0;
+        transform: translate(calc(100% + 15px), -20px) scale(0.3) rotate(30deg);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translate(-10px, 5px) scale(1.1) rotate(-5deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+}
+
+/* 溅射动画：中间项 (垂直下落) */
+@keyframes splatterCenter {
+    0% {
+        opacity: 0;
+        transform: translate(0, -20px) scale(0.3) rotate(0deg);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translate(0, 5px) scale(1.1) rotate(0deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+}
+
+/* 溅射动画：右边项 (需要向左偏移初始位置以重叠到中心) */
+@keyframes splatterRight {
+    0% {
+        opacity: 0;
+        transform: translate(calc(-100% - 15px), -20px) scale(0.3) rotate(-30deg);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translate(10px, 5px) scale(1.1) rotate(5deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+}
+
+/* 应用不同的动画 */
+.bg-branch-group.show .branch-item:nth-child(1) {
+    animation: splatterLeft 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 0ms;
+}
+
+.bg-branch-group.show .branch-item:nth-child(2) {
+    animation: splatterCenter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 60ms;
+}
+
+.bg-branch-group.show .branch-item:nth-child(3) {
+    animation: splatterRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 120ms;
+}
+
+/* 分支项容器 (按钮+列表) */
+.branch-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+/* 印章按钮样式 (Seal Style) - 与父级 widget-btn 同尺寸 */
+.branch-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+    /* 红色边框/文字 */
+    border: 2px solid #d93a49;
+    border-radius: 4px;
+    /* 与父级一致 */
+    color: #d93a49;
+
+    /* 竖排文字 */
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-family: var(--font-title);
+    font-size: 0.7rem;
+    /* 稍小以适应40px */
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    user-select: none;
+}
+
+.branch-btn:hover,
+.branch-item.active .branch-btn {
+    transform: scale(1.05);
+    /* 悬浮微放大 */
+    background: #fff;
+    box-shadow: 0 6px 15px rgba(217, 58, 73, 0.25);
+    /* 红色光晕 */
+}
+
+.branch-btn:active {
+    transform: scale(0.95);
+}
+
+/* 三级子菜单 (具体背景列表) */
+.sub-list {
+    position: absolute;
+    top: 100%;
+    /* 在印章下方 */
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
+
+    /* 默认隐藏，不占空间 */
+    display: none;
+
+    /* 样式复用 selector-list */
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    list-style: none;
+    min-width: 100px;
+    /* 略宽一点 */
+    padding: 5px 0;
+    z-index: 102;
+    overflow: hidden;
+    max-height: 250px;
+    /* 限制高度 */
+    overflow-y: auto;
+}
+
+/* 显示子菜单 */
+.branch-item.active .sub-list {
+    display: block;
+    animation: fadeInSlideDown 0.3s ease forwards;
+}
+
+@keyframes fadeInSlideDown {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+.sub-list li {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    color: #555;
+    cursor: pointer;
+    white-space: nowrap;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    transition: background 0.2s;
+}
+
+.sub-list li:last-child {
+    border-bottom: none;
+}
+
+.sub-list li:hover {
+    background: rgba(217, 58, 73, 0.05);
+    /* 淡淡的红 */
+    color: #d93a49;
+}
+
+.sub-list li.active {
+    color: #d93a49;
+    font-weight: bold;
+    background: rgba(217, 58, 73, 0.08);
+}
+
+/* 通用选择列表 (原 bg-list 样式已独立) */
 .selector-list {
     display: none;
     position: fixed;
@@ -616,12 +850,11 @@ header {
     padding: 0;
 }
 
-.bg-list.show,
 .selector-list.show {
     display: block;
 }
 
-.bg-list li,
+/* 清理旧的 bg-list 选择器，只保留 selector-list */
 .selector-list li {
     padding: 10px 15px;
     font-size: 0.85rem;
@@ -630,13 +863,10 @@ header {
     text-align: center;
 }
 
-.bg-list li:last-child,
 .selector-list li:last-child {
     border-bottom: none;
 }
 
-.bg-list li:hover,
-.bg-list li:active,
 .selector-list li:hover,
 .selector-list li:active {
     background: rgba(168, 63, 63, 0.1);
