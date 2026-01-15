@@ -940,16 +940,16 @@ function playShuffleSound() {
     }, 800);
 }
 
-// 收回音效（短促版本，200ms）
+// 收回音效（短促版本，400ms）
 function playCollapseSound() {
     const audio = new Audio('assets/the-shuffling-of-a-deck-of-playing-cards.mp3');
-    audio.volume = 0.3; // 音量稍低
+    audio.volume = 0.5; // 与展开音效相同音量
     audio.play().catch(() => { });
-    // 200ms后停止（短促）
+    // 400ms后停止（比展开稍短）
     setTimeout(() => {
         audio.pause();
         audio.currentTime = 0;
-    }, 200);
+    }, 400);
 }
 
 // 5秒无操作自动收起
