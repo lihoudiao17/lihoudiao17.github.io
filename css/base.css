@@ -259,6 +259,11 @@ header {
 }
 
 /* ===== 横排模式 ===== */
+.poem-content.horizontal-mode {
+    /* 横排时卡片更宽，避免单字换行 */
+    max-width: clamp(340px, 88vw, 600px);
+}
+
 .poem-content.horizontal-mode #poem-text-container {
     writing-mode: horizontal-tb;
     min-height: auto;
