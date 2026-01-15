@@ -303,6 +303,9 @@ async function loadPoems() {
         // 检查并显示修改通知（蓝喇叭）
         checkModificationNotice();
 
+        // 设置零点自动隐藏：计算距离下一个北京时间零点的毫秒数
+        scheduleMidnightCheck();
+
         // 渲染名录
         renderTOC();
 
@@ -312,6 +315,32 @@ async function loadPoems() {
     } catch (error) {
         console.error("加载诗词数据失败:", error);
     }
+}
+
+// 计算距离下一个北京时间零点的毫秒数，并设置定时器
+function scheduleMidnightCheck() {
+    const now = new Date();
+    // 计算北京时间 (UTC+8)
+    const beijingNow = new Date(now.getTime() + 8 * 3600000);
+    // 计算北京时间明天零点
+    const beijingMidnight = new Date(
+        beijingNow.getUTCFullYear(),
+        beijingNow.getUTCMonth(),
+        beijingNow.getUTCDate() + 1,
+        0, 0, 0, 0
+    );
+    // 转换回本地时间计算差值
+    const msUntilMidnight = beijingMidnight.getTime() - 8 * 3600000 - now.getTime();
+
+    console.log(`下次通知检查：${Math.round(msUntilMidnight / 60000)} 分钟后（北京时间零点）`);
+
+    // 设置定时器，在零点重新检查通知
+    setTimeout(() => {
+        checkUpdateNotice();
+        checkModificationNotice();
+        // 递归设置下一个24小时
+        scheduleMidnightCheck();
+    }, msUntilMidnight + 1000); // 加1秒确保时间已过零点
 }
 
 
