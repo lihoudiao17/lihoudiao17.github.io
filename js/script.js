@@ -969,6 +969,8 @@ function resetCollapseTimer() {
             wrapper.classList.add('collapsed');
             // 自动收起后，设置按钮变为白底红字
             if (settingsBtn) settingsBtn.classList.add('settings-used');
+            // 播放收回音效
+            playCollapseSound();
         }, 5000);
     }
 }
