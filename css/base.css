@@ -196,6 +196,8 @@ header {
     padding: clamp(1rem, 3vw, 2rem) clamp(0.5rem, 2vw, 2rem);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     position: relative;
+    /* 3D 翻页效果透视 */
+    perspective: 1000px;
 }
 
 /* 诗词文字容器 - 默认竖排 */
@@ -212,7 +214,8 @@ header {
     transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s ease;
 }
 
-/* 水墨晕染动画状态 */
+/* 水墨晕染动画状态（保留备用） */
+/*
 #poem-text-container.ink-fade-out {
     opacity: 0;
     filter: blur(8px);
@@ -223,6 +226,42 @@ header {
     opacity: 1;
     filter: blur(0);
     transform: scale(1);
+}
+*/
+
+/* ===== 3D 翻页动画 ===== */
+@keyframes page-flip-out {
+    0% {
+        transform: rotateY(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: rotateY(-90deg);
+        opacity: 0;
+    }
+}
+
+@keyframes page-flip-in {
+    0% {
+        transform: rotateY(90deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: rotateY(0deg);
+        opacity: 1;
+    }
+}
+
+#poem-text-container.page-flip-out {
+    animation: page-flip-out 0.4s ease-in forwards;
+    transform-origin: left center;
+}
+
+#poem-text-container.page-flip-in {
+    animation: page-flip-in 0.4s ease-out forwards;
+    transform-origin: right center;
 }
 
 /* 诗词标题 - 响应式字体 */

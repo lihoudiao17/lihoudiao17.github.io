@@ -405,9 +405,9 @@ function renderPoem(index) {
     const poem = poems[index];
     const textContainer = document.getElementById('poem-text-container');
 
-    // 水墨晕染淡出动画
-    textContainer.classList.remove('ink-fade-in');
-    textContainer.classList.add('ink-fade-out');
+    // 3D 翻页淡出动画
+    textContainer.classList.remove('page-flip-in');
+    textContainer.classList.add('page-flip-out');
 
     setTimeout(() => {
         // 处理标题（如果标题里有通韵标注则移除，备注通过弹窗显示）
@@ -476,9 +476,9 @@ function renderPoem(index) {
             }
         }
 
-        // 水墨晕染淡入动画
-        textContainer.classList.remove('ink-fade-out');
-        textContainer.classList.add('ink-fade-in');
+        // 3D 翻页淡入动画
+        textContainer.classList.remove('page-flip-out');
+        textContainer.classList.add('page-flip-in');
     }, 400);
 }
 
