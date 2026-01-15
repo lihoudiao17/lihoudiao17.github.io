@@ -928,27 +928,37 @@ function toggleSettingsMenu() {
     }
 }
 
+// 预加载发牌音效（全局共享，解决移动端限制）
+let shuffleAudio = null;
+let shuffleTimeout = null;
+
+function getShuffleAudio() {
+    if (!shuffleAudio) {
+        shuffleAudio = new Audio('assets/the-shuffling-of-a-deck-of-playing-cards.mp3');
+        shuffleAudio.volume = 0.5;
+    }
+    return shuffleAudio;
+}
+
 // 发牌音效（仅播放前800ms）
 function playShuffleSound() {
-    const audio = new Audio('assets/the-shuffling-of-a-deck-of-playing-cards.mp3');
-    audio.volume = 0.5;
-    audio.play().catch(() => { }); // 忽略自动播放限制错误
-    // 800ms后停止
-    setTimeout(() => {
+    const audio = getShuffleAudio();
+    clearTimeout(shuffleTimeout);
+    audio.currentTime = 0;
+    audio.play().catch(() => { });
+    shuffleTimeout = setTimeout(() => {
         audio.pause();
-        audio.currentTime = 0;
     }, 800);
 }
 
-// 收回音效（600ms，确保移动端也能播放）
+// 收回音效（复用同一音频，播放600ms）
 function playCollapseSound() {
-    const audio = new Audio('assets/the-shuffling-of-a-deck-of-playing-cards.mp3');
-    audio.volume = 0.5;
+    const audio = getShuffleAudio();
+    clearTimeout(shuffleTimeout);
+    audio.currentTime = 0;
     audio.play().catch(() => { });
-    // 600ms后停止（移动端需要更长初始化时间）
-    setTimeout(() => {
+    shuffleTimeout = setTimeout(() => {
         audio.pause();
-        audio.currentTime = 0;
     }, 600);
 }
 
