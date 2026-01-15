@@ -1129,6 +1129,8 @@ header {
         right: 10px;
         padding: 6px 12px;
         border-radius: 15px;
+        animation: none !important;
+        /* 禁止闪烁 */
     }
 
     .modification-notice {
@@ -1138,6 +1140,8 @@ header {
 
     .notice-icon {
         font-size: 1rem;
+        animation: none !important;
+        /* 禁止抖动 */
     }
 
     .notice-text {
@@ -1379,5 +1383,9 @@ header {
     outline: 3px solid var(--accent-color);
     outline-offset: 2px;
 }
+
 /* 强制提高通知层级 (Fix mobile click issues) */
-.update-notice, .modification-notice { z-index: 2000 !important; }
+.update-notice,
+.modification-notice {
+    z-index: 2000 !important;
+}
