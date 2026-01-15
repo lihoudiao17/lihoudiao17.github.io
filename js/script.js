@@ -896,9 +896,11 @@ function initCollapseMenu() {
         }
     });
 
-    // 所有子按钮点击后重置计时器（针对移动端及点击操作）
-    wrapper.querySelectorAll('.widget-btn, #mode-btn, .music-control').forEach(btn => {
-        btn.addEventListener('click', resetCollapseTimer);
+    // 所有子按钮和下拉列表交互后重置计时器（针对移动端及点击操作）
+    wrapper.querySelectorAll('.widget-btn, #mode-btn, .music-control, #theme-list, #music-list, #bg-list, #theme-list li, #music-list li, #bg-list li').forEach(el => {
+        el.addEventListener('click', resetCollapseTimer);
+        // 触屏设备的长按/滑动也重置计时器
+        el.addEventListener('touchstart', resetCollapseTimer);
     });
 }
 
