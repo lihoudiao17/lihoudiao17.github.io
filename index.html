@@ -52,6 +52,9 @@
 
     <!-- 挂件控制组 -->
     <div class="music-wrapper">
+        <!-- 名录按钮（移到最前面） -->
+        <button id="toc-btn" class="widget-btn" onclick="toggleTOC()">作品<br>名录</button>
+
         <!-- 背景控制按钮容器 (包含按钮和子菜单) -->
         <div class="bg-btn-wrapper">
             <button id="bg-btn" class="widget-btn">背景<br>类别</button>
@@ -90,9 +93,6 @@
                 </div>
             </div>
         </div> <!-- 关闭 bg-btn-wrapper -->
-
-        <!-- 名录按钮 -->
-        <button id="toc-btn" class="widget-btn" onclick="toggleTOC()">作品<br>名录</button>
 
         <!-- 排版模式切换 -->
         <button id="mode-btn" onclick="toggleMode()">竖排<br>观赏</button>
