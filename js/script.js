@@ -228,7 +228,7 @@ function checkUpdateNotice() {
     const textEl = document.getElementById('notice-text');
 
     // 只要更新日期等于“北京时间今天”或“本地时间今天”，都显示
-    if (updateInfo.date && (updateInfo.date === beijingDate || updateInfo.date === localDate)) {
+    if (updateInfo.date && (updateInfo.date === beijingDate || false)) {
         noticeEl.style.display = 'flex';
         // 直接显示具体数量
         const count = updateInfo.latestWorks.length;
@@ -354,7 +354,7 @@ function renderTOC() {
         li.innerText = poem.title;
 
         // 如果是最新作品且在通知有效期内（北京时间或本地时间当天），添加高亮类
-        const isUpdateDay = updateInfo.date && (updateInfo.date === beijingDate || updateInfo.date === localDate);
+        const isUpdateDay = updateInfo.date && (updateInfo.date === beijingDate || false);
         // 检查当前诗词是否在 latestWorks 数组中
         const isNewWork = updateInfo.latestWorks.some(work => poem.title.includes(work.replace(/《|》/g, '')));
         if (isNewWork && isUpdateDay) {
