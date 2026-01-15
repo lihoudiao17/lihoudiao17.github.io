@@ -563,8 +563,10 @@ header {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
     list-style: none;
     min-width: 90px;
+    max-height: 320px;
+    /* 约8项高度，超出滚动 */
+    overflow-y: auto;
     z-index: 1000;
-    overflow: hidden;
     margin: 0;
     padding: 0;
 }

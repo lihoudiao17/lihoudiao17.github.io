@@ -465,7 +465,8 @@ body::before {
 }
 
 /* 歌单悬停显示 - 仅音乐控制图标触发 */
-.music-control:hover+.music-list,
+/* 使用 ~ (通用兄弟选择器) 而非 + (相邻兄弟选择器)，以兼容中间有其他元素的情况 */
+.music-control:hover~.music-list,
 .music-list:hover {
     display: block;
 }
@@ -479,6 +480,9 @@ body::before {
     position: absolute;
     top: 55px;
     right: 0;
+    max-height: 320px;
+    /* 约8项高度，超出滚动 */
+    overflow-y: auto;
 }
 
 /* ===== 页头增强 ===== */
