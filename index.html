@@ -230,22 +230,22 @@
 
             // FCC 晶格动画（左下角）
             const fccScript = document.createElement('script');
-            fccScript.src = 'js/fcc-lattice.js';
+            fccScript.src = 'js/fcc-debug.js'; // 强制加载新文件
             document.body.appendChild(fccScript);
 
             // [新增] BCC 晶格动画（左侧中上）
             const bccScript = document.createElement('script');
-            bccScript.src = 'js/bcc-lattice.js';
+            bccScript.src = 'js/bcc-lattice.js?v=20260114-interactive';
             document.body.appendChild(bccScript);
 
             // [新增] HCP 晶格动画（左侧中下）
             const hcpScript = document.createElement('script');
-            hcpScript.src = 'js/hcp-lattice.js';
+            hcpScript.src = 'js/hcp-lattice.js?v=20260114-interactive';
             document.body.appendChild(hcpScript);
 
             // [新增] SC 简单立方晶格动画（左上角）
             const scScript = document.createElement('script');
-            scScript.src = 'js/sc-lattice.js';
+            scScript.src = 'js/sc-lattice.js?v=20260114-interactive';
             document.body.appendChild(scScript);
 
             // ===== 右列：对应位错滑移面 (暂时关闭) =====
