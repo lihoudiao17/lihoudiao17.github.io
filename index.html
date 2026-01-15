@@ -39,13 +39,13 @@
     <canvas id="particle-canvas"></canvas>
 
     <!-- 更新通知喇叭 -->
-    <div class="update-notice" id="update-notice" onclick="toggleUpdateNotice()">
+    <div class="update-notice" id="update-notice" onclick="this.style.display='none'">
         <span class="notice-icon">📢</span>
         <span class="notice-text" id="notice-text">新作上线</span>
     </div>
 
     <!-- 修改通知喇叭 (蓝) -->
-    <div class="update-notice modification-notice" id="modification-notice" onclick="toggleModificationNotice()">
+    <div class="update-notice modification-notice" id="modification-notice" onclick="this.style.display='none'">
         <span class="notice-icon">📢</span>
         <span class="notice-text" id="mod-notice-text">旧作修订</span>
     </div>
@@ -274,7 +274,7 @@
     </div>
 
     <!-- 核心逻辑 -->
-    <script src="js/script.js?v=20260115-notify-fix"></script>
+    <script src="js/script.js?v=20260115-emergency-fix"></script>
 
 
     <!-- 粒子效果 - 仅桌面端加载 -->
