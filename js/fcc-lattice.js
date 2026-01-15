@@ -46,17 +46,10 @@
     canvas.style.position = 'fixed';
     canvas.style.bottom = '25px';
     canvas.style.left = '25px';  // 左下角
-    canvas.style.zIndex = '9999'; // 临时提高层级以排除遮挡
+    canvas.style.zIndex = '50';
     canvas.style.pointerEvents = 'auto'; // 允许鼠标/触摸交互
     canvas.style.cursor = 'grab';       // 抓手光标
-    canvas.style.border = '2px solid red'; // ⚠️ 调试用红色边框
     canvas.style.opacity = CONFIG.opacity;
-
-    // 调试：点击弹出 alert 确认事件是否送达
-    canvas.addEventListener('click', () => {
-        console.log("Canvas Clicked!");
-        // 如果能拖拽就不需要alert，但如果完全没反应，这个可以测是不是被挡住了
-    });
 
     // FCC 晶胞原子坐标（归一化 0-1）
     const atomPositions = [

@@ -48,10 +48,15 @@
     canvas.width = CONFIG.size;
     canvas.height = CONFIG.size;
     canvas.style.position = 'fixed';
+    // 设置 Canvas 样式
+    canvas.width = CONFIG.size;
+    canvas.height = CONFIG.size;
+    canvas.style.position = 'fixed';
     canvas.style.top = '55%';   // 位于 BCC 下方，FCC 上方
     canvas.style.left = '25px'; // 左侧对齐
     canvas.style.zIndex = '50';
-    canvas.style.pointerEvents = 'none';
+    canvas.style.pointerEvents = 'auto'; // 允许交互
+    canvas.style.cursor = 'grab';
     canvas.style.opacity = CONFIG.opacity;
 
     // HCP 晶胞生成逻辑
@@ -118,7 +123,60 @@
     }
 
     let angleY = 0;
-    const angleX = 0.25; // 稍微减小倾角，更有立体感
+    let angleX = 0.25; // 改为 let
+
+    // 交互状态变量
+    let isDragging = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+    let autoRotateTimeout = null;
+
+    // ===== 交互事件监听 =====
+    canvas.addEventListener('mousedown', startDrag);
+    canvas.addEventListener('touchstart', startDrag, { passive: false });
+
+    window.addEventListener('mousemove', drag);
+    window.addEventListener('touchmove', drag, { passive: false });
+
+    window.addEventListener('mouseup', endDrag);
+    window.addEventListener('touchend', endDrag);
+
+    function startDrag(e) {
+        isDragging = true;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        lastMouseX = clientX;
+        lastMouseY = clientY;
+        canvas.style.cursor = 'grabbing';
+
+        if (autoRotateTimeout) clearTimeout(autoRotateTimeout);
+        autoRotateTimeout = null;
+    }
+
+    function drag(e) {
+        if (!isDragging) return;
+        if (e.type === 'touchmove' && e.target === canvas) {
+            e.preventDefault();
+        }
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const deltaX = clientX - lastMouseX;
+        const deltaY = clientY - lastMouseY;
+        angleY += deltaX * 0.01;
+        angleX += deltaY * 0.01;
+        lastMouseX = clientX;
+        lastMouseY = clientY;
+    }
+
+    function endDrag() {
+        if (!isDragging) return;
+        isDragging = false;
+        canvas.style.cursor = 'grab';
+        if (autoRotateTimeout) clearTimeout(autoRotateTimeout);
+        autoRotateTimeout = setTimeout(() => {
+            autoRotateTimeout = null;
+        }, 2000);
+    }
 
     // 绕 Y 轴旋转 (现在 Y 是中心轴，所以就是自转)
     function rotateY(point, angle) {
@@ -207,12 +265,14 @@
         ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
         ctx.font = '11px "Noto Serif SC", serif';
         ctx.textAlign = 'center';
-        ctx.fillText('HCP Unit Cell', CONFIG.size / 2, CONFIG.size - 8);
+        ctx.fillText('HCP (Interactive)', CONFIG.size / 2, CONFIG.size - 8);
         // 重置阴影
         ctx.shadowColor = 'transparent';
         ctx.shadowBlur = 0;
 
-        angleY += CONFIG.rotationSpeed;
+        if (!isDragging && !autoRotateTimeout) {
+            angleY += CONFIG.rotationSpeed;
+        }
         requestAnimationFrame(draw);
     }
 

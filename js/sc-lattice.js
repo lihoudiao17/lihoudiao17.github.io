@@ -44,7 +44,8 @@
     canvas.style.top = '15px';
     canvas.style.left = '20px';
     canvas.style.zIndex = '50';
-    canvas.style.pointerEvents = 'none';
+    canvas.style.pointerEvents = 'auto'; // 允许交互
+    canvas.style.cursor = 'grab';
     canvas.style.opacity = CONFIG.opacity;
 
     // SC 晶胞原子坐标（归一化 0-1）- 仅8个角原子
@@ -65,24 +66,97 @@
 
     let angleY = 0;
 
-    // 3D 投影函数
-    function project(x, y, z, rotY) {
-        const cx = CONFIG.cellSize * (x - 0.5);
-        const cy = CONFIG.cellSize * (y - 0.5);
-        const cz = CONFIG.cellSize * (z - 0.5);
+    // SC 原本只有 angleY，这里添加 X 轴控制逻辑来兼容统一交互
+    // 但原 project 函数是为单轴优化的，我们需要修改 project 函数或者适配
+    // 简单起见，我们给 SC 也加个全局 angleX 变量，并修改 projection
+    let angleX = 0;
 
+    // 交互状态变量
+    let isDragging = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+    let autoRotateTimeout = null;
+
+    // ===== 交互事件监听 =====
+    canvas.addEventListener('mousedown', startDrag);
+    canvas.addEventListener('touchstart', startDrag, { passive: false });
+
+    window.addEventListener('mousemove', drag);
+    window.addEventListener('touchmove', drag, { passive: false });
+
+    window.addEventListener('mouseup', endDrag);
+    window.addEventListener('touchend', endDrag);
+
+    function startDrag(e) {
+        isDragging = true;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        lastMouseX = clientX;
+        lastMouseY = clientY;
+        canvas.style.cursor = 'grabbing';
+
+        if (autoRotateTimeout) clearTimeout(autoRotateTimeout);
+        autoRotateTimeout = null;
+    }
+
+    function drag(e) {
+        if (!isDragging) return;
+        if (e.type === 'touchmove' && e.target === canvas) {
+            e.preventDefault();
+        }
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const deltaX = clientX - lastMouseX;
+        const deltaY = clientY - lastMouseY;
+        angleY += deltaX * 0.01;
+        angleX += deltaY * 0.01; // SC 增加 X 轴旋转支持
+        lastMouseX = clientX;
+        lastMouseY = clientY;
+    }
+
+    function endDrag() {
+        if (!isDragging) return;
+        isDragging = false;
+        canvas.style.cursor = 'grab';
+        if (autoRotateTimeout) clearTimeout(autoRotateTimeout);
+        autoRotateTimeout = setTimeout(() => {
+            autoRotateTimeout = null;
+        }, 2000);
+    }
+
+    // 3D 投影函数 (升级支持 X 轴旋转)
+    function project(x, y, z, rotY, rotX) {
+        // 先中心化
+        let cx = x - 0.5;
+        let cy = y - 0.5;
+        let cz = z - 0.5;
+
+        // 绕 Y 轴旋转
         const cosY = Math.cos(rotY);
         const sinY = Math.sin(rotY);
-        const rx = cx * cosY - cz * sinY;
-        const rz = cx * sinY + cz * cosY;
+        let x1 = cx * cosY - cz * sinY;
+        let z1 = cx * sinY + cz * cosY;
+        let y1 = cy;
+
+        // 绕 X 轴旋转
+        const cosX = Math.cos(rotX);
+        const sinX = Math.sin(rotX);
+        let y2 = y1 * cosX - z1 * sinX;
+        let z2 = y1 * sinX + z1 * cosX;
+        let x2 = x1;
+
+        // 还原尺寸
+        x2 *= CONFIG.cellSize;
+        y2 *= CONFIG.cellSize;
+        z2 *= CONFIG.cellSize;
 
         const perspective = 300;
-        const scale = perspective / (perspective + rz);
+        const scale = perspective / (perspective + z2);
 
         return {
-            x: CONFIG.size / 2 + rx * scale,
-            y: CONFIG.size / 2 + cy * scale * 0.9,
-            z: rz,
+            x: CONFIG.size / 2 + x2 * scale,
+            y: CONFIG.size / 2 + y2 * scale, // SC 不需要特殊的 0.9 压缩了
+            z: z2,
             scale: scale
         };
     }
@@ -92,7 +166,7 @@
 
         // 计算所有原子的投影位置
         const projectedAtoms = atomPositions.map(pos =>
-            project(pos[0], pos[1], pos[2], angleY)
+            project(pos[0], pos[1], pos[2], angleY, angleX)
         );
 
         // 按 z 排序绘制键
@@ -145,12 +219,14 @@
         ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
         ctx.font = '11px "Noto Serif SC", serif';
         ctx.textAlign = 'center';
-        ctx.fillText('SC Unit Cell', CONFIG.size / 2, CONFIG.size - 8);
+        ctx.fillText('SC (Interactive)', CONFIG.size / 2, CONFIG.size - 8);
         // 重置阴影
         ctx.shadowColor = 'transparent';
         ctx.shadowBlur = 0;
 
-        angleY += CONFIG.rotationSpeed;
+        if (!isDragging && !autoRotateTimeout) {
+            angleY += CONFIG.rotationSpeed;
+        }
         requestAnimationFrame(draw);
     }
 
