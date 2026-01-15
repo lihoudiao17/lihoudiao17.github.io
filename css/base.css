@@ -299,9 +299,8 @@ header {
 
 /* ===== 横排模式 ===== */
 .poem-content.horizontal-mode {
-    /* 横排时卡片更宽，避免单字换行 */
-    width: 92vw;
-    max-width: 600px;
+    /* 面电脑端保持与竖排一致的宽度 (由默认样式控制) */
+    /* 移动端在下方 media query 中单独设置更宽 */
 }
 
 .poem-content.horizontal-mode #poem-text-container {
@@ -1124,6 +1123,13 @@ header {
 
 /* 移动端喇叭适配 */
 @media (max-width: 768px) {
+
+    /* 横排模式：手机端需要更宽以防止换行 */
+    .poem-content.horizontal-mode {
+        width: 92vw;
+        max-width: 600px;
+    }
+
     .update-notice {
         display: none !important;
         /* 回滚：手机端直接隐藏 */
