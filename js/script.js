@@ -195,6 +195,72 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ===== 音乐分类菜单事件绑定 =====
+    const musicControl = document.getElementById('music-control');
+    const musicBranchGroup = document.getElementById('music-branch-group');
+    const audio = document.getElementById('bg-music');
+    const musicCtrl = document.getElementById('music-control');
+
+    if (musicControl && musicBranchGroup) {
+        // 1. 点击音乐图标：切换印章组显示状态
+        musicControl.addEventListener('click', (e) => {
+            e.stopPropagation();
+            musicBranchGroup.classList.toggle('show');
+
+            // 重置所有印章的激活状态
+            if (musicBranchGroup.classList.contains('show')) {
+                musicBranchGroup.querySelectorAll('.branch-item').forEach(item => item.classList.remove('active'));
+            }
+        });
+
+        // 2. 点击印章按钮或音乐项
+        musicBranchGroup.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            // 情况A：点击了印章按钮 (.branch-btn)
+            const branchBtn = e.target.closest('.branch-btn');
+            if (branchBtn) {
+                const item = branchBtn.parentElement;
+                const isActive = item.classList.contains('active');
+
+                musicBranchGroup.querySelectorAll('.branch-item').forEach(i => i.classList.remove('active'));
+
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+                return;
+            }
+
+            // 情况B：点击了具体音乐项
+            const musicItem = e.target.closest('li[data-src]');
+            if (musicItem) {
+                const src = musicItem.dataset.src;
+
+                // 播放选中的音乐
+                if (audio) {
+                    audio.src = src;
+                    audio.play().then(() => {
+                        if (musicCtrl) musicCtrl.classList.add('music-playing');
+                    }).catch(err => console.log('音乐播放需要用户交互'));
+                }
+
+                // 关闭整个菜单组
+                musicBranchGroup.classList.remove('show');
+
+                // 更新激活状态 UI
+                musicBranchGroup.querySelectorAll('li[data-src]').forEach(li => li.classList.remove('active'));
+                musicItem.classList.add('active');
+                return;
+            }
+        });
+
+        // 3. 点击外部区域关闭音乐菜单
+        document.addEventListener('click', (e) => {
+            if (!musicControl.contains(e.target) && !musicBranchGroup.contains(e.target)) {
+                musicBranchGroup.classList.remove('show');
+            }
+        });
+    }
 
     // 更新通知信息（从 poems.json 动态读取）
     let updateInfo = {

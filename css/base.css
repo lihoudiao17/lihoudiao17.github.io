@@ -705,6 +705,56 @@ header {
     animation-delay: 120ms;
 }
 
+/* ===== 音乐分类菜单样式 ===== */
+/* 音乐按钮容器 - 用于子菜单相对定位 */
+.music-btn-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* 音乐分类列表 (水平分叉印章菜单样式) */
+.music-branch-group {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 8px;
+
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+
+    z-index: 101;
+    padding: 5px;
+}
+
+/* 激活状态：显示 */
+.music-branch-group.show {
+    display: flex;
+}
+
+/* 所有的分支项初始透明 */
+.music-branch-group .branch-item {
+    opacity: 0;
+}
+
+/* 应用溅射动画 */
+.music-branch-group.show .branch-item:nth-child(1) {
+    animation: splatterLeft 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 0ms;
+}
+
+.music-branch-group.show .branch-item:nth-child(2) {
+    animation: splatterCenter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 60ms;
+}
+
+.music-branch-group.show .branch-item:nth-child(3) {
+    animation: splatterRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 120ms;
+}
+
 /* 分支项容器 (按钮+列表) */
 .branch-item {
     position: relative;
