@@ -314,6 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
             noticeEl.style.display = 'none';
         }
     }
+    window.toggleUpdateNotice = toggleUpdateNotice;
 
     // 检查是否显示修改通知（蓝喇叭）
     function checkModificationNotice() {
@@ -347,6 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
             noticeEl.style.display = 'none';
         }
     }
+    window.toggleModificationNotice = toggleModificationNotice;
 
     async function loadPoems() {
         try {
@@ -937,6 +939,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.togglePlayMode = togglePlayMode;
     window.prevPoem = prevPoem;
     window.nextPoem = nextPoem;
+    window.toggleUpdateNotice = toggleUpdateNotice;
+    window.toggleModificationNotice = toggleModificationNotice;
 });
 
 // ===== 按钮折叠菜单（全平台生效） =====
