@@ -948,7 +948,8 @@ header {
         justify-content: center;
         align-items: center;
         min-height: 100vh;
-        overflow: hidden;
+        overflow-y: auto;
+        /* 允许垂直滚动，页脚可见 */
     }
 
     .container {
