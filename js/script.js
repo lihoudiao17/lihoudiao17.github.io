@@ -917,6 +917,8 @@ function toggleSettingsMenu() {
         // 展开过一次后，设置按钮变为白底红字
         settingsBtn.classList.add('settings-used');
         clearTimeout(collapseTimer);
+        // 播放收回音效（短促版本）
+        playCollapseSound();
     } else {
         wrapper.classList.remove('collapsed');
         wrapper.classList.add('expanded');
@@ -936,6 +938,18 @@ function playShuffleSound() {
         audio.pause();
         audio.currentTime = 0;
     }, 800);
+}
+
+// 收回音效（短促版本，200ms）
+function playCollapseSound() {
+    const audio = new Audio('assets/the-shuffling-of-a-deck-of-playing-cards.mp3');
+    audio.volume = 0.3; // 音量稍低
+    audio.play().catch(() => { });
+    // 200ms后停止（短促）
+    setTimeout(() => {
+        audio.pause();
+        audio.currentTime = 0;
+    }, 200);
 }
 
 // 5秒无操作自动收起
