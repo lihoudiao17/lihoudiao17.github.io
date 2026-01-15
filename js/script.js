@@ -299,6 +299,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const count = updateInfo.latestWorks.length;
             const worksList = updateInfo.latestWorks.join('、');
             textEl.innerHTML = `新作 ${count} 首：${worksList}`;
+
+            // 20秒后自动隐藏（防止长时间遮挡，特别是手机端）
+            setTimeout(() => {
+                if (noticeEl) noticeEl.style.display = 'none';
+            }, 20000);
         } else {
             noticeEl.style.display = 'none';
         }
@@ -336,6 +341,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // 直接显示修订列表
             const list = updateInfo.modifiedWorks.join('、');
             textEl.innerHTML = `修订：${list}`;
+
+            // 20秒后自动隐藏
+            setTimeout(() => {
+                if (noticeEl) noticeEl.style.display = 'none';
+            }, 20000);
         } else {
             noticeEl.style.display = 'none';
         }
