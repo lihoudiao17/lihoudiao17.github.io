@@ -1125,7 +1125,6 @@ header {
 /* 移动端喇叭适配 */
 @media (max-width: 768px) {
     .update-notice {
-        display: none !important;
         /* 手机端直接隐藏，不搞那些花里胡哨的 */
         top: 60px;
         right: 10px;
