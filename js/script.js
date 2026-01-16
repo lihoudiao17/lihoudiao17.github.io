@@ -517,31 +517,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.getElementById('poem-title').innerText = displayTitle;
 
-            // 检查是否为今日修订作品：
-            // 1. lastUpdate 日期等于当前北京时间日期
-            // 2. 标题在 modifiedWorks 列表中
-            const titleEl = document.getElementById('poem-title');
-            const beijingDate = getBeijingDateString();
-            const isUpdateDay = updateInfo.date && (updateInfo.date === beijingDate);
-
-            // Normalize for comparison
-            const cleanTitle = poem.title.replace(/[《》\s]/g, '');
-            const isModified = updateInfo.modifiedWorks.some(work => {
-                const cleanWork = work.replace(/[《》\s]/g, '');
-                return cleanTitle.includes(cleanWork) || cleanWork.includes(cleanTitle);
-            });
-
-            if (isUpdateDay && isModified) {
-                titleEl.classList.add('modified-title');
-                // Force style in case of CSS specificity issues
-                titleEl.style.setProperty('color', '#4A90E2', 'important');
-                titleEl.style.fontWeight = 'bold';
-            } else {
-                titleEl.classList.remove('modified-title');
-                titleEl.style.removeProperty('color');
-                titleEl.style.fontWeight = 'normal';
-            }
-
             // 渲染正文（不渲染备注，备注通过弹窗单独显示）
             const bodyDiv = document.getElementById('poem-body');
             bodyDiv.innerHTML = '';
