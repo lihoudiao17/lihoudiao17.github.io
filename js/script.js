@@ -677,12 +677,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const list = document.getElementById('theme-list');
 
         if (mode === 'default') {
-            // 宣纸模式：移除云笺类和自定义背景
-            card.classList.remove('yunjian-mode');
+            // 宣纸模式：移除特殊类
+            card.classList.remove('yunjian-mode', 'mask-mode');
             card.style.removeProperty('--yunjian-bg');
             localStorage.setItem('noteMode', 'default');
+        } else if (mode === 'mask') {
+            // 遮光罩模式：玻璃磨砂效果
+            card.classList.remove('yunjian-mode');
+            card.classList.add('mask-mode');
+            card.style.removeProperty('--yunjian-bg');
+            localStorage.setItem('noteMode', 'mask');
         } else {
             // 花笺模式：添加云笺类并设置对应背景图
+            card.classList.remove('mask-mode');
             card.classList.add('yunjian-mode');
             // card06 使用 webp 格式，其他使用 jpg
             const ext = mode === 'card06' ? 'webp' : 'jpg';

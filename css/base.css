@@ -297,6 +297,25 @@ header {
     white-space: nowrap;
 }
 
+/* ===== 遮光罩模式 (Mask Mode) ===== */
+.poem-content.mask-mode {
+    /* 去除纹理，使用纯净半透明背景 */
+    background-image: none !important;
+    background-color: rgba(255, 255, 255, 0.9);
+    /* 高不透明度，类似于遮光罩/磨砂玻璃 */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+/* 遮光罩模式下的深色适配 */
+[data-theme="dark"] .poem-content.mask-mode {
+    background-color: rgba(30, 30, 30, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
 /* ===== 横排模式 ===== */
 .poem-content.horizontal-mode {
     /* 面电脑端保持与竖排一致的宽度 (由默认样式控制) */
