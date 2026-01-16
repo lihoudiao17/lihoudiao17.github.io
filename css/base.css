@@ -299,14 +299,15 @@ header {
 
 /* ===== 遮光罩模式 (Mask Mode) ===== */
 .poem-content.mask-mode {
-    /* 去除纹理，使用纯净半透明背景 */
+    /* 去除纹理，使用与标题一致的磨砂玻璃效果 */
     background-image: none !important;
-    background-color: rgba(255, 255, 255, 0.9);
-    /* 高不透明度，类似于遮光罩/磨砂玻璃 */
+    /* 降低不透明度，让背景更通透 */
+    background-color: rgba(255, 255, 255, 0.2);
+    /* 强力模糊，营造遮光罩质感 */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
 }
 
 /* 遮光罩模式下的深色适配 */
