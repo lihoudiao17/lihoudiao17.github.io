@@ -437,10 +437,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 如果是最新作品且在通知有效期内（北京时间或本地时间当天），添加高亮类
             const isUpdateDay = updateInfo.date && (updateInfo.date === beijingDate || false);
-            // 检查当前诗词是否在 latestWorks 数组中
-            const isNewWork = updateInfo.latestWorks.some(work => poem.title.includes(work.replace(/《|》/g, '')));
-            if (isNewWork && isUpdateDay) {
-                li.classList.add('new-work-highlight');
+
+            // 归一化处理
+            const cleanTitle = poem.title.replace(/[《》\s]/g, '');
+
+            // 1. 检查是否为最新作品 (红色高亮)
+            const isNewWork = updateInfo.latestWorks.some(work => {
+                return cleanTitle.includes(work.replace(/[《》\s]/g, ''));
+            });
+
+            // 2. 检查是否为修订作品 (蓝色高亮)
+            const isModifiedWork = updateInfo.modifiedWorks.some(work => {
+                return cleanTitle.includes(work.replace(/[《》\s]/g, ''));
+            });
+
+            if (isUpdateDay) {
+                if (isNewWork) {
+                    li.classList.add('new-work-highlight');
+                } else if (isModifiedWork) {
+                    li.classList.add('modified-work-highlight');
+                }
             }
 
             li.onclick = () => {
@@ -514,30 +530,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const cleanWork = work.replace(/[《》\s]/g, '');
                 return cleanTitle.includes(cleanWork) || cleanWork.includes(cleanTitle);
             });
-
-            // Debug Overlay
-            const debugText = `Title:[${cleanTitle}] Date:[${beijingDate}] Update:[${updateInfo.date}] Match:${isModified}`;
-            console.log(debugText);
-
-            let debugEl = document.getElementById('debug-overlay');
-            if (!debugEl) {
-                debugEl = document.createElement('div');
-                debugEl.id = 'debug-overlay';
-                Object.assign(debugEl.style, {
-                    position: 'fixed',
-                    bottom: '5px',
-                    left: '5px',
-                    background: 'rgba(0,0,0,0.8)',
-                    color: '#0f0',
-                    padding: '4px 8px',
-                    fontSize: '12px',
-                    zIndex: '10000',
-                    pointerEvents: 'none',
-                    fontFamily: 'monospace'
-                });
-                document.body.appendChild(debugEl);
-            }
-            debugEl.innerText = debugText;
 
             if (isUpdateDay && isModified) {
                 titleEl.classList.add('modified-title');

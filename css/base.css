@@ -1012,6 +1012,37 @@ header {
     color: var(--accent-color);
 }
 
+/* 目录列表新作高亮 */
+#toc-list li.new-work-highlight {
+    color: var(--highlight-color);
+    font-weight: bold;
+}
+
+#toc-list li.new-work-highlight::after {
+    content: " (新)";
+    font-size: 0.8em;
+    opacity: 0.8;
+}
+
+/* 目录列表修订高亮 */
+#toc-list li.modified-work-highlight {
+    color: #4A90E2;
+    /* 蓝色 */
+    font-weight: bold;
+}
+
+#toc-list li.modified-work-highlight::after {
+    content: " (修)";
+    font-size: 0.8em;
+    opacity: 0.8;
+}
+
+/* 高亮样式下hover */
+#toc-list li.new-work-highlight:hover,
+#toc-list li.modified-work-highlight:hover {
+    color: #fff;
+}
+
 .toc-close {
     margin-top: 1rem;
     color: #666;
