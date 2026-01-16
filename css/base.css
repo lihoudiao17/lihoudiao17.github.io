@@ -441,13 +441,6 @@ header {
 .music-label {
     font-family: var(--font-title);
     font-size: 0.7rem;
-    font-weight: bold;
-    color: var(--accent-color);
-    background: rgba(255, 255, 255, 0.95);
-    border: 2px solid var(--accent-color);
-    border-radius: 4px;
-    width: 40px;
-    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
