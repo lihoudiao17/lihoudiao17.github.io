@@ -501,6 +501,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.getElementById('poem-title').innerText = displayTitle;
 
+            // 检查是否为今日修订作品：
+            // 1. lastUpdate 日期等于当前北京时间日期
+            // 2. 标题在 modifiedWorks 列表中
+            const titleEl = document.getElementById('poem-title');
+            const beijingDate = getBeijingDateString();
+            const isUpdateDay = updateInfo.date && (updateInfo.date === beijingDate);
+            const isModified = updateInfo.modifiedWorks.some(work => poem.title.includes(work.replace(/《|》/g, '')));
+
+            console.log(`Checking modification: Title=${poem.title}, BeijingDate=${beijingDate}, UpdateDate=${updateInfo.date}, isUpdateDay=${isUpdateDay}, isModified=${isModified}`);
+
+            if (isUpdateDay && isModified) {
+                titleEl.classList.add('modified-title');
+            } else {
+                titleEl.classList.remove('modified-title');
+            }
+
             // 渲染正文（不渲染备注，备注通过弹窗单独显示）
             const bodyDiv = document.getElementById('poem-body');
             bodyDiv.innerHTML = '';
