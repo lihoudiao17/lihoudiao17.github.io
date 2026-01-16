@@ -1053,7 +1053,9 @@ header {
     border-radius: 8px;
     margin-left: auto;
     margin-right: auto;
-    max-width: 420px;
+    /* 统一宽度与卡片一致 */
+    width: 95%;
+    max-width: clamp(320px, 75vw, 600px);
     /* 防止与内容重叠 */
     position: relative;
     z-index: 10;
