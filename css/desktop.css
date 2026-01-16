@@ -507,6 +507,14 @@ body::before {
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
     transform: translateY(-50px);
     margin-bottom: 60px;
+
+    /* 严格对齐卡片宽度 */
+    width: 500px;
+    max-width: none;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .footer-info {
