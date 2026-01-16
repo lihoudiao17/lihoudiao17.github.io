@@ -331,12 +331,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // 复用更新时间窗口逻辑 (48小时内)
-        const parts = updateInfo.date ? updateInfo.date.split('-') : null;
-        const updateUTC = parts ? Date.UTC(+parts[0], +parts[1] - 1, +parts[2], 0, 0, 0) - 8 * 3600000 : 0;
-        const hoursSince = parts ? (Date.now() - updateUTC) / 3600000 : 999;
+        // 使用统一的北京时间判断
+        const beijingDate = getBeijingDateString();
 
-        if (hoursSince >= 0 && hoursSince <= 48) {
+        // 简单暴力：只要 JSON 日期等于“北京今天”或“北京昨天”，就显示，无视本地时差
+        // 甚至允许“明天”（防止手动改 JSON 提前发布导致不显示）
+        const isValid = (updateInfo.date === beijingDate) ||
+            (new Date(updateInfo.date) > new Date(beijingDate)) || // 未来日期也显示
+            (Date.parse(beijingDate) - Date.parse(updateInfo.date) <= 86400000); // 过去24小时内
+
+        if (isValid) {
             noticeEl.style.display = 'flex';
             // 直接显示修订列表
             const list = updateInfo.modifiedWorks.join('、');
@@ -362,7 +366,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadPoems() {
         try {
-            const response = await fetch('data/poems.json');
+            // 强制刷新：加上时间戳参数，防止 fetch 缓存 json 数据
+            const response = await fetch('data/poems.json?t=' + Date.now());
             const data = await response.json();
 
             // 读取更新信息
