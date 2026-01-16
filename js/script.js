@@ -334,11 +334,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // 使用统一的北京时间判断
         const beijingDate = getBeijingDateString();
 
-        // 简单暴力：只要 JSON 日期等于“北京今天”或“北京昨天”，就显示，无视本地时差
-        // 甚至允许“明天”（防止手动改 JSON 提前发布导致不显示）
-        const isValid = (updateInfo.date === beijingDate) ||
-            (new Date(updateInfo.date) > new Date(beijingDate)) || // 未来日期也显示
-            (Date.parse(beijingDate) - Date.parse(updateInfo.date) <= 86400000); // 过去24小时内
+        // 严格遵循用户要求：仅当天显示，零点立即消失
+        const isValid = (updateInfo.date === beijingDate);
 
         if (isValid) {
             noticeEl.style.display = 'flex';
@@ -418,8 +415,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 设置定时器，在零点重新检查通知
         setTimeout(() => {
+            console.log("北京时间零点已到，刷新通知状态...");
             checkUpdateNotice();
             checkModificationNotice();
+            renderTOC(); // 刷新目录高亮
             // 递归设置下一个24小时
             scheduleMidnightCheck();
         }, msUntilMidnight + 1000); // 加1秒确保时间已过零点
