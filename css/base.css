@@ -1445,3 +1445,25 @@ header {
 .modification-notice {
     z-index: 2000 !important;
 }
+
+/* 朗读按钮激活状态 */
+#voice-btn.active {
+    background: var(--accent-blue);
+    color: #fff;
+    border-color: var(--accent-blue);
+    animation: voice-pulse 2s infinite;
+}
+
+@keyframes voice-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(74, 144, 226, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(74, 144, 226, 0);
+    }
+}

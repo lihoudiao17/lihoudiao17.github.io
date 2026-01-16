@@ -515,6 +515,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderPoem(index) {
+        // 切换诗词时停止朗读
+        if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+        }
+        isSpeaking = false;
+        const voiceBtn = document.getElementById('voice-btn');
+        if (voiceBtn) {
+            voiceBtn.classList.remove('active');
+            voiceBtn.innerHTML = '语音<br>朗读';
+        }
+
         if (poems.length === 0) return;
         const poem = poems[index];
         const textContainer = document.getElementById('poem-text-container');
@@ -1114,6 +1125,70 @@ function resetCollapseTimer() {
         }, 5000);
     }
 }
+
+// ===== 语音朗读功能 (TTS) =====
+let isSpeaking = false;
+let synthesisVoice = null;
+
+// 初始化语音引擎（尝试获取中文语音）
+function initSpeech() {
+    if ('speechSynthesis' in window) {
+        // 某些浏览器需要 onvoiceschanged 事件才能加载语音列表
+        window.speechSynthesis.onvoiceschanged = () => {
+            const voices = window.speechSynthesis.getVoices();
+            // 优先找中文女声/男声
+            synthesisVoice = voices.find(v => v.lang.includes('zh-CN') || v.lang.includes('zh'));
+        };
+    }
+}
+initSpeech();
+
+function toggleVoice() {
+    const btn = document.getElementById('voice-btn');
+
+    if (isSpeaking) {
+        // 停止朗读
+        window.speechSynthesis.cancel();
+        isSpeaking = false;
+        btn.classList.remove('active');
+        btn.innerHTML = '语音<br>朗读';
+    } else {
+        // 开始朗读
+        const poem = poems[currentIndex];
+        if (!poem) return;
+
+        // 拼接朗读文本：标题 -> 作者 -> 正文
+        // 稍微加点停顿（用逗号或句号）
+        const text = `${poem.title.replace('·', ' ')}。${poem.author.split('|')[1] || poem.author}。。${poem.content.join('。')}`;
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.85; // 稍慢语速，更有韵味
+        utterance.pitch = 1.0;
+        utterance.volume = 1.0;
+
+        if (synthesisVoice) {
+            utterance.voice = synthesisVoice;
+        } else {
+            // 再次尝试获取语音
+            const voices = window.speechSynthesis.getVoices();
+            synthesisVoice = voices.find(v => v.lang.includes('zh-CN') || v.lang.includes('zh'));
+            if (synthesisVoice) utterance.voice = synthesisVoice;
+        }
+
+        utterance.onend = () => {
+            isSpeaking = false;
+            btn.classList.remove('active');
+            btn.innerHTML = '语音<br>朗读';
+        };
+
+        window.speechSynthesis.speak(utterance);
+        isSpeaking = true;
+        btn.classList.add('active');
+        btn.innerHTML = '正在<br>朗读';
+    }
+}
+
+window.toggleVoice = toggleVoice;
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', initCollapseMenu);
