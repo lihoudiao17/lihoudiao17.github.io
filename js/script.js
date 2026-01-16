@@ -334,8 +334,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // 使用统一的北京时间判断
         const beijingDate = getBeijingDateString();
 
-        // 严格遵循用户要求：仅当天显示，零点立即消失
-        const isValid = (updateInfo.date === beijingDate);
+        // 宽容模式：允许24小时内的缓冲期（即“今天”和“昨天”都算）
+        const isValid = isWithin24Hours(updateInfo.date, beijingDate);
 
         if (isValid) {
             noticeEl.style.display = 'flex';
@@ -350,6 +350,23 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             noticeEl.style.display = 'none';
         }
+    }
+
+    // 辅助函数：判断日期是否在有效期内（今天或昨天）
+    function isWithin24Hours(targetDate, currentDate) {
+        if (!targetDate) return false;
+        // 1. 完全匹配
+        if (targetDate === currentDate) return true;
+
+        // 2. 也是为了防止时区计算微差，转为时间戳比较
+        const tDate = Date.parse(targetDate);
+        const cDate = Date.parse(currentDate);
+
+        // 如果 targetDate 是未来的（比如手动改了明天的日期），也显示
+        if (tDate > cDate) return true;
+
+        // 如果差距在 24小时 (86400000毫秒) 以内，也显示
+        return (cDate - tDate) <= 86400000;
     }
 
     // 点击蓝喇叭：直接消失
@@ -434,8 +451,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const li = document.createElement('li');
             li.innerText = poem.title;
 
-            // 如果是最新作品且在通知有效期内（北京时间或本地时间当天），添加高亮类
-            const isUpdateDay = updateInfo.date && (updateInfo.date === beijingDate || false);
+            // 如果是最新作品且在通知有效期内（宽容模式：今天或昨天），添加高亮类
+            const isUpdateDay = isWithin24Hours(updateInfo.date, beijingDate);
 
             // 归一化处理
             const cleanTitle = poem.title.replace(/[《》\s]/g, '');
