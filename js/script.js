@@ -507,14 +507,47 @@ document.addEventListener('DOMContentLoaded', () => {
             const titleEl = document.getElementById('poem-title');
             const beijingDate = getBeijingDateString();
             const isUpdateDay = updateInfo.date && (updateInfo.date === beijingDate);
-            const isModified = updateInfo.modifiedWorks.some(work => poem.title.includes(work.replace(/《|》/g, '')));
 
-            console.log(`Checking modification: Title=${poem.title}, BeijingDate=${beijingDate}, UpdateDate=${updateInfo.date}, isUpdateDay=${isUpdateDay}, isModified=${isModified}`);
+            // Normalize for comparison
+            const cleanTitle = poem.title.replace(/[《》\s]/g, '');
+            const isModified = updateInfo.modifiedWorks.some(work => {
+                const cleanWork = work.replace(/[《》\s]/g, '');
+                return cleanTitle.includes(cleanWork) || cleanWork.includes(cleanTitle);
+            });
+
+            // Debug Overlay
+            const debugText = `Title:[${cleanTitle}] Date:[${beijingDate}] Update:[${updateInfo.date}] Match:${isModified}`;
+            console.log(debugText);
+
+            let debugEl = document.getElementById('debug-overlay');
+            if (!debugEl) {
+                debugEl = document.createElement('div');
+                debugEl.id = 'debug-overlay';
+                Object.assign(debugEl.style, {
+                    position: 'fixed',
+                    bottom: '5px',
+                    left: '5px',
+                    background: 'rgba(0,0,0,0.8)',
+                    color: '#0f0',
+                    padding: '4px 8px',
+                    fontSize: '12px',
+                    zIndex: '10000',
+                    pointerEvents: 'none',
+                    fontFamily: 'monospace'
+                });
+                document.body.appendChild(debugEl);
+            }
+            debugEl.innerText = debugText;
 
             if (isUpdateDay && isModified) {
                 titleEl.classList.add('modified-title');
+                // Force style in case of CSS specificity issues
+                titleEl.style.setProperty('color', '#4A90E2', 'important');
+                titleEl.style.fontWeight = 'bold';
             } else {
                 titleEl.classList.remove('modified-title');
+                titleEl.style.removeProperty('color');
+                titleEl.style.fontWeight = 'normal';
             }
 
             // 渲染正文（不渲染备注，备注通过弹窗单独显示）
