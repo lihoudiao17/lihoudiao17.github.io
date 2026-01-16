@@ -18,6 +18,8 @@
     --overlay-bg: rgba(0, 0, 0, 0.7);
     --gradient-start: #e8f0e8;
     --gradient-end: #f5f0e8;
+    --highlight-color: #c91f37;
+    /* 与强调色保持一致 */
 }
 
 /* 深色模式变量 */
