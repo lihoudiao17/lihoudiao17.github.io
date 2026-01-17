@@ -325,6 +325,8 @@ header {
     max-width: 98vw;
     padding: 1rem 0.5rem;
     /* 减小左右内边距 */
+    min-height: 400px;
+    /* 保持与竖排一致的卡片长度 */
 }
 
 .poem-content.horizontal-mode #poem-text-container {
@@ -1463,10 +1465,12 @@ header {
     align-items: center;
     gap: 6px;
     padding: 8px 14px;
-    background: linear-gradient(135deg, #c91f37 0%, #e85a6b 100%);
-    color: #fff;
+    background: #fff;
+    color: #c91f37;
+    /* 红色文字 */
+    border: 2px solid #c91f37;
     border-radius: 20px;
-    box-shadow: 0 2px 10px rgba(201, 31, 55, 0.35);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     z-index: 2000;
     cursor: pointer;
     font-size: 0.8rem;
@@ -1484,8 +1488,11 @@ header {
 
 /* 蓝色修订喇叭 - 在红色喇叭下方 */
 .modification-notice {
-    background: linear-gradient(135deg, #1A5599 0%, #4A90E2 100%);
-    box-shadow: 0 2px 10px rgba(74, 144, 226, 0.35);
+    background: #fff;
+    color: #1A5599;
+    /* 蓝色文字 */
+    border: 2px solid #1A5599;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     top: 140px;
     /* 红色喇叭下方 (95 + 35 + 10间距) */
 }
