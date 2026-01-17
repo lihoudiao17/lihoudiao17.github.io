@@ -1291,8 +1291,23 @@ header {
 }
 
 /* 玫瑰背景 - 移动端简化 */
+/* 右下角大印章 - 移动端静态展示 */
 .poem-content::before {
-    display: none;
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 50px;
+    /* 移动端缩小尺寸 */
+    height: 50px;
+    background-image: url('../assets/Seal1.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.8;
+    z-index: 0;
+    pointer-events: none;
 }
 
 /* ===== iPad 断点 (768px+) ===== */
