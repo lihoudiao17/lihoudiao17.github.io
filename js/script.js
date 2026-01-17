@@ -287,23 +287,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 检查是否显示通知（匹配北京时间 或 本地时间）
     function checkUpdateNotice() {
+        // 使用统一的北京时间判断
         const beijingDate = getBeijingDateString();
-        const localDate = getLocalDateString();
-        const noticeEl = document.getElementById('update-notice');
-        const textEl = document.getElementById('notice-text');
 
-        // 只要更新日期等于“北京时间今天”或“本地时间今天”，都显示
-        if (updateInfo.date && (updateInfo.date === beijingDate || false)) {
+        // 宽容模式：允许24小时内的缓冲期（即“今天”和“昨天”都算）
+        const isValid = isWithin24Hours(updateInfo.date, beijingDate);
+
+        if (isValid) {
             noticeEl.style.display = 'flex';
             // 直接显示具体数量
             const count = updateInfo.latestWorks.length;
             const worksList = updateInfo.latestWorks.join('、');
             textEl.innerHTML = `新作 ${count} 首：${worksList}`;
 
-            // 20秒后自动隐藏（防止长时间遮挡，特别是手机端）
+            // 30秒后自动隐藏（延长一点时间）
             setTimeout(() => {
                 if (noticeEl) noticeEl.style.display = 'none';
-            }, 20000);
+            }, 30000);
         } else {
             noticeEl.style.display = 'none';
         }
