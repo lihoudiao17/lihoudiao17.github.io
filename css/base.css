@@ -321,8 +321,8 @@ header {
 
 /* ===== 横排模式 ===== */
 .poem-content.horizontal-mode {
-    /* 面电脑端保持与竖排一致的宽度 (由默认样式控制) */
-    /* 移动端在下方 media query 中单独设置更宽 */
+    /* 横排模式需要更宽，确保每联14字不换行 */
+    max-width: clamp(340px, 92vw, 650px);
 }
 
 .poem-content.horizontal-mode #poem-text-container {
