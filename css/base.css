@@ -1238,10 +1238,56 @@ header {
 
 /* ===== 装饰元素 - 移动端隐藏 ===== */
 .decoration-branch,
-.stamps-container,
 #particle-canvas,
 .guide-seal {
     display: none;
+}
+
+/* 印章在移动端显示 - 位置与桌面端一致 */
+.stamps-container {
+    display: grid;
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    grid-template-columns: 26px 26px;
+    grid-template-rows: 26px 26px;
+    gap: 4px;
+    pointer-events: none;
+    writing-mode: horizontal-tb;
+}
+
+/* 移动端印章样式 */
+.seal {
+    width: 26px;
+    height: 26px;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    font-size: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 3px;
+    font-family: var(--font-title);
+    opacity: 0.85;
+    line-height: 1;
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
+/* Grid 定位 */
+.seal:nth-child(2) {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.seal:nth-child(3) {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.seal:nth-child(1) {
+    grid-column: 2;
+    grid-row: 2;
 }
 
 /* 玫瑰背景 - 移动端简化 */
