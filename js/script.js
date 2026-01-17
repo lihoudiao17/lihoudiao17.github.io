@@ -132,65 +132,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // 每5分钟切换一次
     bgIntervalId = setInterval(changeBackground, 5 * 60 * 1000);
 
-    // 绑定背景按钮点击事件
+    // 绑定背景按钮点击事件 (简化版下拉列表)
     const bgBtn = document.getElementById('bg-btn');
-    const branchGroup = document.getElementById('bg-branch-group');
+    const bgList = document.getElementById('bg-list');
 
-    if (bgBtn && branchGroup) {
-        // 1. 点击主按钮：切换印章组显示状态
+    if (bgBtn && bgList) {
+        // 点击按钮：切换列表显示
         bgBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            // 切换显示 class
-            branchGroup.classList.toggle('show');
+            bgList.classList.toggle('show');
 
-            // 重置所有印章的激活状态（收起子菜单）
-            if (branchGroup.classList.contains('show')) {
-                branchGroup.querySelectorAll('.branch-item').forEach(item => item.classList.remove('active'));
-            }
+            // 定位列表
+            const rect = bgBtn.getBoundingClientRect();
+            bgList.style.top = (rect.bottom + 5) + 'px';
+            bgList.style.left = rect.left + 'px';
         });
 
-        // 2. 点击印章按钮：展开对应子菜单
-        branchGroup.addEventListener('click', (e) => {
-            e.stopPropagation(); // 防止冒泡关闭菜单
-
-            // 情况A：点击了印章按钮 (.branch-btn)
-            const branchBtn = e.target.closest('.branch-btn');
-            if (branchBtn) {
-                const item = branchBtn.parentElement; // .branch-item
-
-                // 切换当前项激活状态
-                // 如果当前已激活，则关闭；否则激活当前并关闭其他
-                const isActive = item.classList.contains('active');
-
-                // 先关闭所有其他
-                branchGroup.querySelectorAll('.branch-item').forEach(i => i.classList.remove('active'));
-
-                if (!isActive) {
-                    item.classList.add('active');
-                }
-                return;
-            }
-
-            // 情况B：点击了具体背景项
-            const bgItem = e.target.closest('li[data-index]');
-            if (bgItem) {
-                const index = parseInt(bgItem.dataset.index);
+        // 点击列表项：选择背景
+        bgList.addEventListener('click', (e) => {
+            const item = e.target.closest('li[data-index]');
+            if (item) {
+                const index = parseInt(item.dataset.index);
                 selectBackground(index);
 
-                // 关闭整个菜单组
-                branchGroup.classList.remove('show');
+                // 更新激活状态
+                bgList.querySelectorAll('li').forEach(li => li.classList.remove('active'));
+                item.classList.add('active');
 
-                // 更新激活状态 UI
-                branchGroup.querySelectorAll('li[data-index]').forEach(li => li.classList.remove('active'));
-                bgItem.classList.add('active');
-                return;
+                // 关闭列表
+                bgList.classList.remove('show');
             }
         });
 
-        // 3. 点击外部区域关闭菜单
+        // 点击外部关闭
         document.addEventListener('click', (e) => {
-            if (!bgBtn.contains(e.target) && !branchGroup.contains(e.target)) {
-                branchGroup.classList.remove('show');
+            if (!bgBtn.contains(e.target) && !bgList.contains(e.target)) {
+                bgList.classList.remove('show');
             }
         });
     }
@@ -1086,8 +1063,8 @@ function getShuffleAudio() {
 
 // 发牌音效（仅播放前800ms）
 function playShuffleSound() {
-    // 移动端禁用音效，避免抢占背景音乐焦点
-    if (window.innerWidth <= 768) return;
+    // 移动端/平板禁用音效，避免抢占背景音乐焦点
+    if (window.innerWidth <= 1024) return;
 
     const audio = getShuffleAudio();
     clearTimeout(shuffleTimeout);
@@ -1100,8 +1077,8 @@ function playShuffleSound() {
 
 // 收回音效（复用同一音频，播放600ms）
 function playCollapseSound() {
-    // 移动端禁用音效，避免抢占背景音乐焦点
-    if (window.innerWidth <= 768) return;
+    // 移动端/平板禁用音效，避免抢占背景音乐焦点
+    if (window.innerWidth <= 1024) return;
 
     const audio = getShuffleAudio();
     clearTimeout(shuffleTimeout);

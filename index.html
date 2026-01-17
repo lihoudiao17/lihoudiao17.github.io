@@ -58,44 +58,24 @@
         <!-- 名录按钮（移到最前面） -->
         <button id="toc-btn" class="widget-btn" onclick="toggleTOC()">作品<br>名录</button>
 
-        <!-- 背景控制按钮容器 (包含按钮和子菜单) -->
-        <div class="bg-btn-wrapper">
+        <!-- 背景控制按钮容器 (简化为下拉列表) -->
+        <div class="widget-group" style="position: relative;">
             <button id="bg-btn" class="widget-btn">背景<br>类别</button>
-
-            <!-- 背景选择列表 (水平分叉印章菜单) -->
-            <div id="bg-branch-group" class="bg-branch-group">
-                <!-- 分类1：山水 -->
-                <div class="branch-item">
-                    <div class="branch-btn">山水<br>诗意</div>
-                    <ul class="sub-list">
-                        <li data-index="0">千里江山</li>
-                        <li data-index="2">残阳如血</li>
-                        <li data-index="3">妩媚青山</li>
-                        <li data-index="4">梅花山水</li>
-                        <li data-index="7">珠峰银月</li>
-                    </ul>
-                </div>
-                <!-- 分类2：艺术 -->
-                <div class="branch-item">
-                    <div class="branch-btn">艺术<br>诗魂</div>
-                    <ul class="sub-list">
-                        <li data-index="1">观音大士</li>
-                        <li data-index="5">庄生蝴蝶</li>
-                        <li data-index="8">五彩斑斓</li>
-                        <li data-index="11">荷花探戈</li>
-                    </ul>
-                </div>
-                <!-- 分类3：自然 -->
-                <div class="branch-item">
-                    <div class="branch-btn">自然<br>诗境</div>
-                    <ul class="sub-list">
-                        <li data-index="6">蓝星一角</li>
-                        <li data-index="9">星空垂野</li>
-                        <li data-index="10">光影森林</li>
-                    </ul>
-                </div>
-            </div>
-        </div> <!-- 关闭 bg-btn-wrapper -->
+            <ul id="bg-list" class="selector-list">
+                <li data-index="0" class="active">千里江山</li>
+                <li data-index="1">观音大士</li>
+                <li data-index="2">残阳如血</li>
+                <li data-index="3">妩媚青山</li>
+                <li data-index="4">梅花山水</li>
+                <li data-index="5">庄生蝴蝶</li>
+                <li data-index="6">蓝星一角</li>
+                <li data-index="7">珠峰银月</li>
+                <li data-index="8">五彩斑斓</li>
+                <li data-index="9">星空垂野</li>
+                <li data-index="10">光影森林</li>
+                <li data-index="11">荷花探戈</li>
+            </ul>
+        </div>
 
         <!-- 排版模式切换 -->
         <button id="mode-btn" onclick="toggleMode()">竖排<br>观赏</button>
