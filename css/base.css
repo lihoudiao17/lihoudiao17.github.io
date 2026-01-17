@@ -413,7 +413,8 @@ header {
 .widget-btn,
 #mode-btn {
     font-family: var(--font-title);
-    font-size: 0.75rem;
+    font-size: 0.85rem;
+    /* 加大字号，便于阅读 */
     font-weight: bold;
     color: var(--accent-color);
     background: rgba(255, 255, 255, 0.85);
@@ -421,8 +422,9 @@ header {
     -webkit-backdrop-filter: blur(8px);
     border: 2px solid var(--accent-color);
     border-radius: 4px;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    /* 加大点击区域 */
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -462,14 +464,14 @@ header {
 .settings-btn {
     display: none;
     font-family: var(--font-title);
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     font-weight: bold;
     color: #fff;
     background: var(--accent-color);
     border: 2px solid var(--accent-color);
     border-radius: 4px;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -636,6 +638,10 @@ header {
 
     z-index: 101;
     padding: 5px;
+
+    /* 防止窄屏溢出 */
+    max-width: 95vw;
+    overflow-x: auto;
 }
 
 /* 激活状态：显示 */

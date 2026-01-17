@@ -1107,7 +1107,7 @@ function playCollapseSound() {
     }, 600);
 }
 
-// 5秒无操作自动收起
+// 10秒无操作自动收起（延长以减少打断感）
 function resetCollapseTimer() {
     clearTimeout(collapseTimer);
     if (!menuCollapsed) {
@@ -1126,7 +1126,7 @@ function resetCollapseTimer() {
             if (settingsBtn) settingsBtn.classList.add('settings-used');
             // 播放收回音效
             playCollapseSound();
-        }, 5000);
+        }, 10000); // 10秒
     }
 }
 
