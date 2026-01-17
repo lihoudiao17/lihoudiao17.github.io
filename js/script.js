@@ -403,6 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
             scheduleMidnightCheck();
 
             // 渲染名录
+            console.log(`Loaded ${poems.length} poems.`);
             renderTOC();
 
             // 随机开始
@@ -410,6 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderPoem(currentIndex);
         } catch (error) {
             console.error("加载诗词数据失败:", error);
+            alert("诗词数据加载失败： " + error.message);
         }
     }
 
