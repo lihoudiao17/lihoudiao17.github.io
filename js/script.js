@@ -299,8 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
             noticeEl.style.display = 'flex';
             // 直接显示具体数量
             const count = updateInfo.latestWorks.length;
-            const worksList = updateInfo.latestWorks.join('、');
-            textEl.innerHTML = `新作 ${count} 首：${worksList}`;
+            textEl.innerHTML = `有新作 ${count} 首上线`;
 
             // 10秒后自动隐藏
             setTimeout(() => {
@@ -341,9 +340,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (isValid) {
             noticeEl.style.display = 'flex';
-            // 直接显示修订列表
-            const list = updateInfo.modifiedWorks.join('、');
-            textEl.innerHTML = `修订：${list}`;
+            // 直接显示修订数量
+            const count = updateInfo.modifiedWorks.length;
+            textEl.innerHTML = `有 ${count} 首旧作翻新`;
 
             // 10秒后自动隐藏
             setTimeout(() => {
