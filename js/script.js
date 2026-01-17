@@ -287,6 +287,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 检查是否显示通知（匹配北京时间 或 本地时间）
     function checkUpdateNotice() {
+        const noticeEl = document.getElementById('update-notice');
+        const textEl = document.getElementById('notice-text');
         // 使用统一的北京时间判断
         const beijingDate = getBeijingDateString();
 
