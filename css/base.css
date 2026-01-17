@@ -544,8 +544,9 @@ header {
 
 /* 音乐控制图标 - 方形边框+圆形内切 */
 .music-control {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    /* 与 widget-btn 保持一致 */
+    height: 50px;
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -562,16 +563,18 @@ header {
 .music-control::before {
     content: "";
     position: absolute;
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    /* 内切圆，留边5px边距 */
+    height: 40px;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 50%;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .music-icon {
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    /* 稍微加大图标 */
+    height: 22px;
     position: relative;
     z-index: 1;
 }
