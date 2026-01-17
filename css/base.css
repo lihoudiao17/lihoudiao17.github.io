@@ -321,8 +321,10 @@ header {
 
 /* ===== 横排模式 ===== */
 .poem-content.horizontal-mode {
-    /* 横排模式需要更宽，确保每联14字不换行 */
-    max-width: clamp(340px, 92vw, 650px);
+    /* 横排模式需要最大宽度，确保每联14字不换行 */
+    max-width: 98vw;
+    padding: 1rem 0.5rem;
+    /* 减小左右内边距 */
 }
 
 .poem-content.horizontal-mode #poem-text-container {
@@ -337,14 +339,18 @@ header {
 }
 
 .poem-content.horizontal-mode .body-text {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    /* 稍微减小字号 */
     line-height: 2rem;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
+    /* 减小字间距 */
 }
 
 .poem-content.horizontal-mode .body-text p {
     margin: 0.5rem 0;
     text-align: center;
+    white-space: nowrap;
+    /* 强制不换行 */
 }
 
 /* 横排模式下的注释 - 显示在正文下方 */
