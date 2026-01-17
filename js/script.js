@@ -1087,6 +1087,9 @@ function getShuffleAudio() {
 
 // 发牌音效（仅播放前800ms）
 function playShuffleSound() {
+    // 移动端禁用音效，避免抢占背景音乐焦点
+    if (window.innerWidth <= 768) return;
+
     const audio = getShuffleAudio();
     clearTimeout(shuffleTimeout);
     audio.currentTime = 0;
@@ -1098,6 +1101,9 @@ function playShuffleSound() {
 
 // 收回音效（复用同一音频，播放600ms）
 function playCollapseSound() {
+    // 移动端禁用音效，避免抢占背景音乐焦点
+    if (window.innerWidth <= 768) return;
+
     const audio = getShuffleAudio();
     clearTimeout(shuffleTimeout);
     audio.currentTime = 0;
