@@ -1440,10 +1440,56 @@ header {
     outline-offset: 2px;
 }
 
-/* 强制提高通知层级 (Fix mobile click issues) */
-.update-notice,
+/* ===== 通知喇叭样式 (红/蓝) ===== */
+.update-notice {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    /* 默认隐藏，JS控制显示 */
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(135deg, #c91f37 0%, #e85a6b 100%);
+    color: #fff;
+    border-radius: 2rem;
+    box-shadow: 0 4px 15px rgba(201, 31, 55, 0.4);
+    z-index: 2000;
+    cursor: pointer;
+    font-size: 0.9rem;
+    max-width: 90vw;
+    text-align: center;
+    animation: notice-bounce 0.5s ease-out;
+}
+
+.update-notice .notice-icon {
+    font-size: 1.2rem;
+}
+
+.update-notice .notice-text {
+    font-weight: 500;
+}
+
+/* 蓝色修订喇叭 */
 .modification-notice {
-    z-index: 2000 !important;
+    background: linear-gradient(135deg, #1A5599 0%, #4A90E2 100%);
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+    top: 4rem;
+    /* 如果红色喇叭也在，蓝色往下移 */
+}
+
+/* 入场动画 */
+@keyframes notice-bounce {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
 }
 
 /* 朗读按钮激活状态 */

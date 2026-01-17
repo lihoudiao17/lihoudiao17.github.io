@@ -302,10 +302,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const worksList = updateInfo.latestWorks.join('、');
             textEl.innerHTML = `新作 ${count} 首：${worksList}`;
 
-            // 30秒后自动隐藏（延长一点时间）
+            // 10秒后自动隐藏
             setTimeout(() => {
                 if (noticeEl) noticeEl.style.display = 'none';
-            }, 30000);
+            }, 10000);
         } else {
             noticeEl.style.display = 'none';
         }
@@ -345,10 +345,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const list = updateInfo.modifiedWorks.join('、');
             textEl.innerHTML = `修订：${list}`;
 
-            // 20秒后自动隐藏
+            // 10秒后自动隐藏
             setTimeout(() => {
                 if (noticeEl) noticeEl.style.display = 'none';
-            }, 20000);
+            }, 10000);
         } else {
             noticeEl.style.display = 'none';
         }
