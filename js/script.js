@@ -611,6 +611,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const themeBtn = document.getElementById('theme-btn');
         const playmodeBtn = document.getElementById('playmode-btn');
         const bgBtn = document.getElementById('bg-btn');
+        const headerEl = document.querySelector('header');
+        const footerEl = document.querySelector('.site-footer');
 
         // 切换 class
         card.classList.toggle('horizontal-mode');
@@ -624,6 +626,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (themeBtn) themeBtn.classList.toggle('blue-mode');
         if (playmodeBtn) playmodeBtn.classList.toggle('blue-mode');
         if (bgBtn) bgBtn.classList.toggle('blue-mode');
+
+        // 联动宽度：header/footer 与诗词卡片对齐
+        if (headerEl) headerEl.classList.toggle('horizontal-width');
+        if (footerEl) footerEl.classList.toggle('horizontal-width');
 
         // 修改按钮文字（显示当前状态）
         if (card.classList.contains('horizontal-mode')) {

@@ -367,6 +367,15 @@ header {
     text-align: center;
 }
 
+/* 横排模式下 header/footer 宽度对齐卡片 */
+header.horizontal-width,
+.site-footer.horizontal-width {
+    max-width: 98vw;
+    width: 98vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* ===== 控制按钮 ===== */
 .control-panel {
     display: flex;
