@@ -1,7 +1,7 @@
 let poems = [];
 let currentIndex = 0;
 
-// 背景图随机切换（12张）
+// 背景图随机切换（14张）
 const backgrounds = [
     'assets/background01.jpg',
     'assets/background02.jpg',
@@ -14,7 +14,9 @@ const backgrounds = [
     'assets/background09.png',
     'assets/background10.jpg',
     'assets/background11.jpg',
-    'assets/background12.jpg'
+    'assets/background12.jpg',
+    'assets/background13.jpg',
+    'assets/background14.jpg'
 ];
 
 let bgIndex = 0; // 当前背景索引
