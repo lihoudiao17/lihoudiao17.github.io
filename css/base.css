@@ -322,6 +322,7 @@ header {
 /* ===== 横排模式 ===== */
 .poem-content.horizontal-mode {
     /* 横排模式需要最大宽度，确保每联14字不换行 */
+    width: 98vw;
     max-width: 98vw;
     padding: 1rem 0.5rem;
     /* 减小左右内边距 */
