@@ -275,17 +275,6 @@ header {
     letter-spacing: 2px;
 }
 
-/* 笔名（标题和正文之间） */
-#poem-author {
-    font-family: var(--font-title);
-    /* 与正文字体一致：手机1.2rem → iPad1.35rem → 桌面1.5rem */
-    font-size: clamp(1.2rem, 2.8vw, 1.5rem);
-    color: var(--accent-color);
-    margin: 0.5rem 0 0 clamp(1rem, 3vw, 2rem);
-    letter-spacing: 3px;
-    opacity: 0.85;
-}
-
 /* 诗词正文 - 响应式字体 */
 .body-text {
     /* 手机1.2rem → iPad1.35rem → 桌面1.5rem */
