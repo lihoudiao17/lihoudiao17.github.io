@@ -321,9 +321,9 @@ header {
 
 /* ===== 横排模式 ===== */
 .poem-content.horizontal-mode {
-    /* 横排模式需要最大宽度，确保每联14字不换行 */
-    width: 98vw;
-    max-width: 98vw;
+    /* 横排模式：宽度扣除容器padding(16px*2)，与header/footer对齐 */
+    width: calc(100vw - 32px);
+    max-width: calc(100vw - 32px);
     padding: 1rem 0.5rem;
     /* 减小左右内边距 */
     min-height: 400px;
@@ -371,8 +371,8 @@ header {
 /* 横排模式下 header/footer 宽度对齐卡片 */
 header.horizontal-width,
 .site-footer.horizontal-width {
-    max-width: 98vw;
-    width: 98vw;
+    max-width: calc(100vw - 32px);
+    width: calc(100vw - 32px);
     margin-left: auto;
     margin-right: auto;
 }
