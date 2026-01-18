@@ -1315,6 +1315,36 @@ header {
     background-image: url('../assets/Seal4.png');
 }
 
+/* ===== 云笺模式（花笺背景） - 移动端支持 ===== */
+.poem-content.yunjian-mode::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(--yunjian-bg, url('../assets/card01.jpg'));
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* 云笺模式下确保正文和印章在背景之上 */
+.poem-content.yunjian-mode #poem-text-container {
+    z-index: 2;
+    position: relative;
+}
+
+.poem-content.yunjian-mode::before {
+    z-index: 1;
+}
+
+.poem-content.yunjian-mode .stamps-container {
+    z-index: 2;
+}
+
 /* ===== iPad 断点 (768px+) ===== */
 @media (min-width: 768px) {
     /* iPad/平板特别优化：隐藏所有3D特效和装饰，防止卡顿 */
