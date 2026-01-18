@@ -1310,6 +1310,11 @@ header {
     pointer-events: none;
 }
 
+/* 横排模式使用蓝色印章 Seal4 */
+.poem-content.horizontal-mode::before {
+    background-image: url('../assets/Seal4.png');
+}
+
 /* ===== iPad 断点 (768px+) ===== */
 @media (min-width: 768px) {
     /* iPad/平板特别优化：隐藏所有3D特效和装饰，防止卡顿 */
